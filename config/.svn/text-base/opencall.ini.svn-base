@@ -1,0 +1,38 @@
+# System Configuration File
+#
+# Purpose: B2BUA 1.1 Belador, provide Connection control for Mobicents (OpenCall System)
+# Author: Gonzalo Gasca Meza
+# Oxford University
+# Department of Computer Science, Wolfson Building,  
+# Parks Rd, Oxford OX1, United Kingdom
+# +44 1865 273838
+# Version 1.000(01) Comendador
+#
+#
+#	MODE 
+#	1 - LOCAL FILE
+#	2 - DB (MYSQL DB)
+#	3 - LOCAL RULES (BUILT-IN)
+#
+#   DB TYPE 
+#   	1 - MYSQL
+#	2 - ORACLE DB	TODO
+#	3 - MICROSOFT SQL SERVER	TODO
+#
+# MODE 1 must have CALLRULES
+# MODE 2 must have DBTYPE,DBHOSTNAME,DBPORT,DBNAME,DBUSERNAME and DBPASSWORD
+# MODE 3 does not need any params
+#
+MODE=1
+RULE_LIMIT=100
+CALLTRANSFORMS=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
+CALLRULES=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
+CALLROUTELIST=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg
+DBTYPE=1
+DBHOSTNAME=localhost
+DBPORT=3306
+DBNAME=opencall
+DBUSERNAME=root
+DBPASSWORD=
+
+

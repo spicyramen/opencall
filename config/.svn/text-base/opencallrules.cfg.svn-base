@@ -1,0 +1,53 @@
+# Configuration File
+#
+# Purpose: Call Control Routing rules for OpenCall
+# Author: Gonzalo Gasca Meza
+# Oxford University
+# Department of Computer Science, Wolfson Building,  
+# Parks Rd, Oxford OX1, United Kingdom
+# +44 1865 273838
+# Version 1.1(000) Comendador
+#		
+#       ROUTE= 
+#       Mandatory parameters:
+#       RULE     = NUMERIC
+#       PRIORITY = NUMERIC
+#       TYPE     = REGEX,  WILDCARD, NUMERIC
+#       STRING   = VALUE
+#       TARGET   = IP ADDRESS, HOSTNAME, _DNS_
+#       
+#       Optional
+#       PORT     = NUMERIC VALUE (DEFAULT 5060)
+#
+#       RULES ENTRIES
+#       RULE NUMBER,RULE PRIORITY, RULE TYPE, MATCH STRING,TARGET, PORT TARGET
+#
+#
+# 		TRANSFORM=
+#       Mandatory parameters:
+#       TYPE     = REGEX,  WILDCARD, NUMERIC
+#       ORIGINAL STRING   = VALUE
+#       FINAL    STRING   = VALUE
+#
+#
+#		TRANSFORMS ARE APPLIED FIRST, THEN ROUTE PATTERNS
+#
+#
+#
+ROUTE=("1","100","REGEX","(.*)@.*","_DNS_")
+ROUTE=("2","5","REGEX","(.*)@videolab.att.com","_DNS_")
+ROUTE=("3","10","NUMERIC","201","192.168.1.10","5060")
+ROUTE=("4","100","WILDCARD","20X","110.10.0.200")
+ROUTE=("5","10","WILDCARD","10X","110.10.0.200")
+ROUTE=("6","10","WILDCARD","XXXXXXXX","videoalpha.att.com")
+ROUTE=("7","10","WILDCARD","XXXXXXXX","videolab.att.com")
+ROUTE=("8","50","WILDCARD","20X","110.10.0.210","5060")
+ROUTE=("9","50","WILDCARD","0115255!","110.10.0.200","5060")
+ROUTE=("10","50","WILDCARD","0115233!","110.10.0.200","5060")
+ROUTE=("11","1","NUMERIC","+525557969469","110.10.0.200","5060")
+ROUTE=("12","1","WILDCARD","4XX","110.10.0.220","5060")
+ROUTE=("13","10","NUMERIC","+14089449402","110.10.0.200","5060")
+#
+#
+#
+ROUTELIST=("LOCAL","1.1.1.1","2.2.2.2","3.3.3.3")

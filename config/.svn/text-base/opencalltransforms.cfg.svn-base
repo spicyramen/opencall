@@ -1,0 +1,28 @@
+# Configuration File
+#
+# Purpose: Call Control Routing rules for OpenCall
+# Author: Gonzalo Gasca Meza
+# Oxford University
+# Department of Computer Science, Wolfson Building,  
+# Parks Rd, Oxford OX1, United Kingdom
+# +44 1865 273838
+# Version 1.1(000) Comendador
+#		
+#
+#
+# 		TRANSFORM=
+#       Mandatory parameters:
+#       RULE     = NUMERIC
+#       TYPE     = REGEX,  WILDCARD, NUMERIC
+#       ORIGINAL STRING   = VALUE
+#       FINAL    STRING   = VALUE
+#		APPLYTO  = CALLED, CALLING, REDIRECT
+#
+#
+#		TRANSFORM CALLED NUMBER ARE APPLIED FIRST, THEN ROUTE PATTERNS
+#
+#
+TRANSFORM=("1","WILDCARD","+5255!","01152!","CALLED")
+TRANSFORM=("2","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED")
+TRANSFORM=("3","NUMERIC","201","9201","CALLING")
+TRANSFORM=("4","REGEX","(.*)@.*","$1","REDIRECT")

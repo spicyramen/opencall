@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/29/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF
+END
+log4j.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/29/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/log4j.xml
+END
+sip.xml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/29/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/sip.xml
+END
+jboss-web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/29/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/jboss-web.xml
+END
