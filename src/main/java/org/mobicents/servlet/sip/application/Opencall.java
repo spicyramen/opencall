@@ -252,11 +252,11 @@ public class Opencall extends SipServlet {
 		
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("Distributable Simple Servlet: attributes previously set in linked sip session INVITE : "
+			logger.info("Opencall Servlet: attributes previously set in linked sip session INVITE : "
 					+ linkedSipSessionInviteAttribute);
-			logger.info("Distributable Simple Servlet: attributes previously set in sip session INVITE : "
+			logger.info("Opencall Servlet: attributes previously set in sip session INVITE : "
 					+ sipSessionInviteAttribute);
-			logger.info("Distributable Simple Servlet: attributes previously set in sip application session INVITE : "
+			logger.info("Opencall Servlet: attributes previously set in sip application session INVITE : "
 					+ sipApplicationSessionInviteAttribute);
 		}
 
