@@ -178,18 +178,30 @@ public class Opencall extends SipServlet {
 				headers.put("To", toHeaderSet);
 
 				SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
-				SipURI sipUri = (SipURI) sipFactory.createURI(finalSipUri);			
+				String transport = inviteRequest.getTransport();
+                
+                if(logger.isDebugEnabled()) {
+                	logger.debug("Transport for sending request is: '" + transport + "'");
+                }
+                
+				SipURI sipUri = (SipURI) sipFactory.createURI(finalSipUri);
+				
+				/* Add Transport TCP,UDP,TLS */
+				//sipUri.setTransportParam("tcp");
+				
 				inviteRequest.setRequestURI(sipUri);
 			
 				if (logger.isInfoEnabled()) {
 					if (logger.isDebugEnabled())
-						logger.debug("inviteRequest = " + inviteRequest);
+						logger.debug("OpenCall InviteRequest = " + inviteRequest);
 				}
 				
 				inviteRequest.getSession().setAttribute("originalRequest",request);
 				inviteRequest.getSession().setAttribute("INVITE", RECEIVED);
-				
+						
+            
 				try {
+					
 					inviteRequest.send();
 				}
 				catch (Exception e) {

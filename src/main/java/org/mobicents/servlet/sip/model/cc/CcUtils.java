@@ -160,6 +160,8 @@ public class CcUtils {
 		// logger.info("getWildCard() " + routeString);
 		routeString = routeString.replace("!", "\\d+");
 		// logger.info("getWildCard() " + routeString);
+		// Add + Support for E164 dialing
+		routeString = routeString.replace("+", "\\+");
 		// logger.info("getWildCard() Return: " + routeString);
 		return routeString;
 

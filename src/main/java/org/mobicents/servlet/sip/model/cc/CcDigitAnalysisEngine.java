@@ -539,6 +539,7 @@ public class CcDigitAnalysisEngine {
 				try {
 					Pattern.compile(newRuleString);
 				} catch (PatternSyntaxException e) {
+					logger.error("Invalid Rule: " + ruleString);
 					exc = e;
 					return false;
 				}
