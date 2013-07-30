@@ -57,6 +57,11 @@ public class CcSystemConfigurationEngine implements
 	private ArrayList<String> mandatoryConfigParamsRouteList = new ArrayList<String>();
 	private ArrayList<String> candidateRoutePatterns = new ArrayList<String>();
 	private ArrayList<String> routePatterns = new ArrayList<String>();
+	private ArrayList<String> candidateTransformPatterns = new ArrayList<String>();
+	private ArrayList<String> transformPatterns = new ArrayList<String>();
+	private ArrayList<String> candidateRouteList = new ArrayList<String>();
+	private ArrayList<String> routeLists = new ArrayList<String>();
+	
 	private Map<Object, String> callRoutingRules = new HashMap<Object, String>();
 
 	private String CONFIGURATION_FILE = "../standalone/configuration/opencall/opencallrules.cfg";
@@ -88,7 +93,6 @@ public class CcSystemConfigurationEngine implements
 			//TODO
 			ACCESS_MODE = 0;
 			logger.info("CcSystemConfigurationEngine() DefaultSystemConfiguration(Undefined)");
-
 		} else {
 			logger.error("CcSystemConfigurationEngine() DefaultSystemConfiguration(Error)");
 		}
@@ -99,7 +103,7 @@ public class CcSystemConfigurationEngine implements
 		CONFIGURATION_FILE = fileName;
 		logger.info("CcSystemConfigurationEngine() CcStartFileEngine initializing...Mode: ["
 				+ ACCESS_MODE + "]" + " CALL RULES:  " + CONFIGURATION_FILE);
-		if (CcReadConfigurationFile())
+		if (CcReadConfigurationFile(CONFIGURATION_FILE,1))
 			return true;
 		else
 			return false;
@@ -110,7 +114,7 @@ public class CcSystemConfigurationEngine implements
 		CONFIGURATION_FILE = fileName;
 		logger.info("CcSystemConfigurationEngine() CcStartFileEngine initializing...Mode: ["
 				+ ACCESS_MODE + "]" + " CALL RULES:  " + CONFIGURATION_FILE);
-		if (CcReadConfigurationFile())
+		if (CcReadConfigurationFile(CONFIGURATION_FILE,2))
 			return true;
 		else
 			return false;
@@ -121,7 +125,7 @@ public class CcSystemConfigurationEngine implements
 		CONFIGURATION_FILE = fileName;
 		logger.info("CcSystemConfigurationEngine() CcStartFileEngine initializing...Mode: ["
 				+ ACCESS_MODE + "]" + " CALL RULES:  " + CONFIGURATION_FILE);
-		if (CcReadConfigurationFile())
+		if (CcReadConfigurationFile(CONFIGURATION_FILE,3))
 			return true;
 		else
 			return false;
@@ -148,8 +152,8 @@ public class CcSystemConfigurationEngine implements
 		if (MySqlConnection.CcInitDBConnection()) {
 			logger.info("CcStartDbEngine() Attempting to read from DB");
 
-			/* Init system parameters */
-			CcInitConfigurationValues(true);
+			/* Initialize system parameters */
+			CcInitConfigurationValues(true,4);
 
 			if (MySqlConnection.CcReadDBInfo()) {
 				logger.info("CcStartDbEngine()Verifying DB route patterns");
@@ -166,14 +170,34 @@ public class CcSystemConfigurationEngine implements
 	 * @return
 	 */
 
-	private boolean CcReadConfigurationFile() {
+	private boolean CcReadConfigurationFile(String fileName,int type) {
 		logger.info("CcSystemConfigurationEngine() CcStartReadConfigurationFile CONFIGURATION_FILE: "
-				+ CONFIGURATION_FILE);
-		CcInitConfigurationValues(true);
-		if (CcInitConfigurationFile())
-			return true;
-		else
+				+ fileName);
+		if (type==1) {
+			CcInitConfigurationValues(true,1);
+			if (CcInitConfigurationFile(1))
+				return true;
+			else
+				return false;
+		}	
+		else if (type == 2) {
+			CcInitConfigurationValues(true,2);
+			if (CcInitConfigurationFile(2))
+				return true;
+			else
+				return false;
+		}	
+		else if (type == 3) {
+			CcInitConfigurationValues(true,3);
+			if (CcInitConfigurationFile(3))
+				return true;
+			else
+				return false;
+		}	
+		else 
 			return false;
+		
+		
 	}
 
 	/**
@@ -181,34 +205,46 @@ public class CcSystemConfigurationEngine implements
 	 * @return
 	 */
 
-	private boolean CcInitConfigurationFile() {
+	private boolean CcInitConfigurationFile(int type) {
 		logger.info("CcSystemConfigurationEngine() CcInitConfigurationFile initializing...");
 		try {
 			if (CcVerifyConfigurationFileAccess(CONFIGURATION_FILE)) 
 			{ // Verify File
-																	
-				if (!CcReadCallRulesParameters(CONFIGURATION_FILE)) 
-				{ // Read Call rules File																
+							
+				if (type == 1) {
+					// CHECK ROUTES SYNTAX
+					if (!CcReadCallRulesParameters(CONFIGURATION_FILE))	{ // Read Call rules File																
+						return false;
+					}
+					if (!CcVerifyFileCallRules(CONFIGURATION_FILE))	{ // Verify File Parameters															
+						return false;
+					}
+					return true;
+				}	
+				else if (type == 2) {
+					//TODO CHECK TRANSFORM SYNTAX
+					
+				}
+				else if (type == 3) {
+					//TODO CHECK ROUTELIST SYNTAX
+				}
+				else {
 					return false;
 				}
-				if (!CcVerifyFileCallRules(CONFIGURATION_FILE))
-				{ // Verify File Parameters															
-					return false;
-				}
-				return true;
+				
 			
 			} 
-			else 
-			{			
+			else {			
 				return false;
 			}
 		} 
 		catch (IOException e) 
 		{
-		
 			e.printStackTrace();
 			return false;
 		}
+		
+		return false;
 	}
 
 	/**
@@ -239,11 +275,24 @@ public class CcSystemConfigurationEngine implements
 	 * @param startInit
 	 */
 
-	private void CcInitConfigurationValues(boolean startInit) {
+	private void CcInitConfigurationValues(boolean startInit,int type) {
 		logger.info("CcSystemConfigurationEngine() CcInitConfigurationValues initializing...");
 		if (startInit) {
 			logger.info("CcSystemConfigurationEngine() CcInitConfigurationValues (Mandatory) initializing...");
-			mandatoryConfigParamsRules.add("ROUTE");
+			if (type == 1)
+				mandatoryConfigParamsRules.add("ROUTE");
+			else if (type == 2)
+				mandatoryConfigParamsTransforms.add("TRANSFORM");
+			else if (type == 3)
+				mandatoryConfigParamsRouteList.add("ROUTELIST");
+			else if (type == 4) {
+				logger.info("CcInitConfigurationValues Database read");
+				mandatoryConfigParamsRules.add("ROUTE");
+				mandatoryConfigParamsTransforms.add("TRANSFORM");
+				mandatoryConfigParamsRouteList.add("ROUTELIST");
+			}	
+			else
+				return;
 		}
 
 	}
