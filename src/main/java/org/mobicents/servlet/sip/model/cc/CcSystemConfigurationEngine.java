@@ -59,7 +59,7 @@ public class CcSystemConfigurationEngine implements
 	private ArrayList<String> routePatterns = new ArrayList<String>();
 	private ArrayList<String> candidateTransformPatterns = new ArrayList<String>();
 	private ArrayList<String> transformPatterns = new ArrayList<String>();
-	private ArrayList<String> candidateRouteList = new ArrayList<String>();
+	private ArrayList<String> candidateRouteLists = new ArrayList<String>();
 	private ArrayList<String> routeLists = new ArrayList<String>();
 	
 	private Map<Object, String> callRoutingRules = new HashMap<Object, String>();
@@ -174,22 +174,22 @@ public class CcSystemConfigurationEngine implements
 		logger.info("CcSystemConfigurationEngine() CcStartReadConfigurationFile CONFIGURATION_FILE: "
 				+ fileName);
 		if (type==1) {
-			CcInitConfigurationValues(true,1);
-			if (CcInitConfigurationFile(1))
+			CcInitConfigurationValues(true,type);
+			if (CcInitConfigurationFile(type))
 				return true;
 			else
 				return false;
 		}	
 		else if (type == 2) {
-			CcInitConfigurationValues(true,2);
-			if (CcInitConfigurationFile(2))
+			CcInitConfigurationValues(true,type);
+			if (CcInitConfigurationFile(type))
 				return true;
 			else
 				return false;
 		}	
 		else if (type == 3) {
-			CcInitConfigurationValues(true,3);
-			if (CcInitConfigurationFile(3))
+			CcInitConfigurationValues(true,type);
+			if (CcInitConfigurationFile(type))
 				return true;
 			else
 				return false;
@@ -213,7 +213,7 @@ public class CcSystemConfigurationEngine implements
 							
 				if (type == 1) {
 					// CHECK ROUTES SYNTAX
-					if (!CcReadCallRulesParameters(CONFIGURATION_FILE))	{ // Read Call rules File																
+					if (!CcReadCallRulesParameters(CONFIGURATION_FILE,type))	{ // Read Call rules File																
 						return false;
 					}
 					if (!CcVerifyFileCallRules(CONFIGURATION_FILE))	{ // Verify File Parameters															
@@ -303,7 +303,7 @@ public class CcSystemConfigurationEngine implements
 	 * @throws IOException
 	 */
 
-	private boolean CcReadCallRulesParameters(String configurationFileName)
+	private boolean CcReadCallRulesParameters(String configurationFileName,int type)
 			throws IOException {
 
 		try {
@@ -318,13 +318,20 @@ public class CcSystemConfigurationEngine implements
 				if (strLine.startsWith("#") || strLine.isEmpty()) {
 					// logger.info ("Comment Found");
 				} else {
-					candidateRoutePatterns.add(strLine);
+					if (type == 1)
+						candidateRoutePatterns.add(strLine);
+					else if (type == 2)
+						candidateTransformPatterns.add(strLine);
+					else if (type == 3)
+						candidateRouteLists.add(strLine);
+					else
+						return false;
 				}
 			}
 
 			// Close the input stream
 			in.close();
-			CcDisplayCandidateRules();
+			CcDisplayCandidateRules(type);
 			return true;
 
 		} catch (FileNotFoundException e) {
@@ -335,19 +342,40 @@ public class CcSystemConfigurationEngine implements
 
 	}
 
-	private boolean CcDisplayCandidateRules() throws IOException {
-		logger.info("CcDisplayCandidateRules() Candidate Route patterns");
-		int intPatterns = 0;
-		for (String r : candidateRoutePatterns) {
-			logger.info(r);
-			intPatterns++;
+	private boolean CcDisplayCandidateRules(int type) throws IOException {
+		
+		if (type == 1) {
+			logger.info("CcDisplayCandidateRules() Candidate Route patterns");
+			int intPatterns = 0;
+			for (String r : candidateRoutePatterns) {
+				logger.info(r);
+				intPatterns++;
+			}
+			if (intPatterns == 0) {
+				return false;
+			} else {
+				return true;
+			}
 		}
-		if (intPatterns == 0) {
-			return false;
-		} else {
+		else if (type == 2){
+			logger.info("CcDisplayCandidateRules() Candidate Transform patterns");
+			
+			for (String r : candidateTransformPatterns) {
+				logger.info(r);
+			}
 			return true;
 		}
-
+		else if (type == 3){
+			logger.info("CcDisplayCandidateRules() Candidate Route Lists");
+			for (String r : candidateRouteLists) {
+				logger.info(r);
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 
 	private boolean CcVerifyDbRoutePatterns(ArrayList<String> rules) {
@@ -498,10 +526,8 @@ public class CcSystemConfigurationEngine implements
 							logger.error("CcVerifyFileCallRules() Error in VerifyRuleType Rule"
 									+ "(" + index + ") " + route + "\n");
 						}
-					}
-				
+					}			
 					index++; // Check next rule
-				
 				}
 				
 				executor.shutdown();
