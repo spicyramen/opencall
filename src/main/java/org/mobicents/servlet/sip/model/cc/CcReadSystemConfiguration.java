@@ -23,7 +23,6 @@ public class CcReadSystemConfiguration {
 			.getLogger(CcReadSystemConfiguration.class);
 	private static String DELIMITER = "=";
 	private String SYSTEM_CONFIGURATION = "";
-
 	private int MODE = 0;
 	private ArrayList<String> candidateParameters = new ArrayList<String>();
 	private ArrayList<String> systemParameters = new ArrayList<String>();
@@ -374,7 +373,7 @@ public class CcReadSystemConfiguration {
 					index++;
 				}
 			}
-			if (index == 1) {
+			if (index == fileParams.size()) {
 				logger.info("obtainRules Valid parameters finalized");
 				return true;
 			}

@@ -38,7 +38,9 @@ public class CcTestFile {
 
 		initParams.add("MODE");
 		generalParams.add("RULE_LIMIT");
-		fileParams.add("FILELOCATION");
+		fileParams.add("CALLRULES");
+		fileParams.add("CALLTRANSFORMS");
+		fileParams.add("CALLROUTELIST");
 		dbParams.add("DBTYPE");
 		dbParams.add("DBHOSTNAME");
 		dbParams.add("DBPORT");
@@ -374,7 +376,7 @@ public class CcTestFile {
 					index++;
 				}
 			}
-			if (index == 1) {
+			if (index == fileParams.size()) {
 				System.out.println("obtainRules Valid parameters finalized");
 				return true;
 			}
@@ -405,7 +407,7 @@ public class CcTestFile {
 
 	public static void main(String[] args) {
 		CcTestFile archivo = new CcTestFile(
-				"/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/opencall.ini");
+				"/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/projects/sipservlets/sip-servlets-examples/opencall/config/opencall.ini");
 		archivo.CcInitSystemConfiguration();
 		System.out.println("Mode: " + archivo.getSystemMode());
 		for (String r : archivo.getConnection()) {
