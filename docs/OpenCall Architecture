@@ -23,3 +23,18 @@ Main application
  	  -RealTime reporting module
  	  
  	  
+
+OpenCall 1.1
+
+Opencall.java Initializes and reads opencall.ini:
+	CcProcessor
+	CcProcessor.startService
+		CcReadSystemConfiguration
+		CcReadSystemConfiguration.CcInitSystemConfiguration
+			CcInitConfigSrv
+			CcInitConfigSrv.initializeConfiguration			
+			CcSystemConfigurationEngine
+				CcSystemConfigurationEngine.CcStartCallRulesEngine
+				CcSystemConfigurationEngine.CcReadConfigurationFile
+					CcSystemConfigurationEngine.CcInitConfigurationValues
+					CcSystemConfigurationEngine.CcInitConfigurationFile

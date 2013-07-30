@@ -105,24 +105,26 @@ public class CcSystemConfigurationEngine implements
 			return false;
 	}
 
-	public boolean CcStartCallRulesEngine() {
+
+	public boolean CcStartCallTransformsEngine(String fileName) {
+		CONFIGURATION_FILE = fileName;
 		logger.info("CcSystemConfigurationEngine() CcStartFileEngine initializing...Mode: ["
-				+ ACCESS_MODE + "]");
+				+ ACCESS_MODE + "]" + " CALL RULES:  " + CONFIGURATION_FILE);
 		if (CcReadConfigurationFile())
 			return true;
 		else
 			return false;
 	}
 
-	public boolean CcStartCallTransformsEngine() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	
-	public boolean CcStartRouteListEngine() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean CcStartRouteListEngine(String fileName) {
+		CONFIGURATION_FILE = fileName;
+		logger.info("CcSystemConfigurationEngine() CcStartFileEngine initializing...Mode: ["
+				+ ACCESS_MODE + "]" + " CALL RULES:  " + CONFIGURATION_FILE);
+		if (CcReadConfigurationFile())
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -186,23 +188,19 @@ public class CcSystemConfigurationEngine implements
 			{ // Verify File
 																	
 				if (!CcReadCallRulesParameters(CONFIGURATION_FILE)) 
-				{ // Read Call rules File
-																	
+				{ // Read Call rules File																
 					return false;
 				}
 				if (!CcVerifyFileCallRules(CONFIGURATION_FILE))
-				{ // Verify File Parameters
-																
+				{ // Verify File Parameters															
 					return false;
 				}
 				return true;
 			
 			} 
 			else 
-			{
-				
+			{			
 				return false;
-			
 			}
 		} 
 		catch (IOException e) 

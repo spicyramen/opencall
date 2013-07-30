@@ -60,7 +60,7 @@ public class CcInitConfigSrv {
 				}
 				else if (paramType[0].toString().equals("ROUTELIST")) {
 					ROUTELIST = paramType[1].toString();
-					logger.info("MODE " + Type + " ROUTE LIST FILE  FOUND: " + ROUTELIST);
+					logger.info("MODE " + Type + " ROUTELIST FILE  FOUND: " + ROUTELIST);
 				}
 			}
 

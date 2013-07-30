@@ -31,9 +31,13 @@ public class CcProcessor {
 	public boolean startService() {
 		
 		logger.info("SipEngine() starting...");
-			 // Initialize object to read for rules from: File, DB,Internal, or other.
+		
+		// Initialize object to read for rules from: File, DB,Internal, or other.
 		CcReadSystemConfiguration readInitParameters = new CcReadSystemConfiguration(INIT_FILE);
-		readInitParameters.CcInitSystemConfiguration(); 				// Reads opencall.ini and determined Connection Mode
+		
+		// Reads opencall.ini and determined Connection Mode
+		
+		readInitParameters.CcInitSystemConfiguration(); 				
 		
 		try {
 			readConfigRules.initializeConfiguration(readInitParameters.getSystemMode(),readInitParameters.getConnection());

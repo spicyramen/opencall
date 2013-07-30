@@ -113,8 +113,7 @@ public class CcReadSystemConfiguration {
 		}
 
 		File configFile = new File(SYSTEM_CONFIGURATION);
-		
-		
+				
 		if (configFile.exists() && configFile.canRead()) {
 			return true;
 		} else {
