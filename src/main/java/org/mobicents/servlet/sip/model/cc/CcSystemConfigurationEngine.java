@@ -445,7 +445,6 @@ public class CcSystemConfigurationEngine implements
 	class RuleReader implements Runnable {
 
 		private int id;
-
 		public RuleReader(int id) {
 			this.id = id;
 
@@ -486,17 +485,16 @@ public class CcSystemConfigurationEngine implements
 			String[] routeType;
 			int index = 1;
 
-			/* given string will be split by the argument delimiter provided. */
+			/* Given string will be split by the argument delimiter provided. */
 
 			if (!routePatterns.isEmpty()) {
 
-				// Start Multi-threaded engine
+				// Start Multithreaded engine
 				ExecutorService executor = Executors
 						.newFixedThreadPool(routePatterns.size());
 
 				for (String route : routePatterns) {
-					executor.submit(new RuleReader(index));
-					
+					executor.submit(new RuleReader(index));			
 					routeType = route.split(DELIMITER);
 					
 					if (routeType.length > 2) 
@@ -548,6 +546,193 @@ public class CcSystemConfigurationEngine implements
 		}
 	}
 
+	/*
+	 * 
+	 */
+	
+	private boolean CcVerifyFileTransformRules(String configurationFileName)
+			throws IOException {
+		try {
+			// Open the file that is the first
+			// command line parameter
+			FileInputStream fstream = new FileInputStream(configurationFileName);
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			
+			// Read File Line By Line
+			while ((strLine = br.readLine()) != null) {
+				strLine = strLine.trim();
+				if (strLine.startsWith("#") || strLine.isEmpty()) {
+					// logger.info ("Comment Found");
+				} else {
+					routePatterns.add(strLine);
+				}
+			}
+
+			// Close the input stream
+			in.close();
+
+			logger.info("CcVerifyFileTransformRules() Transform patterns Total ("
+					+ transformPatterns.size() + ")");
+			String[] routeType;
+			int index = 1;
+
+			/* given string will be split by the argument delimiter provided. */
+
+			if (!transformPatterns.isEmpty()) {
+
+				// Start Multi-threaded engine
+				ExecutorService executor = Executors
+						.newFixedThreadPool(transformPatterns.size());
+
+				for (String route : transformPatterns) {
+					executor.submit(new RuleReader(index));
+					
+					routeType = route.split(DELIMITER);
+					
+					if (routeType.length > 2) 
+					{
+						logger.error("CcVerifyFileTransformRules() Error Parsing Rule"
+								+ "(" + index + ") ");
+					} 
+					else 
+					{
+						// Start thread
+						if (CcVerifyRuleSyntax(index, 0, routeType[0].toString()) && 
+						CcVerifyRuleSyntax(index, 1, routeType[1].toString())) 
+						{
+							if (CcVerifyRuleLogic(routeType[0].toString(),routeType[1].toString())) 
+							{
+								try {
+									CcDigitAnalisysEngineInit(
+											routeType[0].toString(),
+											routeType[1].toString());
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+							}
+						}
+						} 
+						else {
+							logger.error("CcVerifyFileTransformRules() Error in VerifyRuleType Rule"
+									+ "(" + index + ") " + route + "\n");
+						}
+					}			
+					index++; // Check next rule
+				}
+				
+				executor.shutdown();
+
+			} 
+			else 
+			{
+				logger.error("CcVerifyFileTransformRules() No Transform Patterns found!");
+				return true;
+			}
+			
+			return true;
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			// logConsole.error(e.getMessage());
+			return false;
+		}
+		
+	}
+	
+	
+	private boolean CcVerifyFileRouteListRules(String configurationFileName)
+			throws IOException {
+		
+		try {
+			// Open the file that is the first
+			// command line parameter
+			FileInputStream fstream = new FileInputStream(configurationFileName);
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			
+			// Read File Line By Line
+			while ((strLine = br.readLine()) != null) {
+				strLine = strLine.trim();
+				if (strLine.startsWith("#") || strLine.isEmpty()) {
+					// logger.info ("Comment Found");
+				} else {
+					routeLists.add(strLine);
+				}
+			}
+
+			// Close the input stream
+			in.close();
+
+			logger.info("CcVerifyFileRouteListRules() Route Lists Total ("
+					+ routeLists.size() + ")");
+			String[] routeType;
+			int index = 1;
+
+			/* given string will be split by the argument delimiter provided. */
+
+			if (!routeLists.isEmpty()) {
+
+				// Start Multi-threaded engine
+				ExecutorService executor = Executors
+						.newFixedThreadPool(routeLists.size());
+
+				for (String route : routeLists) {
+					executor.submit(new RuleReader(index));
+					
+					routeType = route.split(DELIMITER);
+					
+					if (routeType.length > 2) 
+					{
+						logger.error("CcVerifyFileRouteListRules() Error Parsing Rule"
+								+ "(" + index + ") ");
+					} 
+					else 
+					{
+						// Start thread
+						if (CcVerifyRuleSyntax(index, 0, routeType[0].toString()) && 
+						CcVerifyRuleSyntax(index, 1, routeType[1].toString())) 
+						{
+							if (CcVerifyRuleLogic(routeType[0].toString(),routeType[1].toString())) 
+							{
+								try {
+									CcDigitAnalisysEngineInit(
+											routeType[0].toString(),
+											routeType[1].toString());
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+							}
+						}
+						} 
+						else {
+							logger.error("CcVerifyFileRouteListRules() Error in VerifyRuleType Rule"
+									+ "(" + index + ") " + route + "\n");
+						}
+					}			
+					index++; // Check next rule
+				}
+				
+				executor.shutdown();
+
+			} 
+			else 
+			{
+				logger.error("CcVerifyFileRouteListRules() No Route Lists found!");
+				return false;
+			}
+			
+			return true;
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			// logConsole.error(e.getMessage());
+			return false;
+		}
+	}
+	
 	/*
 	 * Valid rule initialize Array
 	 */
@@ -627,7 +812,6 @@ public class CcSystemConfigurationEngine implements
 		if (totalRules == 0) {
 			logger.error("CcGetDbRules() No rules found!");
 		}
-
 		return callRoutingRules;
 	}
 
