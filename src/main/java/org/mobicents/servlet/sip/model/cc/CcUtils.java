@@ -136,7 +136,7 @@ public class CcUtils {
 							|| (tokenIndex == 7 && iToken == 0)) { // TRANSPORT
 						try {
 							if (token.matches("TCP") || token.matches("UDP")
-								|| token.matches("TLS") || token.matches("WS")) {
+								|| token.matches("TLS") || token.matches("WS") || token.matches("WSS")) {
 								Tokens[tokenIndex] = token;
 							} else {
 								logger.error("getRuleValue() Invalid Transport Value");
@@ -256,6 +256,8 @@ public class CcUtils {
 		validTransport.add("UDP");
 		validTransport.add("TLS");
 		validTransport.add("WS");
+		validTransport.add("WSS");
+		
 		
 		transport = transport.toUpperCase();
 		

@@ -15,7 +15,7 @@ public class CcInitConfigSrv {
 	private static Logger logger = Logger.getLogger(CcInitConfigSrv.class);
 	private boolean isStarted = false;
 	private static String DELIMITER = "=";
-	private CcDigitAnalysisEngine initDigitAnalysisModule = null;
+	private CcDigitAnalysisEngine DigitAnalysisModule = null;
 	private String finalURI = null;
 
 	/**
@@ -65,8 +65,9 @@ public class CcInitConfigSrv {
 			}
 
 			if (initConfigModule.CcStartCallRulesEngine(CALLRULES)) {
-				initDigitAnalysisModule = new CcDigitAnalysisEngine(initConfigModule.CcGetRules());
-				if (initDigitAnalysisModule.isStarted()) {
+				// Obtain valid rules from File or DB
+				DigitAnalysisModule = new CcDigitAnalysisEngine(initConfigModule.CcGetRules());
+				if (DigitAnalysisModule.isStarted()) {
 					isStarted = true;
 				} else {
 					isStarted = false;
@@ -138,9 +139,9 @@ public class CcInitConfigSrv {
 
 			if (initConfigModule.CcStartDbEngine(DBTYPE, DBHOSTNAME, DBPORT,
 					DBNAME, DBUSERNAME, DBPASSWORD)) {
-				initDigitAnalysisModule = new CcDigitAnalysisEngine(
+				DigitAnalysisModule = new CcDigitAnalysisEngine(
 						initConfigModule.CcGetDbRules());
-				if (initDigitAnalysisModule.isStarted()) {
+				if (DigitAnalysisModule.isStarted()) {
 					isStarted = true;
 				} else {
 					isStarted = false;
@@ -163,12 +164,13 @@ public class CcInitConfigSrv {
 	/**
 	 * 
 	 * @param sipURI
+	 * Process incoming SIP Message and return converted string.
 	 * @return
 	 */
 
 	public String digitsDialed(String sipURI) {
-		if (initDigitAnalysisModule.CcCallProcessSipMessage(sipURI)) {
-			finalURI = initDigitAnalysisModule.getFinalURI();
+		if (DigitAnalysisModule.CcCallProcessSipMessage(sipURI)) {
+			finalURI = DigitAnalysisModule.getFinalURI();
 			return finalURI;
 		} else {
 			return null;

@@ -409,6 +409,7 @@ public class CcSystemConfigurationEngine implements
 						if (CcVerifyRuleLogic(routeType[0].toString(),
 								routeType[1].toString())) {
 							try {
+								// Insert Valid rules to Digit Analysis Engine
 								CcDigitAnalisysEngineInit(
 										routeType[0].toString(),
 										routeType[1].toString());
@@ -822,6 +823,145 @@ public class CcSystemConfigurationEngine implements
 
 	/**
 	 * 
+	 * @param configurationParameter
+	 * @return
+	 */
+
+	private boolean CcVerifyRuleSyntax(int ruleNumber, int paramNumber,
+			String configurationParameter) {
+		// Display Rule number
+		logger.info("CcVerifyRuleSyntax() Rule Number " + "[" + ruleNumber
+				+ "] Value: " + configurationParameter);
+		
+		// Display Valid Parameter number
+		if (paramNumber == 0
+				&& (configParams.contains(configurationParameter) || mandatoryConfigParamsRules
+						.contains(configurationParameter))) {
+			logger.info("CcVerifyRuleSyntax() Valid Parameter Rule Type: "
+					+ configurationParameter);
+			return true;
+			
+		} else if (paramNumber == 1) {
+			// Replace () with "" from Rule: ("8","50","WILDCARD","20X","110.10.0.210","5061","TLS")
+			
+			configurationParameter = configurationParameter.replaceAll(
+					"\\(\"|\"\\)", "\"");
+			
+			logger.info("CcVerifyRuleSyntax() Rule Value: "	+ configurationParameter);
+			
+			if (!configurationParameter.contains("\\(\"")
+					&& !configurationParameter.contains("\"\\)")) {
+				
+				logger.info("Processing Tokens: " + configurationParameter);
+				StringTokenizer st = new StringTokenizer(
+						configurationParameter, ",");
+				if (st.countTokens() == TOKEN_COUNT
+						|| st.countTokens() == TOKEN_COUNT + 1) {
+					logger.info("CcVerifyRuleSyntax() Processing Tokens: ["
+							+ st.countTokens() + "]");
+					int tokenIndex = 1;
+					while (st.hasMoreElements()) {
+						String token = st.nextElement().toString();
+						token = token.replaceAll("\"", "");
+
+						if (token.isEmpty() && tokenIndex != 6) { // PORT CAN BE EMPTY
+																	
+							return false;
+						}
+						if (tokenIndex == 1) { // RULE NUMBER
+							try {
+								Integer.parseInt(token);
+								logger.info("Token [" + tokenIndex + "]: "
+										+ Integer.parseInt(token));
+							} catch (NumberFormatException e) {
+								logger.error("Invalid rule Number Value");
+								return false;
+							}
+
+						}
+						if (tokenIndex == 2) { // PRIORITY
+
+							try {
+								if (Integer.parseInt(token) >= 0
+										&& Integer.parseInt(token) <= 100
+										&& (!token.isEmpty()))
+									logger.info("Token (" + tokenIndex + "): "
+											+ Integer.parseInt(token));
+								else {
+									logger.error("Invalid Priority Value RULE "
+											+ ruleNumber);
+									return false;
+								}
+							} catch (NumberFormatException e) {
+								logger.error("Invalid Priority Value RULE "
+										+ ruleNumber);
+								return false;
+							}
+
+						}
+						if (tokenIndex == 3) { // TYPE
+
+							if (token.matches("REGEX")
+									|| token.matches("NUMERIC")
+									|| token.matches("WILDCARD"))
+								logger.info("Token (" + tokenIndex + "): "
+										+ token);
+							else {
+								logger.error("Invalid Type Value");
+								return false;
+							}
+						}
+						if (tokenIndex == 4) { // STRING
+							logger.info("Token (" + tokenIndex + "): " + token);
+						}
+						if (tokenIndex == 5) { // TRUNK
+							if (CcUtils.isValidIP(token)
+									|| CcUtils.isValidHostName(token)
+									|| token.matches("_DNS_"))
+								logger.info("Token (" + tokenIndex + "): "
+										+ token);
+
+						}
+						if (tokenIndex == 6) { // PORT
+							try {
+								if (Integer.parseInt(token) >= START_PORT
+										&& Integer.parseInt(token) <= END_PORT)
+									logger.info("Token (" + tokenIndex + "): "
+											+ Integer.parseInt(token));
+								else
+									logger.error("Invalid Port Value");
+							} catch (NumberFormatException e) {
+								logger.error("Invalid Port Value");
+								return false;
+							}
+						}
+						if (tokenIndex == 7) { // TRANSPORT
+							if (CcUtils.isValidTransport(token)) {
+								 logger.info("CcVerifyRuleSyntax() Token RULE TRANSPORT: " +
+										 token);
+							} else {
+								return false;
+							}
+						}
+						tokenIndex++;
+					}
+					return true;
+					
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			logger.error("CcVerifyRuleSyntax() Error in Rule Number " + "["
+					+ ruleNumber + "] Value: " + configurationParameter);
+			return false;
+		}
+	}
+
+	/**
+	 * 
 	 * @param routeType
 	 * @param routeValue
 	 * @return
@@ -853,6 +993,7 @@ public class CcSystemConfigurationEngine implements
 			ruleType = ruleValues[3];
 			ruleString = ruleValues[4];
 			ruleTrunk = ruleValues[5];
+			
 			if (utilObj.getTokenCount(routeValue) == 6) {
 				rulePort = ruleValues[6];
 			}
@@ -982,7 +1123,7 @@ public class CcSystemConfigurationEngine implements
 
 				if (rulePort != null && !rulePort.isEmpty()) {
 					if (ruleType.equals("_DNS_")) {
-						 logger.info("CcVerifyRuleLogic() Token RULE PORT " +
+						 logger.warn("CcVerifyRuleLogic() Token RULE PORT " +
 						  rulePort + "INVALID when using _DNS_ type");
 						return false;
 					} 
@@ -992,15 +1133,16 @@ public class CcSystemConfigurationEngine implements
 			if (utilObj.getTokenCount(routeValue) == 7) {
 				
 				// We can't set the transport in a DNS request
-				// TODO Future release, recieve DNS response and filter based on transport DE1
-				
-				if (ruleTrunk.equals("_DNS_")) {
-					return false;
-				}
+				// TODO  DE1 Future release, receive DNS response and filter based on transport
 				
 				if (CcUtils.isValidTransport(ruleTransport)) {
 					 logger.info("CcVerifyRuleLogic() Token RULE TRANSPORT: " +
 							 ruleTransport);
+					 if (ruleTrunk.equals("_DNS_")) {
+						 logger.warn("CcVerifyRuleLogic() Can't use DNS with Token RULE TRANSPORT: " +
+								 ruleTransport);
+							return false;
+					 }
 				} else {
 					return false;
 				}
@@ -1011,144 +1153,6 @@ public class CcSystemConfigurationEngine implements
 		return true;
 	}
 
-	/**
-	 * 
-	 * @param configurationParameter
-	 * @return
-	 */
-
-	private boolean CcVerifyRuleSyntax(int ruleNumber, int paramNumber,
-			String configurationParameter) {
-		// Display Rule number
-		logger.info("CcVerifyRuleSyntax() Rule Number " + "[" + ruleNumber
-				+ "] Value: " + configurationParameter);
-		
-		// Display Valid Parameter number
-		if (paramNumber == 0
-				&& (configParams.contains(configurationParameter) || mandatoryConfigParamsRules
-						.contains(configurationParameter))) {
-			logger.info("CcVerifyRuleSyntax() Valid Parameter Rule Type: "
-					+ configurationParameter);
-			return true;
-			
-		} else if (paramNumber == 1) {
-			// Replace () with "" from Rule: ("8","50","WILDCARD","20X","110.10.0.210","5061","TLS")
-			
-			configurationParameter = configurationParameter.replaceAll(
-					"\\(\"|\"\\)", "\"");
-			
-			logger.info("CcVerifyRuleSyntax() Rule Value: "	+ configurationParameter);
-			
-			if (!configurationParameter.contains("\\(\"")
-					&& !configurationParameter.contains("\"\\)")) {
-				
-				logger.info("Processing Tokens: " + configurationParameter);
-				StringTokenizer st = new StringTokenizer(
-						configurationParameter, ",");
-				if (st.countTokens() == TOKEN_COUNT
-						|| st.countTokens() == TOKEN_COUNT + 1) {
-					logger.info("CcVerifyRuleSyntax() Processing Tokens: ["
-							+ st.countTokens() + "]");
-					int tokenIndex = 1;
-					while (st.hasMoreElements()) {
-						String token = st.nextElement().toString();
-						token = token.replaceAll("\"", "");
-
-						if (token.isEmpty() && tokenIndex != 6) { // PORT CAN BE EMPTY
-																	
-							return false;
-						}
-						if (tokenIndex == 1) { // RULE NUMBER
-							try {
-								Integer.parseInt(token);
-								logger.info("Token [" + tokenIndex + "]: "
-										+ Integer.parseInt(token));
-							} catch (NumberFormatException e) {
-								logger.error("Invalid rule Number Value");
-								return false;
-							}
-
-						}
-						if (tokenIndex == 2) { // PRIORITY
-
-							try {
-								if (Integer.parseInt(token) >= 0
-										&& Integer.parseInt(token) <= 100
-										&& (!token.isEmpty()))
-									logger.info("Token (" + tokenIndex + "): "
-											+ Integer.parseInt(token));
-								else {
-									logger.error("Invalid Priority Value RULE "
-											+ ruleNumber);
-									return false;
-								}
-							} catch (NumberFormatException e) {
-								logger.error("Invalid Priority Value RULE "
-										+ ruleNumber);
-								return false;
-							}
-
-						}
-						if (tokenIndex == 3) { // TYPE
-
-							if (token.matches("REGEX")
-									|| token.matches("NUMERIC")
-									|| token.matches("WILDCARD"))
-								logger.info("Token (" + tokenIndex + "): "
-										+ token);
-							else {
-								logger.error("Invalid Type Value");
-								return false;
-							}
-						}
-						if (tokenIndex == 4) { // STRING
-							logger.info("Token (" + tokenIndex + "): " + token);
-						}
-						if (tokenIndex == 5) { // TRUNK
-							if (CcUtils.isValidIP(token)
-									|| CcUtils.isValidHostName(token)
-									|| token.matches("_DNS_"))
-								logger.info("Token (" + tokenIndex + "): "
-										+ token);
-
-						}
-						if (tokenIndex == 6) { // PORT
-							try {
-								if (Integer.parseInt(token) >= START_PORT
-										&& Integer.parseInt(token) <= END_PORT)
-									logger.info("Token (" + tokenIndex + "): "
-											+ Integer.parseInt(token));
-								else
-									logger.error("Invalid Port Value");
-							} catch (NumberFormatException e) {
-								logger.error("Invalid Port Value");
-								return false;
-							}
-						}
-						if (tokenIndex == 7) {
-							if (CcUtils.isValidTransport(token)) {
-								 logger.info("CcVerifyRuleSyntax() Token RULE TRANSPORT: " +
-										 token);
-							} else {
-								return false;
-							}
-						}
-						tokenIndex++;
-					}
-					return true;
-				} else {
-
-					return false;
-				}
-			} else {
-				return false;
-			}
-		} else {
-			logger.error("CcVerifyRuleSyntax() Error in Rule Number " + "["
-					+ ruleNumber + "] Value: " + configurationParameter);
-			return false;
-		}
-	}
 
 	
 

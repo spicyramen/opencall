@@ -73,9 +73,9 @@ public class Opencall extends SipServlet {
 	private static final String VERSION = "1.1 Belador";
 	private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
 	B2buaHelper helper = null;
-	private CcProcessor openCallEngine =  null;
+	private CcProcessor openCallSipEngine =  null;
 
-	/** Creates a new instance of CallForwardingB2BUASipServlet */
+	/** Creates a new instance of Opencall */
 	public Opencall() {
 
 	}
@@ -92,20 +92,19 @@ public class Opencall extends SipServlet {
 		Thread initOpenCallService = new Thread(new Runnable() {
 			
 			public void run() {
-				logger.info("OpenCall sip servlet reading init parameters: " + INIT_FILE);
+				logger.info("OpenCall() sip servlet reading init parameters: " + INIT_FILE);
 				
 				try {
-					openCallEngine = new CcProcessor(INIT_FILE);
-					openCallEngine.startService();
-					if (openCallEngine.isStarted()) {
-						logger.info("OpenCall engine started succesfully.");
+					openCallSipEngine = new CcProcessor(INIT_FILE);
+					openCallSipEngine.startService();
+					if (openCallSipEngine.isStarted()) {
+						logger.info("OpenCall() engine started succesfully.");
 					} else {
-						logger.fatal("OpenCall engine unable to start.");
+						logger.fatal("OpenCall()  engine unable to start.");
 					}
 					
-				} catch (Exception e) {
-					
-					logger.error("OpenCall Exception during system initialization");
+				} catch (Exception e) {	
+					logger.error("OpenCall() Exception during system initialization");
 					e.printStackTrace();
 				}
 			}
@@ -116,7 +115,7 @@ public class Opencall extends SipServlet {
         try {
         	initOpenCallService.join();
 		} catch (InterruptedException e) {
-			logger.error("OpenCall Exception occured during system initialization" + e.getMessage());
+			logger.error("OpenCall() Exception occured during system initialization" + e.getMessage());
 			
 		}
 		
@@ -152,18 +151,18 @@ public class Opencall extends SipServlet {
 		
 		if (logger.isInfoEnabled()) {
 			if (logger.isDebugEnabled())
-				logger.info("New SIP Call Detected: " + request.toString());
+				logger.info("Opencall() New SIP Call Detected: " + request.toString());
 			if (logger.isDebugEnabled())
 				logger.debug(request.getFrom().getURI().toString());
 			if (logger.isDebugEnabled())
-				logger.debug("OUTBOUND INTERFACES  "
+				logger.debug("Opencall() OUTBOUND INTERFACES  "
 						+ getServletContext().getAttribute(
 								"javax.servlet.sip.outboundInterfaces"));
 		}
 
 		if (request.isInitial()) {
 			
-			String finalSipUri = openCallEngine.digitsDialed(request.getTo().getURI().toString());
+			String finalSipUri = openCallSipEngine.digitsDialed(request.getTo().getURI().toString());
 
 			if (finalSipUri != null && finalSipUri.length() > 0) {
 				helper = request.getB2buaHelper();
@@ -181,7 +180,7 @@ public class Opencall extends SipServlet {
 				String transport = inviteRequest.getTransport();
                 
                 if(logger.isDebugEnabled()) {
-                	logger.debug("Transport for sending request is: '" + transport + "'");
+                	logger.debug("OpenCall() Transport for sending request is: '" + transport + "'");
                 }
                 
 				SipURI sipUri = (SipURI) sipFactory.createURI(finalSipUri);
@@ -190,10 +189,11 @@ public class Opencall extends SipServlet {
 				//sipUri.setTransportParam("tcp");
 				
 				inviteRequest.setRequestURI(sipUri);
-			
+				sipUri.setTransportParam("tcp");
+				
 				if (logger.isInfoEnabled()) {
 					if (logger.isDebugEnabled())
-						logger.debug("OpenCall InviteRequest = " + inviteRequest);
+						logger.debug("OpenCall() InviteRequest = " + inviteRequest);
 				}
 				
 				inviteRequest.getSession().setAttribute("originalRequest",request);
