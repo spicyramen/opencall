@@ -2,20 +2,26 @@ package org.mobicents.servlet.sip.model.cc;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 
 public class CcUtils {
 
 	private static int TOKEN_COUNT = 5;
+	private static int TOKEN_MAX = 7;
 	private static int START_PORT = 1;
 	private static int END_PORT = 65535;
 	private static int PRIORITY_LOWER = 1;
 	private static int PRIORITY_UPPER = 100;
 	private static Logger logger = Logger.getLogger(CcUtils.class);
+	
+	
 
 	public CcUtils() {
+		
 		// logger.error("CcUtils() New Instance created");
+		
 	}
 
 	public String[] getRuleValue(int iToken, String routeValue) {
@@ -23,11 +29,11 @@ public class CcUtils {
 
 		if (routeValue.isEmpty())
 			return null;
-		if (iToken < 0 || iToken > TOKEN_COUNT + 1)
+		if (iToken < 0 || iToken > TOKEN_MAX)
 			return null;
 
 		routeValue = routeValue.replaceAll("\\(\"|\"\\)", "\"");
-		String[] Tokens = new String[TOKEN_COUNT + 2];
+		String[] Tokens = new String[TOKEN_MAX + 1];
 
 		// logger.info("getRuleValue() Find Token: [" + iToken +
 		// "] Rule Content: " + routeValue);
@@ -124,6 +130,21 @@ public class CcUtils {
 						} catch (NumberFormatException e) {
 							logger.error("getRuleValue() Invalid Port Value");
 							return null;
+						}
+					}
+					if ((tokenIndex == 7 && tokenIndex == iToken) 
+							|| (tokenIndex == 7 && iToken == 0)) { // TRANSPORT
+						try {
+							if (token.matches("TCP") || token.matches("UDP")
+								|| token.matches("TLS") || token.matches("WS")) {
+								Tokens[tokenIndex] = token;
+							} else {
+								logger.error("getRuleValue() Invalid Transport Value");
+								return null;
+							}
+						} 
+						catch (Exception e) {
+								return null;
 						}
 					}
 					tokenIndex++;
@@ -227,4 +248,26 @@ public class CcUtils {
 			return false;
 		}
 	}
+	
+	public static boolean isValidTransport(String transport) {
+		
+		ArrayList<String> validTransport = new ArrayList<String>();
+		validTransport.add("TCP");
+		validTransport.add("UDP");
+		validTransport.add("TLS");
+		validTransport.add("WS");
+		
+		transport = transport.toUpperCase();
+		
+		try {
+			if(validTransport.contains(transport))
+				return true;
+			else
+				return true;
+		} catch (Exception e) {
+			logger.warn(e);
+			return false;
+		}
+	}
+	
 }

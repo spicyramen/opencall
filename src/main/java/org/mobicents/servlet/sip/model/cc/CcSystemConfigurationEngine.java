@@ -45,6 +45,7 @@ public class CcSystemConfigurationEngine implements
 			.getLogger(CcSystemConfigurationEngine.class);
 	private static String DELIMITER = "=";
 	private static int TOKEN_COUNT = 5;
+	private static int TOKEN_MAX   = 7;
 	private static int START_PORT = 1;
 	private static int END_PORT = 65535;
 	private static int RULE_LIMIT = 100;
@@ -462,6 +463,7 @@ public class CcSystemConfigurationEngine implements
 		try {
 			// Open the file that is the first
 			// command line parameter
+			
 			FileInputStream fstream = new FileInputStream(configurationFileName);
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -504,7 +506,10 @@ public class CcSystemConfigurationEngine implements
 					} 
 					else 
 					{
-						// Start thread
+						// Start thread 
+						// routeType[0] = ROUTE 
+						// routeType[1] = ("8","50","WILDCARD","20X","110.10.0.210","5061","TLS")
+						
 						if (CcVerifyRuleSyntax(index, 0, routeType[0].toString()) && 
 						CcVerifyRuleSyntax(index, 1, routeType[1].toString())) 
 						{
@@ -832,9 +837,10 @@ public class CcSystemConfigurationEngine implements
 		String ruleString = null;
 		String ruleTrunk = null;
 		String rulePort = null;
+		String ruleTransport = null;
 
 		if (utilObj.getTokenCount(routeValue) < TOKEN_COUNT
-				&& utilObj.getTokenCount(routeValue) > TOKEN_COUNT + 1) {
+				&& utilObj.getTokenCount(routeValue) > TOKEN_MAX) {
 			return false;
 		}
 
@@ -849,6 +855,9 @@ public class CcSystemConfigurationEngine implements
 			ruleTrunk = ruleValues[5];
 			if (utilObj.getTokenCount(routeValue) == 6) {
 				rulePort = ruleValues[6];
+			}
+			if (utilObj.getTokenCount(routeValue) == 7) {
+				ruleTransport = ruleValues[7];
 			}
 
 			if (ruleNumber != null && !ruleNumber.isEmpty()) {
@@ -973,14 +982,29 @@ public class CcSystemConfigurationEngine implements
 
 				if (rulePort != null && !rulePort.isEmpty()) {
 					if (ruleType.equals("_DNS_")) {
-						// logger.info("CcVerifyRuleLogic() Token RULE PORT " +
-						// rulePort + "INVALID when using _DNS_ type");
+						 logger.info("CcVerifyRuleLogic() Token RULE PORT " +
+						  rulePort + "INVALID when using _DNS_ type");
 						return false;
-					} else {
-						// logger.info("CcVerifyRuleLogic() Token RULE PORT: " +
-						// rulePort);
-					}
+					} 
 				}
+			}
+			
+			if (utilObj.getTokenCount(routeValue) == 7) {
+				
+				// We can't set the transport in a DNS request
+				// TODO Future release, recieve DNS response and filter based on transport DE1
+				
+				if (ruleTrunk.equals("_DNS_")) {
+					return false;
+				}
+				
+				if (CcUtils.isValidTransport(ruleTransport)) {
+					 logger.info("CcVerifyRuleLogic() Token RULE TRANSPORT: " +
+							 ruleTransport);
+				} else {
+					return false;
+				}
+				
 			}
 
 		}
@@ -995,24 +1019,29 @@ public class CcSystemConfigurationEngine implements
 
 	private boolean CcVerifyRuleSyntax(int ruleNumber, int paramNumber,
 			String configurationParameter) {
-
+		// Display Rule number
 		logger.info("CcVerifyRuleSyntax() Rule Number " + "[" + ruleNumber
 				+ "] Value: " + configurationParameter);
+		
+		// Display Valid Parameter number
 		if (paramNumber == 0
 				&& (configParams.contains(configurationParameter) || mandatoryConfigParamsRules
 						.contains(configurationParameter))) {
 			logger.info("CcVerifyRuleSyntax() Valid Parameter Rule Type: "
 					+ configurationParameter);
 			return true;
+			
 		} else if (paramNumber == 1) {
-			// logger.info("Before: " + configurationParameter);
-			// Remove () from Rule
+			// Replace () with "" from Rule: ("8","50","WILDCARD","20X","110.10.0.210","5061","TLS")
+			
 			configurationParameter = configurationParameter.replaceAll(
 					"\\(\"|\"\\)", "\"");
-			logger.info("CcVerifyRuleSyntax() Rule Value: "
-					+ configurationParameter);
+			
+			logger.info("CcVerifyRuleSyntax() Rule Value: "	+ configurationParameter);
+			
 			if (!configurationParameter.contains("\\(\"")
 					&& !configurationParameter.contains("\"\\)")) {
+				
 				logger.info("Processing Tokens: " + configurationParameter);
 				StringTokenizer st = new StringTokenizer(
 						configurationParameter, ",");
@@ -1025,8 +1054,8 @@ public class CcSystemConfigurationEngine implements
 						String token = st.nextElement().toString();
 						token = token.replaceAll("\"", "");
 
-						if (token.isEmpty() && tokenIndex != 6) { // PORT CAN BE
-																	// EMPTY
+						if (token.isEmpty() && tokenIndex != 6) { // PORT CAN BE EMPTY
+																	
 							return false;
 						}
 						if (tokenIndex == 1) { // RULE NUMBER
@@ -1093,6 +1122,14 @@ public class CcSystemConfigurationEngine implements
 									logger.error("Invalid Port Value");
 							} catch (NumberFormatException e) {
 								logger.error("Invalid Port Value");
+								return false;
+							}
+						}
+						if (tokenIndex == 7) {
+							if (CcUtils.isValidTransport(token)) {
+								 logger.info("CcVerifyRuleSyntax() Token RULE TRANSPORT: " +
+										 token);
+							} else {
 								return false;
 							}
 						}
