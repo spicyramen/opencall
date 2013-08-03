@@ -40,7 +40,7 @@ public class CcUtils {
 		routeValue = routeValue.replaceAll("\\(\"|\"\\)", "\"");
 		String[] Tokens = new String[TOKEN_MAX + 1];
 
-		logger.info("getRuleValue() Find Token: [" + iToken + "] Rule Content: " + routeValue);
+		//logger.info("getRuleValue() Find Token: [" + iToken + "] Rule Content: " + routeValue);
 		if (!routeValue.contains("\\(\"") && !routeValue.contains("\"\\)")) {
 			// logger.info("getRuleValue() Processing Tokens: " + routeValue);
 			StringTokenizer st = new StringTokenizer(routeValue, ",");
@@ -102,12 +102,14 @@ public class CcUtils {
 							return null;
 						}
 					}
+					
 					if ((tokenIndex == 4 && tokenIndex == iToken)
 							|| (tokenIndex == 4 && iToken == 0)) { // STRING
 						// logger.info("getRuleValue() Token [" + tokenIndex +
 						// "]: " + token);
 						Tokens[tokenIndex] = token;
 					}
+					
 					if ((tokenIndex == 5 && tokenIndex == iToken)
 							|| (tokenIndex == 5 && iToken == 0)) { // TRUNK
 						if (isValidIP(token) || isValidHostName(token)
@@ -118,23 +120,32 @@ public class CcUtils {
 						} else
 							return null;
 					}
+					
 					if ((tokenIndex == 6 && tokenIndex == iToken)
-							|| (tokenIndex == 6 && iToken == 0)) { // PORT
+							|| (tokenIndex == 6 && iToken == 0)) { // PORT or TRANSPORT
+						
 						try {
-							if (Integer.parseInt(token) >= START_PORT
-									&& Integer.parseInt(token) <= END_PORT) {
-								// logger.info("getRuleValue() Token [" +
-								// tokenIndex + "]: " +
-								// Integer.parseInt(token));
-								Tokens[tokenIndex] = token;
-							} else {
-								logger.error("getRuleValue() Invalid Port Value");
+							if (java.util.regex.Pattern.matches("\\d+", token)) {
+								if (Integer.parseInt(token) >= START_PORT
+										&& Integer.parseInt(token) <= END_PORT) {
+									Tokens[tokenIndex] = token;
+								}	
+								else {
+									logger.error("getRuleValue() Invalid Port Value");
+								}	
+							}			
+							else if (CcUtils.isValidTransport(token)) {
+								 Tokens[tokenIndex] = token;
+							} 
+							else {
 								return null;
 							}
-						} catch (NumberFormatException e) {
-							logger.error("getRuleValue() Invalid Port Value");
+							
+						} catch (Exception e) {
+							logger.error("getRuleValue() Invalid Value");
 							return null;
 						}
+						
 					}
 					if ((tokenIndex == 7 && tokenIndex == iToken) 
 							|| (tokenIndex == 7 && iToken == 0)) { // TRANSPORT

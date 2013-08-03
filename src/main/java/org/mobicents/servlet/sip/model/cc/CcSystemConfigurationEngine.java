@@ -1008,17 +1008,21 @@ public class CcSystemConfigurationEngine implements
 					+ utilObj.getTokenCount(routeValue));
 			String ruleValues[] = utilObj.getRuleValue(0, routeValue);
 			
+			
+			
 			ruleNumber = ruleValues[1];
 			rulePriority = ruleValues[2];
 			ruleType = ruleValues[3];
 			ruleString = ruleValues[4];
 			ruleTrunk = ruleValues[5];
 			
-			if (utilObj.getTokenCount(routeValue) == 6) {
+			if (utilObj.getTokenCount(routeValue) == 6) {			
 				rulePort = ruleValues[6];
+				logger.info("CcVerifyRuleLogic() ruleValues[6]: " + ruleValues[6] );
 			}
 			if (utilObj.getTokenCount(routeValue) == 7) {
 				ruleTransport = ruleValues[7];
+				logger.info("CcVerifyRuleLogic() ruleValues[7]: " + ruleValues[7]);
 			}
 
 			if (ruleNumber != null && !ruleNumber.isEmpty()) {
@@ -1138,37 +1142,34 @@ public class CcSystemConfigurationEngine implements
 					return false;
 				}
 			}
-			// PORT or TRANSPORT
-			if (utilObj.getTokenCount(routeValue) == 6) {
+			
+			// PORT or TRANSPORT		
+			if (rulePort != null && !rulePort.isEmpty()) {			
 				
-				ruleTransport=rulePort;
-				
-				if (rulePort != null && !rulePort.isEmpty()) {
-					if (ruleType.equals("_DNS_")) {
-						 logger.warn("CcVerifyRuleLogic() Token RULE PORT " +
-						  rulePort + "INVALID when using _DNS_ type");
+				if (ruleTrunk.equals("_DNS_")) {
+						 logger.warn("CcVerifyRuleLogic() Token: " +
+						  rulePort + " is INVALID when using _DNS_ type");
 						return false;
-					} 
-					else if (CcUtils.isValidTransport(ruleTransport)) {
-						logger.info("CcVerifyRuleLogic() Token RULE TRANSPORT: " +
-								 ruleTransport);
-					}
-					else {
-						return false;
-					}
+				} 
+				//Assign rulePort as Transport
+			    if (CcUtils.isValidTransport(rulePort)) {
+						logger.info("CcVerifyRuleLogic() Token Rule Transport: " +
+								rulePort);
 				}
-			}
-			// TRANSPORT
-			if (utilObj.getTokenCount(routeValue) == 7) {
 				
+			}
+			
+			// TRANSPORT
+			if (ruleTransport != null && !ruleTransport.isEmpty()) {		
 				// We can't set the transport in a DNS request
 				// TODO  DE1 Future release, receive DNS response and filter based on transport
 				
 				if (CcUtils.isValidTransport(ruleTransport)) {
-					 logger.info("CcVerifyRuleLogic() Token RULE TRANSPORT: " +
+					 logger.info("CcVerifyRuleLogic() Token Rule Transport: " +
 							 ruleTransport);
+					 
 					 if (ruleTrunk.equals("_DNS_")) {
-						 logger.warn("CcVerifyRuleLogic() Can't use DNS with Token RULE TRANSPORT: " +
+						 logger.warn("CcVerifyRuleLogic() Can't use DNS with Token Rule TRANSPORT: " +
 								 ruleTransport);
 							return false;
 					 }
