@@ -57,7 +57,7 @@ public class CcProcessor {
 		
 	}
 	
-	public String digitsDialed (String sipUri) {
+	public String processDigitsDialed (String sipUri) {
 			return readConfigRules.digitsDialed(sipUri);
 	
 	}

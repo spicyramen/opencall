@@ -922,9 +922,13 @@ public class CcSystemConfigurationEngine implements
 										+ token);
 
 						}
-						if (tokenIndex == 6) { // PORT
+						if (tokenIndex == 6) { // PORT or TRANSPORT
 							try {
-								if (Integer.parseInt(token) >= START_PORT
+								if (CcUtils.isValidTransport(token)) {
+									 logger.info("Token (" + tokenIndex + "): "
+												+ token);
+								} 
+								else if (Integer.parseInt(token) >= START_PORT
 										&& Integer.parseInt(token) <= END_PORT)
 									logger.info("Token (" + tokenIndex + "): "
 											+ Integer.parseInt(token));
@@ -1118,7 +1122,7 @@ public class CcSystemConfigurationEngine implements
 					return false;
 				}
 			}
-
+			// PORT or TRANSPORT
 			if (utilObj.getTokenCount(routeValue) == 6) {
 
 				if (rulePort != null && !rulePort.isEmpty()) {
@@ -1127,9 +1131,16 @@ public class CcSystemConfigurationEngine implements
 						  rulePort + "INVALID when using _DNS_ type");
 						return false;
 					} 
+					else if (CcUtils.isValidTransport(ruleTransport)) {
+						logger.info("CcVerifyRuleLogic() Token RULE TRANSPORT: " +
+								 ruleTransport);
+					}
+					else {
+						return false;
+					}
 				}
 			}
-			
+			// TRANSPORT
 			if (utilObj.getTokenCount(routeValue) == 7) {
 				
 				// We can't set the transport in a DNS request

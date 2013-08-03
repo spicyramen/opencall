@@ -258,15 +258,16 @@ public class CcUtils {
 		validTransport.add("WS");
 		validTransport.add("WSS");
 		
-		
-		transport = transport.toUpperCase();
-		
 		try {
+			transport = transport.toUpperCase();
 			if(validTransport.contains(transport))
 				return true;
 			else
 				return true;
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		catch (Exception e) {
 			logger.warn(e);
 			return false;
 		}

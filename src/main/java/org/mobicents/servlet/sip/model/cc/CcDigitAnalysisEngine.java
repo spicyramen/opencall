@@ -32,7 +32,7 @@ public class CcDigitAnalysisEngine {
 	}
 
 	/**
-	 * Constructor
+	 * Constructor is initialized with Routing rules processed from opencallrules.cfg file or DB
 	 * 
 	 */
 
@@ -48,6 +48,11 @@ public class CcDigitAnalysisEngine {
 			return false;
 	}
 
+	/**
+	 * Process SIP URI Invite Message from Opencall.java Main application
+	 * 
+	 */
+	
 	public boolean CcCallProcessSipMessage(String sipURI) {
 		// logger.info("*************************** Parsing SIP URI " + "[" +
 		// sipURI + "] " + "***************************");
@@ -96,7 +101,7 @@ public class CcDigitAnalysisEngine {
 		// logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
 		if (sipURI.length() > SIPURI_LIMIT) {
 			logger.error("CcExtractURI() Error Parsing sipURI" + "[" + sipURI
-					+ "] Exceed size: " + SIPURI_LIMIT);
+					+ "] Exceeded size: " + SIPURI_LIMIT);
 			return null;
 		}
 
@@ -201,8 +206,6 @@ public class CcDigitAnalysisEngine {
 	@SuppressWarnings({ "rawtypes", "unused", })
 	
 	private void CcProcessRules(String sipURI) {
-		// systemRoutingRules.put(new
-		// Integer(Integer.parseInt(getRuleValue(1,ruleValue))), ruleValue);
 	
 		logger.info("CcProcessRules()  Displaying Potential Route Patterns matches");
 		boolean foundRuleMatch = false;
@@ -284,7 +287,7 @@ public class CcDigitAnalysisEngine {
 		 * 
 		 */
 
-		// ROUTE=("12","1","WILDCARD","3XX","110.10.0.154","6060")
+		// ROUTE=("1","10","NUMERIC","201","192.168.1.10","5060","TLS")
 
 		String rulePort = null;
 		logger.info("CcProcessFinalSipURI() Original SIP URI: [" + origSipURI

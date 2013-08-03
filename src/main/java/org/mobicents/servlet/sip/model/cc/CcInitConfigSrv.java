@@ -40,6 +40,7 @@ public class CcInitConfigSrv {
 
 		// We create a new Object to Read information.
 		// CcSystemConfigurationEngine will parse the Rules
+		
 		CcSystemConfigurationEngine initConfigModule = new CcSystemConfigurationEngine(Type, connectionInfo);
 
 		if (Type == 1) {
@@ -65,6 +66,7 @@ public class CcInitConfigSrv {
 			}
 
 			if (initConfigModule.CcStartCallRulesEngine(CALLRULES)) {
+			
 				// Obtain valid rules from File or DB
 				DigitAnalysisModule = new CcDigitAnalysisEngine(initConfigModule.CcGetRules());
 				if (DigitAnalysisModule.isStarted()) {

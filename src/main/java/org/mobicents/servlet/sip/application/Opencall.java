@@ -162,7 +162,7 @@ public class Opencall extends SipServlet {
 
 		if (request.isInitial()) {
 			
-			String finalSipUri = openCallSipEngine.digitsDialed(request.getTo().getURI().toString());
+			String finalSipUri = openCallSipEngine.processDigitsDialed(request.getTo().getURI().toString());
 
 			if (finalSipUri != null && finalSipUri.length() > 0) {
 				helper = request.getB2buaHelper();
