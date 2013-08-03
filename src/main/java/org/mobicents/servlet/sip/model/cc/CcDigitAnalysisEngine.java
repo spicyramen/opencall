@@ -210,11 +210,11 @@ public class CcDigitAnalysisEngine {
 		logger.info("CcProcessRules()  Displaying Potential Route Patterns matches");
 		boolean foundRuleMatch = false;
 		Set<?> systemRoutingRulesSet = systemRoutingRules.entrySet();
-		Iterator<?> systemRoutingRulesit = systemRoutingRulesSet.iterator();
+		Iterator<?> systemRoutingRulesIt = systemRoutingRulesSet.iterator();
 		
-		while (systemRoutingRulesit.hasNext()) 
+		while (systemRoutingRulesIt.hasNext()) 
 		{
-			Map.Entry mapa = (Map.Entry) systemRoutingRulesit.next(); // key=value														
+			Map.Entry mapa = (Map.Entry) systemRoutingRulesIt.next(); // key=value														
 			int key = (Integer) mapa.getKey(); // getKey is used to get key 											
 			String value = (String) mapa.getValue(); // getValue is used to get value
 														
@@ -274,13 +274,19 @@ public class CcDigitAnalysisEngine {
 				utilObj.getRuleValue(0, CcExtractRuleParams(ruleNumber)));
 	}
 
+	/**
+	 * Process SIP URI against rules	
+	 * @param origSipURI
+	 * @param ruleParams
+	 * @return
+	 */
 	private String CcProcessFinalSipURI(String origSipURI, String[] ruleParams) {
 
 		/**
 		 * Return sipURI after parsing rule priority Algorithm: Find userURI,
 		 * domainURI and portURI Count Rules Match priority Order by priority If
-		 * REGEX and _DNS_ select rule and return unmodified sipURI else if
-		 * REGEX and not _DNS_ select rule: parse rule Domain and Port parse SIP
+		 * REGEX and _DNS_ select rule and return unmodified sipURI 
+		 * else if REGEX and not _DNS_ select rule: parse rule Domain and Port parse SIP
 		 * URI Domain and Port replace URI Domain with rule Domain if URI Port
 		 * if rule Port not empty replace URI port with rule Port else (rule
 		 * Port empty) attach original port to SIP URI port

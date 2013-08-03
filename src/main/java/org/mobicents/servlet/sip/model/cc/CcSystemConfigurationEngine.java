@@ -527,8 +527,8 @@ public class CcSystemConfigurationEngine implements
 						}
 						} 
 						else {
-							logger.error("CcVerifyFileCallRules() Error in VerifyRuleType Rule"
-									+ "(" + index + ") " + route + "\n");
+							logger.error("CcVerifyFileCallRules() Error in CcVerifyRuleSyntax Rule"
+									+ "(" + index + ") " + route);
 						}
 					}			
 					index++; // Check next rule
@@ -852,26 +852,33 @@ public class CcSystemConfigurationEngine implements
 			if (!configurationParameter.contains("\\(\"")
 					&& !configurationParameter.contains("\"\\)")) {
 				
-				logger.info("Processing Tokens: " + configurationParameter);
+				logger.info("CcVerifyRuleSyntax() Processing Tokens: " + configurationParameter);
+				
 				StringTokenizer st = new StringTokenizer(
 						configurationParameter, ",");
-				if (st.countTokens() == TOKEN_COUNT
-						|| st.countTokens() == TOKEN_COUNT + 1) {
+				
+				// Count number of Tokens
+				
+				if (st.countTokens() >= TOKEN_COUNT
+						&& st.countTokens() <= TOKEN_MAX) {
+					
 					logger.info("CcVerifyRuleSyntax() Processing Tokens: ["
 							+ st.countTokens() + "]");
 					int tokenIndex = 1;
+					
 					while (st.hasMoreElements()) {
 						String token = st.nextElement().toString();
 						token = token.replaceAll("\"", "");
 
-						if (token.isEmpty() && tokenIndex != 6) { // PORT CAN BE EMPTY
-																	
+						if (token.isEmpty() && tokenIndex != TOKEN_MAX) { // PORT|TRANSPORT CAN BE EMPTY	
+							
 							return false;
 						}
+						
 						if (tokenIndex == 1) { // RULE NUMBER
 							try {
 								Integer.parseInt(token);
-								logger.info("Token [" + tokenIndex + "]: "
+								logger.info("Token (" + tokenIndex + "): "
 										+ Integer.parseInt(token));
 							} catch (NumberFormatException e) {
 								logger.error("Invalid rule Number Value");
@@ -924,25 +931,33 @@ public class CcSystemConfigurationEngine implements
 						}
 						if (tokenIndex == 6) { // PORT or TRANSPORT
 							try {
-								if (CcUtils.isValidTransport(token)) {
+								if (java.util.regex.Pattern.matches("\\d+", token)) {
+									if (Integer.parseInt(token) >= START_PORT
+											&& Integer.parseInt(token) <= END_PORT) {
+										logger.info("Token (" + tokenIndex + "): "
+												+ Integer.parseInt(token));
+									}	
+									else {
+										logger.error("Invalid Port Value");
+									}	
+								}			
+								else if (CcUtils.isValidTransport(token)) {
 									 logger.info("Token (" + tokenIndex + "): "
 												+ token);
 								} 
-								else if (Integer.parseInt(token) >= START_PORT
-										&& Integer.parseInt(token) <= END_PORT)
-									logger.info("Token (" + tokenIndex + "): "
-											+ Integer.parseInt(token));
-								else
-									logger.error("Invalid Port Value");
-							} catch (NumberFormatException e) {
-								logger.error("Invalid Port Value");
+								else {
+									return false;
+								}
+								
+							} catch (Exception e) {
+								logger.error("Invalid Value");
 								return false;
 							}
 						}
 						if (tokenIndex == 7) { // TRANSPORT
 							if (CcUtils.isValidTransport(token)) {
-								 logger.info("CcVerifyRuleSyntax() Token RULE TRANSPORT: " +
-										 token);
+								logger.info("Token (" + tokenIndex + "): "
+										+ token);
 							} else {
 								return false;
 							}
@@ -984,7 +999,7 @@ public class CcSystemConfigurationEngine implements
 		String ruleTransport = null;
 
 		if (utilObj.getTokenCount(routeValue) < TOKEN_COUNT
-				&& utilObj.getTokenCount(routeValue) > TOKEN_MAX) {
+				|| utilObj.getTokenCount(routeValue) > TOKEN_MAX) {
 			return false;
 		}
 
@@ -992,6 +1007,7 @@ public class CcSystemConfigurationEngine implements
 			logger.info("CcVerifyRuleLogic() Rule: " + routeValue + " Tokens: "
 					+ utilObj.getTokenCount(routeValue));
 			String ruleValues[] = utilObj.getRuleValue(0, routeValue);
+			
 			ruleNumber = ruleValues[1];
 			rulePriority = ruleValues[2];
 			ruleType = ruleValues[3];
@@ -1124,7 +1140,9 @@ public class CcSystemConfigurationEngine implements
 			}
 			// PORT or TRANSPORT
 			if (utilObj.getTokenCount(routeValue) == 6) {
-
+				
+				ruleTransport=rulePort;
+				
 				if (rulePort != null && !rulePort.isEmpty()) {
 					if (ruleType.equals("_DNS_")) {
 						 logger.warn("CcVerifyRuleLogic() Token RULE PORT " +

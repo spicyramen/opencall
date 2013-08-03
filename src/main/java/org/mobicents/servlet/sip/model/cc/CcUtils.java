@@ -16,7 +16,6 @@ public class CcUtils {
 	private static int PRIORITY_UPPER = 100;
 	private static Logger logger = Logger.getLogger(CcUtils.class);
 	
-	
 
 	public CcUtils() {
 		
@@ -27,21 +26,26 @@ public class CcUtils {
 	public String[] getRuleValue(int iToken, String routeValue) {
 		// 0 returns all values from Rule
 
-		if (routeValue.isEmpty())
+		if (routeValue.isEmpty()) {
+			logger.warn("getRuleValue() Processing Tokens: " + routeValue + " is empty!");
 			return null;
-		if (iToken < 0 || iToken > TOKEN_MAX)
+		}
+			
+		if (iToken < 0 || iToken > TOKEN_MAX) {
+			logger.warn("getRuleValue() Processing Tokens: " + iToken + " invalid index!");
 			return null;
+		}
+			
 
 		routeValue = routeValue.replaceAll("\\(\"|\"\\)", "\"");
 		String[] Tokens = new String[TOKEN_MAX + 1];
 
-		// logger.info("getRuleValue() Find Token: [" + iToken +
-		// "] Rule Content: " + routeValue);
+		logger.info("getRuleValue() Find Token: [" + iToken + "] Rule Content: " + routeValue);
 		if (!routeValue.contains("\\(\"") && !routeValue.contains("\"\\)")) {
 			// logger.info("getRuleValue() Processing Tokens: " + routeValue);
 			StringTokenizer st = new StringTokenizer(routeValue, ",");
-			if (st.countTokens() == TOKEN_COUNT
-					|| st.countTokens() == TOKEN_COUNT + 1) {
+			if (st.countTokens() >= TOKEN_COUNT
+					&& st.countTokens() <= TOKEN_MAX) {
 				// logger.info("getRuleValue() Processing Tokens: (" +
 				// st.countTokens() + ")");
 				int tokenIndex = 1;
@@ -151,6 +155,7 @@ public class CcUtils {
 				}
 
 			} else {
+				logger.error("getRuleValue() Invalid Rule");
 				return null;
 			}
 		}
@@ -251,26 +256,32 @@ public class CcUtils {
 	
 	public static boolean isValidTransport(String transport) {
 		
-		ArrayList<String> validTransport = new ArrayList<String>();
-		validTransport.add("TCP");
-		validTransport.add("UDP");
-		validTransport.add("TLS");
-		validTransport.add("WS");
-		validTransport.add("WSS");
+		if (transport!=null && !transport.isEmpty())  {
+			
+			ArrayList<String> validTransport = new ArrayList<String>();
+			validTransport.add("TCP");
+			validTransport.add("UDP");
+			validTransport.add("TLS");
+			validTransport.add("WS");
+			validTransport.add("WSS");
+			
+			try {
+				transport = transport.toUpperCase();
+				if(validTransport.contains(transport))
+					return true;
+				else
+					return false;
+			} catch (NumberFormatException e) {
+				return false;
+			}
+			catch (Exception e) {
+				logger.warn(e + " Invalid transport ");
+				return false;
+			}
+		}
+			
+		return false;
 		
-		try {
-			transport = transport.toUpperCase();
-			if(validTransport.contains(transport))
-				return true;
-			else
-				return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-		catch (Exception e) {
-			logger.warn(e);
-			return false;
-		}
 	}
 	
 }

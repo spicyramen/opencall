@@ -8,6 +8,7 @@ class CcRule implements Comparable<CcRule> {
 	public int rulePriority;
 	public String ruleTrunk;
 	public int rulePort;
+	public String ruleTransport;
 
 	/**
 	 * 
@@ -25,13 +26,15 @@ class CcRule implements Comparable<CcRule> {
 	 * @param pri
 	 * @param trunk
 	 * @param port
+	 * @param transport
 	 */
 
-	public CcRule(int num, int pri, String trunk, int port) {
+	public CcRule(int num, int pri, String trunk, int port,String transport) {
 		ruleNumber = num;
 		rulePriority = pri;
 		ruleTrunk = trunk;
 		rulePort = port;
+		ruleTransport = transport;
 	}
 
 	public int getRuleNumber() {
@@ -50,6 +53,10 @@ class CcRule implements Comparable<CcRule> {
 		return rulePort;
 	}
 
+	public String getRuleTransport(){
+		return ruleTransport;
+	}
+	
 	public int compareTo(CcRule uno) {
 		int compareRuleValue = ((CcRule) uno).getRuleNumber();
 		// Ascending order
