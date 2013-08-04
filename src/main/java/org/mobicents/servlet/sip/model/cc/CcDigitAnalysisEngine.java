@@ -12,7 +12,8 @@ public class CcDigitAnalysisEngine {
 
 	private static Logger logger = Logger
 			.getLogger(CcDigitAnalysisEngine.class);
-	private Map<Object, String> systemRoutingRules = new HashMap<Object, String>();
+	//private Map<Object, String> systemTransformRules = new HashMap<Object, String>();
+	private Map<Object, String> systemCallRules = new HashMap<Object, String>();
 	private Map<Object, String> potentialMatchRules = new HashMap<Object, String>();
 	private CcUtils utilObj = new CcUtils();
 	private static String DELIMITER = "@";
@@ -32,17 +33,22 @@ public class CcDigitAnalysisEngine {
 	}
 
 	/**
-	 * Constructor is initialized with Routing rules processed from opencallrules.cfg file or DB
-	 * 
+	 * Constructor is initialized with call routing rules processed from opencallrules.cfg file or DB
 	 */
 
-	public CcDigitAnalysisEngine(Map<Object, String> rules) {
+	public CcDigitAnalysisEngine(Map<Object, String> transformRules,Map<Object, String> callRules) {
 		logger.info("CcDigitAnalysisEngine() initializing...");
-		systemRoutingRules = rules;
+		//systemTransformRules = transformRules;
+		systemCallRules = callRules;	
 	}
-
+	
+	public CcDigitAnalysisEngine(Map<Object, String> callRules) {
+		logger.info("CcDigitAnalysisEngine() initializing...");
+		systemCallRules = callRules;
+	}
+	
 	public boolean isStarted() {
-		if (systemRoutingRules != null)
+		if (systemCallRules != null)
 			return true;
 		else
 			return false;
@@ -209,7 +215,7 @@ public class CcDigitAnalysisEngine {
 	
 		logger.info("CcProcessRules()  Displaying Potential Route Patterns matches");
 		boolean foundRuleMatch = false;
-		Set<?> systemRoutingRulesSet = systemRoutingRules.entrySet();
+		Set<?> systemRoutingRulesSet = systemCallRules.entrySet();
 		Iterator<?> systemRoutingRulesIt = systemRoutingRulesSet.iterator();
 		
 		while (systemRoutingRulesIt.hasNext()) 
@@ -275,7 +281,7 @@ public class CcDigitAnalysisEngine {
 	}
 
 	/**
-	 * Process SIP URI against rules	
+	 * Process SIP URI  based on Call Rules	
 	 * @param origSipURI
 	 * @param ruleParams
 	 * @return
@@ -283,13 +289,16 @@ public class CcDigitAnalysisEngine {
 	private String CcProcessFinalSipURI(String origSipURI, String[] ruleParams) {
 
 		/**
-		 * Return sipURI after parsing rule priority Algorithm: Find userURI,
-		 * domainURI and portURI Count Rules Match priority Order by priority If
-		 * REGEX and _DNS_ select rule and return unmodified sipURI 
-		 * else if REGEX and not _DNS_ select rule: parse rule Domain and Port parse SIP
-		 * URI Domain and Port replace URI Domain with rule Domain if URI Port
-		 * if rule Port not empty replace URI port with rule Port else (rule
-		 * Port empty) attach original port to SIP URI port
+		 * Return sipURI after parsing rule priority Algorithm: 
+		 * 1. Find userURI,domainURI and portURI 
+		 * 2. Count CallRules Match priority 
+		 * 3. Order CallRules by priority 
+		 * If REGEX and _DNS_ select rule and return unmodified sipURI 
+		 * else if REGEX and not _DNS_ select rule: 
+		 * Parse rule Domain and Port. 
+		 * Parse SIP URI Domain and Port, replace URI Domain with rule Domain 
+		 * if URI Port
+		 * if rule Port not empty replace URI port with rule Port else (rule Port empty) attach original port to SIP URI port
 		 * 
 		 */
 
@@ -299,7 +308,16 @@ public class CcDigitAnalysisEngine {
 		logger.info("CcProcessFinalSipURI() Original SIP URI: [" + origSipURI
 				+ "]");
 
-		if (ruleParams[6] != null) {
+		if (ruleParams[7] != null) {
+			logger.info("CcProcessFinalSipURI() [1] "
+					+ ruleParams[1].toString() + " [2] "
+					+ ruleParams[2].toString() + " [3] "
+					+ ruleParams[3].toString() + " [4] "
+					+ ruleParams[4].toString() + " [5] "
+					+ ruleParams[5].toString() + " [6] "
+					+ ruleParams[6].toString() + " [7] "
+					+ ruleParams[7].toString());
+		} else if (ruleParams[6] != null) {
 			logger.info("CcProcessFinalSipURI() [1] "
 					+ ruleParams[1].toString() + " [2] "
 					+ ruleParams[2].toString() + " [3] "
@@ -307,7 +325,8 @@ public class CcDigitAnalysisEngine {
 					+ ruleParams[4].toString() + " [5] "
 					+ ruleParams[5].toString() + " [6] "
 					+ ruleParams[6].toString());
-		} else {
+		}	
+		else {
 			logger.info("CcProcessFinalSipURI() [1] "
 					+ ruleParams[1].toString() + " [2] "
 					+ ruleParams[2].toString() + " [3] "
@@ -319,6 +338,7 @@ public class CcDigitAnalysisEngine {
 
 		if (ruleParams[3].toString().matches("REGEX")
 				&& ruleParams[5].toString().matches("_DNS_")) {
+			// TODO: DE1 Call Routing Rules transport support DNS trunk type should allow Transport definition
 			this.finalURI = origSipURI;
 			logger.info("CcProcessFinalSipURI() Final SIP URI: " + finalURI);
 			return finalURI;
@@ -450,6 +470,7 @@ public class CcDigitAnalysisEngine {
 
 	}
 
+	
 	@SuppressWarnings("unused")
 	private boolean CcProcessRulesNumericCdcc(String[] Tokens, String sipURI,
 			String value) {
@@ -487,15 +508,17 @@ public class CcDigitAnalysisEngine {
 				PatternSyntaxException exc = null;
 				try {
 					Pattern.compile(ruleString);
-				} catch (PatternSyntaxException e) {
+				} 
+				catch (PatternSyntaxException e) {
 					exc = e;
 					return false;
 				}
 
 				if (exc != null) {
-					exc.printStackTrace();
+					logger.error("" + exc.getMessage());;
 					return false;
-				} else {
+				} 
+				else {
 					// logger.info("CcProcessRulesNumericCdcc() Token RULE STRING NUMERIC "
 					// + ruleString + " is valid!");
 					// We match only userURI portion

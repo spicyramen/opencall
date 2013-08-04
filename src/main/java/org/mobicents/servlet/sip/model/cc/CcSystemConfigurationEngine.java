@@ -556,6 +556,7 @@ public class CcSystemConfigurationEngine implements
 	 * 
 	 */
 	
+	@SuppressWarnings("unused")
 	private boolean CcVerifyFileTransformRules(String configurationFileName)
 			throws IOException {
 		try {
@@ -648,6 +649,7 @@ public class CcSystemConfigurationEngine implements
 	}
 	
 	
+	@SuppressWarnings("unused")
 	private boolean CcVerifyFileRouteListRules(String configurationFileName)
 			throws IOException {
 		
@@ -762,7 +764,7 @@ public class CcSystemConfigurationEngine implements
 
 	public Map<Object, String> CcGetRules() throws InterruptedException {
 		logger.info("CcGetRules() Displaying Valid Route Patterns");
-	//	int totalRules = 0;
+		
 
 		Set<?> s = callRoutingRules.entrySet();
 		Iterator<?> it = s.iterator();
@@ -1018,11 +1020,10 @@ public class CcSystemConfigurationEngine implements
 			
 			if (utilObj.getTokenCount(routeValue) == 6) {			
 				rulePort = ruleValues[6];
-				logger.info("CcVerifyRuleLogic() ruleValues[6]: " + ruleValues[6] );
 			}
 			if (utilObj.getTokenCount(routeValue) == 7) {
 				ruleTransport = ruleValues[7];
-				logger.info("CcVerifyRuleLogic() ruleValues[7]: " + ruleValues[7]);
+				
 			}
 
 			if (ruleNumber != null && !ruleNumber.isEmpty()) {

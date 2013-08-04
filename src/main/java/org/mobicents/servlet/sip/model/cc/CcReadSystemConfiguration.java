@@ -363,6 +363,7 @@ public class CcReadSystemConfiguration {
 	private boolean obtainRules(int Mode) {
 		int index = 0;
 		String[] paramType;
+		
 		if (Mode == 1) { // File mode
 			for (String param : systemParameters) {
 				paramType = param.split(DELIMITER);
@@ -390,6 +391,17 @@ public class CcReadSystemConfiguration {
 				logger.info("ObtainRules Valid parameters finalized");
 				return true;
 			}
+			else if (index == 7) {
+				logger.info("ObtainRules Valid parameters finalized");
+				return true;
+			}
+			else {
+				logger.error("ObtainRules Valid parameters error index");
+				return false;
+				
+			}
+			
+			
 		} else if (Mode == 3) {
 			return true;
 		} else {

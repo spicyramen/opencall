@@ -98,13 +98,13 @@ public class Opencall extends SipServlet {
 					openCallSipEngine = new CcProcessor(INIT_FILE);
 					openCallSipEngine.startService();
 					if (openCallSipEngine.isStarted()) {
-						logger.info("OpenCall() engine started succesfully.");
+						logger.info("OpenCall() Engine started succesfully.");
 					} else {
-						logger.fatal("OpenCall()  engine unable to start.");
+						logger.fatal("OpenCall() Engine unable to start.");
 					}
 					
 				} catch (Exception e) {	
-					logger.error("OpenCall() Exception during system initialization");
+					logger.fatal("OpenCall() Exception during system initialization");
 					e.printStackTrace();
 				}
 			}
@@ -115,7 +115,7 @@ public class Opencall extends SipServlet {
         try {
         	initOpenCallService.join();
 		} catch (InterruptedException e) {
-			logger.error("OpenCall() Exception occured during system initialization" + e.getMessage());
+			logger.fatal("OpenCall() Exception occured during system initialization" + e.getMessage());
 			
 		}
 		
