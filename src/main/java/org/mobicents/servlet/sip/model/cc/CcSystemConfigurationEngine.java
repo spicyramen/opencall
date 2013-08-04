@@ -751,7 +751,7 @@ public class CcSystemConfigurationEngine implements
 		String ruleNumber = null;
 		String ruleValues[] = utilObj.getRuleValue(0, ruleValue);
 		ruleNumber = ruleValues[1];
-		logger.info("CcDigitAnalisysEngineInit() Inserting Route Pattern into DA engine: Rule Number ["
+		logger.info("CcDigitAnalisysEngineInit() Inserting Call Rule into DA engine. Rule Number ["
 				+ Integer.parseInt(ruleNumber) + "]");
 		callRoutingRules.put(new Integer(Integer.parseInt(ruleNumber)), ruleValue);
 

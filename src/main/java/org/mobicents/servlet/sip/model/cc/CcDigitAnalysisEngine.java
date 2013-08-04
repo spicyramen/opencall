@@ -26,16 +26,33 @@ public class CcDigitAnalysisEngine {
 	private String userURI = null;
 	private String domainURI = null;
 	private String portURI = null;
+	private String transportURI = null;
 	private String finalURI = null;
 
+	/**
+	 * 
+	 * @return transportURI
+	 */
+	public String getTransportURI() {
+		return transportURI;
+	}
+	
+	/**
+	 * 
+	 * @return finalURI
+	 */
+	
 	public String getFinalURI() {
 		return finalURI;
 	}
 
+	
 	/**
-	 * Constructor is initialized with call routing rules processed from opencallrules.cfg file or DB
+	 * 	
+	 * Constructor is initialized with call routing rules processed from opencallrules.cfg file or database.
+	 * @param transformRules
+	 * @param callRules
 	 */
-
 	public CcDigitAnalysisEngine(Map<Object, String> transformRules,Map<Object, String> callRules) {
 		logger.info("CcDigitAnalysisEngine() initializing...");
 		//systemTransformRules = transformRules;
@@ -184,12 +201,14 @@ public class CcDigitAnalysisEngine {
 	}
 
 	/**
-	 * 
+	 * Process incoming SIP URI and match configure call rules
 	 * @param userURI
 	 * @param domainURI
+	 * @param portURI
 	 */
 	private void CcDA(String userURI, String domainURI, String portURI) {
 		
+		// No Port defined in SIP URI
 		if (portURI.equals("")) 
 		{
 			logger.info("CcDA() URI:\t" + SIP_PROTOCOL + userURI + "@"
@@ -205,7 +224,7 @@ public class CcDigitAnalysisEngine {
 	}
 
 	/**
-	 * 
+	 * Process Potential Rules
 	 * @param sipURI
 	 */
 
@@ -220,16 +239,16 @@ public class CcDigitAnalysisEngine {
 		
 		while (systemRoutingRulesIt.hasNext()) 
 		{
-			Map.Entry mapa = (Map.Entry) systemRoutingRulesIt.next(); // key=value														
-			int key = (Integer) mapa.getKey(); // getKey is used to get key 											
-			String value = (String) mapa.getValue(); // getValue is used to get value
+			Map.Entry mapa = (Map.Entry) systemRoutingRulesIt.next(); 	// key=value														
+			int key = (Integer) mapa.getKey(); 							// getKey is used to get key 											
+			String value = (String) mapa.getValue(); 					// getValue is used to get value
 														
-			if (CcProcessRulesCdcc(utilObj.getRuleValue(0, value), sipURI,value)) {
+			if (CcProcessRulesCdcc(utilObj.getRuleValue(0, value), sipURI, value)) {
 				foundRuleMatch = true;
 			}
 		}
 
-		// Add Thread
+		// Add MultiThreading
 
 		if (foundRuleMatch) {
 			CcSipInit(sipURI);
@@ -317,6 +336,7 @@ public class CcDigitAnalysisEngine {
 					+ ruleParams[5].toString() + " [6] "
 					+ ruleParams[6].toString() + " [7] "
 					+ ruleParams[7].toString());
+			
 		} else if (ruleParams[6] != null) {
 			logger.info("CcProcessFinalSipURI() [1] "
 					+ ruleParams[1].toString() + " [2] "
@@ -345,11 +365,34 @@ public class CcDigitAnalysisEngine {
 		} else {
 
 			String ruleDomain = ruleParams[5].toString();
+			
+			/**
+			 * If Port is defined:
+			 */
+			
 			if (ruleParams[6] != null) {
-				rulePort = ruleParams[6].toString();
-				portURI = rulePort;
-				domainURI = ruleDomain;
-			} else {
+			
+				/*
+				 *  Port is defined
+				 */
+				if(utilObj.isPortOrTransport(ruleParams[6])==1) {
+					rulePort = ruleParams[6].toString();
+					portURI = rulePort;
+					domainURI = ruleDomain;
+				}
+				
+				/*
+				 *  Transport is defined
+				 */
+				else if(utilObj.isPortOrTransport(ruleParams[6])==2) {
+					transportURI = ruleParams[6].toString();
+					domainURI = ruleDomain;
+				}
+				else {
+					logger.error("Invalid parameter");
+				}
+			} 
+			else {
 				domainURI = ruleDomain;
 			}
 		}
@@ -360,7 +403,15 @@ public class CcDigitAnalysisEngine {
 					+ portURI + "]");
 			finalURI = SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
 					+ portURI;
-		} else {
+		} 
+		else if (ruleParams[7] != null) {
+			logger.info("CcProcessFinalSipURI Building New SIP URI ["
+					+ SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
+					+ portURI + "] Transport defined: " + transportURI);
+			finalURI = SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
+					+ portURI;
+		}
+		else {
 			logger.info("CcProcessFinalSipURI Building New SIP URI ["
 					+ SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
 					+ SIP_PORT + "]");
@@ -392,8 +443,8 @@ public class CcDigitAnalysisEngine {
 	
 		Set<?> potentialSet = potentialMatchRules.entrySet();
 		Iterator<?> it = potentialSet.iterator();
-		while (it.hasNext()) {
-			
+		
+		while (it.hasNext()) {	
 			Map.Entry mapa = (Map.Entry) it.next(); 	// key=value separator this										
 			int key = (Integer) mapa.getKey(); 			// getKey 												
 			String value = (String) mapa.getValue(); 	// getValue 
@@ -463,7 +514,9 @@ public class CcDigitAnalysisEngine {
 				}
 			}
 		} else {
+			
 			return false;
+		
 		}
 
 		return false;
@@ -515,7 +568,7 @@ public class CcDigitAnalysisEngine {
 				}
 
 				if (exc != null) {
-					logger.error("" + exc.getMessage());;
+					logger.error("Exception found: " + exc.getMessage());;
 					return false;
 				} 
 				else {
@@ -600,10 +653,5 @@ public class CcDigitAnalysisEngine {
 
 	}
 
-	/**
-	 * 
-	 * @param routeString
-	 * @return
-	 */
 
 }

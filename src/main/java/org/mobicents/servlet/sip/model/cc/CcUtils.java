@@ -18,9 +18,7 @@ public class CcUtils {
 	
 
 	public CcUtils() {
-		
-		// logger.error("CcUtils() New Instance created");
-		
+		// logger.info("CcUtils() New Instance created");
 	}
 
 	public String[] getRuleValue(int iToken, String routeValue) {
@@ -253,7 +251,34 @@ public class CcUtils {
 		}
 	}
 
+	public int isPortOrTransport(String param) {
+		
+		/*
+		 * Port: 			1
+		 * Transport: 		2
+		 * Other:			-1
+		 */
+		if (java.util.regex.Pattern.matches("\\d+", param)) {
+			if (Integer.parseInt(param) >= START_PORT
+					&& Integer.parseInt(param) <= END_PORT) {
+				return 1;
+			}	
+			else {
+				logger.error("Invalid Port Value");
+				return -1;
+			}	
+		}			
+		else if (CcUtils.isValidTransport(param)) {
+			return 2; 
+		} 
+		else {
+			return -1;
+		}
+		
+	}
+	
 	public static boolean isValidPort(int port) {
+		
 		try {
 			if (port < 1024 || port > 65535)
 				return false;
