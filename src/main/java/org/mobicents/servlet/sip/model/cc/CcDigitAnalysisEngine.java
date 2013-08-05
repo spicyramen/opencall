@@ -34,8 +34,11 @@ public class CcDigitAnalysisEngine {
 	 * @return transportURI
 	 */
 	public String getTransportURI() {
-		if (transportURI!=null) 
+		if (transportURI!=null) {
+			transportURI = transportURI.toLowerCase();
+			logger.info("Transport: " + transportURI);
 			return transportURI;
+		}
 		else
 			return null;
 		
@@ -127,7 +130,7 @@ public class CcDigitAnalysisEngine {
 		domainURI = null;
 		portURI = null;
 
-		logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
+		//logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
 		if (sipURI.length() > SIPURI_LIMIT) {
 			logger.error("CcExtractURI() Error Parsing sipURI" + "[" + sipURI
 					+ "] Exceeded size: " + SIPURI_LIMIT);
@@ -368,6 +371,7 @@ public class CcDigitAnalysisEngine {
 			this.finalURI = origSipURI;
 			logger.info("CcProcessFinalSipURI() Final SIP URI: " + finalURI);
 			return finalURI;
+			
 		} else {
 
 			String ruleDomain = ruleParams[5].toString();
@@ -376,18 +380,15 @@ public class CcDigitAnalysisEngine {
 			 * If Port is defined:
 			 */
 			
-			if (ruleParams[6] != null) {
+			if (ruleParams[6] != null && ruleParams[7] == null) {
 			
-				/*
-				 *  Port is defined
-				 */
 				if(utilObj.isPortOrTransport(ruleParams[6])==1) {
 					rulePort = ruleParams[6].toString();
 					portURI = rulePort;
 					domainURI = ruleDomain;
 				}
 				
-				/*
+				/**
 				 *  Transport is defined
 				 */
 				else if(utilObj.isPortOrTransport(ruleParams[6])==2) {
@@ -397,7 +398,24 @@ public class CcDigitAnalysisEngine {
 				else {
 					logger.error("Invalid parameter");
 				}
-			} 
+				
+			}
+			
+			/**
+			 * Transport is defined
+			 */
+			else if (ruleParams[7] != null) {
+				
+				if(utilObj.isPortOrTransport(ruleParams[7])==2) {
+					portURI = ruleParams[6].toString();
+					transportURI = ruleParams[7].toString();
+					domainURI = ruleDomain;
+				}
+				else {
+					logger.error("Invalid parameter");
+				}
+			}
+			
 			else {
 				domainURI = ruleDomain;
 			}

@@ -183,7 +183,7 @@ public class CcInitConfigSrv {
 	 * 
 	 * @return Transport defined in Call Rules
 	 */
-	public String getTransport() {
+	public String getRuleTransport() {
 		return DigitAnalysisModule.getTransportURI();
 	}
 	

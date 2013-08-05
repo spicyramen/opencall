@@ -161,9 +161,10 @@ public class Opencall extends SipServlet {
 		if (request.isInitial()) {
 			
 			String finalSipUri = openCallSipEngine.processDigitsDialed(request.getTo().getURI().toString());
-			String finalTransport = openCallSipEngine.getTransport();
+			String finalTransport = openCallSipEngine.getRuleTransport();
 			
 			if (finalSipUri != null && finalSipUri.length() > 0) {
+				
 				helper = request.getB2buaHelper();
 				request.getSession().setAttribute("INVITE", RECEIVED);
 				request.getApplicationSession().setAttribute("INVITE", RECEIVED);
@@ -187,8 +188,7 @@ public class Opencall extends SipServlet {
 				inviteRequest.setRequestURI(sipUri);
 		
 				
-				if (finalTransport!=null) {
-					/* Add Transport TCP,UDP,TLS */				
+				if (finalTransport!=null) {			
 					sipUri.setTransportParam(finalTransport);
 					logger.info("OpenCall() Final transport for sending request is: '" + finalTransport + "'");
             	}
@@ -228,6 +228,7 @@ public class Opencall extends SipServlet {
 					SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_NOT_FOUND);
 					sipServletResponse.send();
 				}
+				
 			}
 		} else {
 			

@@ -62,8 +62,8 @@ public class CcProcessor {
 	
 	}
 	
-	public String getTransport () {
-		return readConfigRules.getTransport();
+	public String getRuleTransport () {
+		return readConfigRules.getRuleTransport();
 	}
 
 }
