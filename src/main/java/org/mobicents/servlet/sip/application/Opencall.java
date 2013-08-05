@@ -75,7 +75,7 @@ public class Opencall extends SipServlet {
 	B2buaHelper helper = null;
 	private CcProcessor openCallSipEngine =  null;
 
-	/** Creates a new instance of Opencall */
+	/** Creates a new instance of opencall */
 	public Opencall() {
 
 	}
@@ -150,12 +150,10 @@ public class Opencall extends SipServlet {
 	protected void doInvite(final SipServletRequest request) throws ServletException,IOException {
 		
 		if (logger.isInfoEnabled()) {
-			if (logger.isDebugEnabled())
+			
 				logger.info("Opencall() New SIP Call Detected: " + request.toString());
-			if (logger.isDebugEnabled())
-				logger.debug(request.getFrom().getURI().toString());
-			if (logger.isDebugEnabled())
-				logger.debug("Opencall() OUTBOUND INTERFACES  "
+				logger.info(request.getFrom().getURI().toString());
+				logger.info("Opencall() Supported transports:  "
 						+ getServletContext().getAttribute(
 								"javax.servlet.sip.outboundInterfaces"));
 		}
@@ -163,7 +161,8 @@ public class Opencall extends SipServlet {
 		if (request.isInitial()) {
 			
 			String finalSipUri = openCallSipEngine.processDigitsDialed(request.getTo().getURI().toString());
-
+			String finalTransport = openCallSipEngine.getTransport();
+			
 			if (finalSipUri != null && finalSipUri.length() > 0) {
 				helper = request.getB2buaHelper();
 				request.getSession().setAttribute("INVITE", RECEIVED);
@@ -179,34 +178,45 @@ public class Opencall extends SipServlet {
 				SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
 				String transport = inviteRequest.getTransport();
                 
-                if(logger.isDebugEnabled()) {
-                	logger.debug("OpenCall() Transport for sending request is: '" + transport + "'");
+                if(logger.isInfoEnabled()) {
+                	logger.info("OpenCall() Original transport for sending request is: '" + transport + "'");
+                	
                 }
                 
 				SipURI sipUri = (SipURI) sipFactory.createURI(finalSipUri);
-				
-				/* Add Transport TCP,UDP,TLS */
-				//sipUri.setTransportParam("tcp");
-				
 				inviteRequest.setRequestURI(sipUri);
-				sipUri.setTransportParam("tcp");
+		
+				
+				if (finalTransport!=null) {
+					/* Add Transport TCP,UDP,TLS */				
+					sipUri.setTransportParam(finalTransport);
+					logger.info("OpenCall() Final transport for sending request is: '" + finalTransport + "'");
+            	}
+				
+				
 				
 				if (logger.isInfoEnabled()) {
-					if (logger.isDebugEnabled())
-						logger.debug("OpenCall() InviteRequest = " + inviteRequest);
+						logger.info("OpenCall() InviteRequest = " + inviteRequest);
 				}
 				
 				inviteRequest.getSession().setAttribute("originalRequest",request);
 				inviteRequest.getSession().setAttribute("INVITE", RECEIVED);
 						
             
+				/**
+				 * Route List implementation
+				 */
+				
 				try {
-					
 					inviteRequest.send();
 				}
-				catch (Exception e) {
+				catch (Exception exc) {
+					
 					logger.error("Unable to send SIP INVITE: " + finalSipUri);
-					e.printStackTrace();
+					logger.error("Error: " + exc.getMessage());
+					exc.printStackTrace();
+					SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_SERVICE_UNAVAILABLE);
+					sipServletResponse.send();
 				
 				}
 				
@@ -214,7 +224,7 @@ public class Opencall extends SipServlet {
 			else {
 
 				if (logger.isInfoEnabled()) {
-					logger.error("INVITE has not been forwarded. Not found in rules");
+					logger.error("INVITE. Not found in rules");
 					SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_NOT_FOUND);
 					sipServletResponse.send();
 				}
@@ -224,7 +234,7 @@ public class Opencall extends SipServlet {
 			// Deals with Re-Invite request
 			
 			if (logger.isInfoEnabled()) {
-				logger.info("SIP Re-INVITE");
+				logger.info("SIP RE-INVITE");
 			}
 			
 			B2buaHelper b2buaHelper = request.getB2buaHelper();

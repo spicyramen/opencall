@@ -34,7 +34,12 @@ public class CcDigitAnalysisEngine {
 	 * @return transportURI
 	 */
 	public String getTransportURI() {
-		return transportURI;
+		if (transportURI!=null) 
+			return transportURI;
+		else
+			return null;
+		
+		//TODO return default Transport
 	}
 	
 	/**
@@ -77,8 +82,9 @@ public class CcDigitAnalysisEngine {
 	 */
 	
 	public boolean CcCallProcessSipMessage(String sipURI) {
-		// logger.info("*************************** Parsing SIP URI " + "[" +
-		// sipURI + "] " + "***************************");
+		
+		logger.info("*************************** Parsing SIP URI " + "[" +
+		sipURI + "] " + "***************************");
 
 		String[] resultURI = CcExtractURI(sipURI);
 		originalURI = sipURI;
@@ -121,7 +127,7 @@ public class CcDigitAnalysisEngine {
 		domainURI = null;
 		portURI = null;
 
-		// logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
+		logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
 		if (sipURI.length() > SIPURI_LIMIT) {
 			logger.error("CcExtractURI() Error Parsing sipURI" + "[" + sipURI
 					+ "] Exceeded size: " + SIPURI_LIMIT);
@@ -150,7 +156,7 @@ public class CcDigitAnalysisEngine {
 
 				userURI = sipProtocolURI[1].toString();
 				resultURI[0] = userURI;
-				// logger.info("CcExtractURI USER:\t" + userURI);
+				//logger.info("CcExtractURI USER:\t" + userURI);
 				domainURI = routeType[1].toString();
 				resultURI[1] = domainURI;
 
@@ -159,10 +165,10 @@ public class CcDigitAnalysisEngine {
 					portURI = domainPort[1].toString();
 					if ((Integer.parseInt(portURI) > 0 && Integer
 							.parseInt(portURI) <= 65535) && portURI != null) {
-						// logger.info("CcExtractURI DOMAIN:\t" +
-						// domainPort[0].toString());
-						// logger.info("CcExtractURI PORT:\t" + portURI);
-						domainURI = domainPort[0].toString();
+						 //logger.info("CcExtractURI DOMAIN:\t" +
+						 //domainPort[0].toString());
+						 //logger.info("CcExtractURI PORT:\t" + portURI);
+						//domainURI = domainPort[0].toString();
 						resultURI[1] = domainURI;
 						resultURI[2] = portURI;
 					} else {
@@ -189,10 +195,10 @@ public class CcDigitAnalysisEngine {
 			return null;
 		else {
 			if (portURI == null) {
-				// logger.info("CcExtractURI URI:\t" + SIP_PROTOCOL + userURI +
+				//logger.info("CcExtractURI URI:\t" + SIP_PROTOCOL + userURI +
 				// "@" + domainURI);
 			} else {
-				// logger.info("CcExtractURI URI:\t" + SIP_PROTOCOL + userURI +
+				//logger.info("CcExtractURI URI:\t" + SIP_PROTOCOL + userURI +
 				// "@" + domainURI + ":" + portURI);
 			}
 			

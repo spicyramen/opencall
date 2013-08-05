@@ -61,6 +61,10 @@ public class CcProcessor {
 			return readConfigRules.digitsDialed(sipUri);
 	
 	}
+	
+	public String getTransport () {
+		return readConfigRules.getTransport();
+	}
 
 }
 
