@@ -1,0 +1,1386 @@
+root@ip-172-31-32-194:~# /usr/sbin/webrtc2sip
+*******************************************************************
+Copyright (C) 2012-2013 Doubango Telecom <http://www.doubango.org>
+HOME PAGE: http://webrtc2sip.org
+LICENCE: GPLv3 or proprietary
+VERSION: 2.5.0
+'quit' to quit the application.
+*******************************************************************
+
+SSL is enabled :)
+DTLS supported: yes
+DTLS-SRTP supported: yes
+*INFO: transport = tcp://*:5060
+*INFO: transport = udp://*:5060
+*INFO: transport = ws://*:5062
+*INFO: enable-rtp-symetric = yes
+*INFO: enable-100rel = no
+*INFO: enable-media-coder = yes
+*INFO: enable-videojb = yes
+*INFO: video-size-pref = 720p
+*INFO: rtp-buffsize = 65535
+*INFO: avpf-tail-length = [100-400]
+*INFO: srtp-mode = optional
+*INFO: srtp-type = sdes;dtls
+*INFO: dtmf-type = rfc4733
+*INFO: codecs = opus;pcma;pcmu;gsm;vp8;h264-bp;h264-mp;h263;h263+
+*INFO: 'opus' codec enabled but not supported
+*INFO: codec-opus-maxrates = 48000;48000
+*INFO: nameserver = 172.31.0.2
+*INFO: Stack running in SERVER mode
+*INFO: tsk_timer_manager_start
+*INFO: Timer manager run()::enter
+*INFO: TIMER MANAGER -- START
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=6
+*INFO: Socket added[SIP transport]: fd=6, tail.count=1
+*INFO: master fd=3
+*INFO: Socket added[SIP transport]: fd=3, tail.count=2
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=8
+*INFO: Socket added[SIP transport]: fd=8, tail.count=1
+*INFO: master fd=4
+*INFO: Socket added[SIP transport]: fd=4, tail.count=2
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=10
+*INFO: Socket added[SIP transport]: fd=10, tail.count=1
+*INFO: master fd=5
+*INFO: Socket added[SIP transport]: fd=5, tail.count=2
+*INFO: SIP STACK -- START
+*INFO: Transport::run() - enter
+*INFO: Transport::run() - enter
+*INFO: Transport::run() - enter
+*INFO: Starting [SIP transport] server with IP {172.31.32.194} on port {5062} using fd {5} with type {64}...
+*INFO: Starting [SIP transport] server with IP {172.31.32.194} on port {5060} using fd {4} with type {8}...
+*INFO: SIP STACK::run -- START
+*INFO: Starting [SIP transport] server with IP {172.31.32.194} on port {5060} using fd {3} with type {2}...
+*INFO: ioctlt(5), len=0 returned zero or failed
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- FD_ACCEPT(fd=12)
+*INFO: Socket added[SIP transport]: fd=12, tail.count=3
+*INFO: WebSocket Peer accepted/connected with fd = 12
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- TNET_POLLOUT
+*INFO: WebSocket Peer accepted/connected with fd = 12
+*INFO: *** Stream Peer destroyed ***
+*INFO: WebSocket handshake message: GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Host: ec2-54-213-119-23.us-west-2.compute.amazonaws.com:5062
+Origin: http://sipml5.org
+Sec-WebSocket-Protocol: sip
+Pragma: no-cache
+Cache-Control: no-cache
+Sec-WebSocket-Key: f04S75OcA62BWfJDjSu32g==
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Extensions: x-webkit-deflate-frame
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1578.3 Safari/537.36
+Cookie: __gads=ID=7451b26d279f8031:T=1368903289:S=ALNI_MbyN8VBjvbkE6RFmWI8YC85sJKZ6Q
+
+
+*INFO: Receiving SIP o/ WebSocket message: REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKQLR2xuJhgULwJa9WXagJUU6teK6N333J;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=p3NqUuwJ4mm2x0PNJVEh
+To: "WebRTC client"<sip:+14082186576@attlabs.com>
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;transport=ws>;expires=200;click2call=no;+g.oma.sip-im;+audio;language="en,fr"
+Call-ID: 5d562e16-fae5-29c3-ff85-79634c86fc1c
+CSeq: 45322 REGISTER
+Content-Length: 0
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+Organization: Doubango Telecom
+Supported: path
+
+
+*INFO: State machine: tsip_transac_nict_Started_2_Trying_X_send
+*INFO: 
+
+SEND: REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKQLR2xuJhgULwJa9WXagJUU6teK6N333J;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=p3NqUuwJ4mm2x0PNJVEh
+To: "WebRTC client"<sip:+14082186576@attlabs.com>
+Contact: "WebRTC client"<sip:+14082186576@172.31.32.194:5060;rtcweb-breaker=yes;transport=tcp;ws-src-ip=50.156.118.130;ws-src-port=58709;ws-src-proto=ws>;expires=200;click2call=no;+g.oma.sip-im;+audio;language="en,fr"
+Call-ID: 5d562e16-fae5-29c3-ff85-79634c86fc1c
+CSeq: 45322 REGISTER
+Content-Length: 0
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+Organization: Doubango Telecom
+Supported: path
+Via: SIP/2.0/TCP 50.156.118.130:58709;rport;branch=z9hG4bKQLR2xuJhgULwJa9WXagJUU6teK6N333J;ws-hacked=WS
+
+
+
+
+*INFO: Cannot find peer with remote IP/Port=172.31.46.56/5060, connecting to the destination...
+**WARN: function: "tnet_sockfd_connectto()" 
+file: "src/tnet_utils.c" 
+line: "1612" 
+MSG: TNET_ERROR_WOULDBLOCK/TNET_ERROR_ISCONN/TNET_ERROR_INPROGRESS/TNET_ERROR_EAGAIN  ==> use tnet_sockfd_waitUntilWritable.
+*INFO: Socket added[SIP transport]: fd=13, tail.count=3
+*INFO: Socket added (external call) 13
+*INFO: Data send requested but peer not connected yet...saving data
+*INFO: PipeR event = 1
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- TNET_POLLOUT
+*INFO: Stream Peer accepted/connected - 13
+*INFO: 
+
+RECV:SIP/2.0 200 OK
+To: "WebRTC client" <sip:+14082186576@attlabs.com>;tag=42298011_06d8ad6a_097ed9b8-b5ed-4c9d-a592-ff47f38677e2
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKQLR2xuJhgULwJa9WXagJUU6teK6N333J;rport=52334;received=172.31.32.194
+Via: SIP/2.0/TCP 50.156.118.130:58709;rport;branch=z9hG4bKQLR2xuJhgULwJa9WXagJUU6teK6N333J;ws-hacked=WS
+CSeq: 45322 REGISTER
+Call-ID: 5d562e16-fae5-29c3-ff85-79634c86fc1c
+From: "WebRTC client" <sip:+14082186576@attlabs.com>;tag=p3NqUuwJ4mm2x0PNJVEh
+Content-Length: 0
+
+
+
+
+*INFO: State machine: tsip_transac_nict_Trying_2_Completed_X_200_to_699
+*INFO: No all data in the WS buffer
+*INFO: No all data in the WS buffer
+*INFO: Receiving SIP o/ WebSocket message: INVITE sip:22223333@videolab.att.com SIP/2.0
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKJ2kMysA4dozBsl8l7giMtDfXVShl9K9L;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=vc93WTsTB7ceQ6MU2blr
+To: <sip:22223333@videolab.att.com>
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;click2call=no;transport=ws>;impi=%2B14082186575;ha1=6bac5c78db407f29243556b8e7798edf;+g.oma.sip-im;+sip.ice;language="en,fr"
+Call-ID: de742715-7f25-b976-1489-ce00e2190fdf
+CSeq: 5091 INVITE
+Content-Type: application/sdp
+Content-Length: 3058
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+Organization: Doubango Telecom
+
+v=0
+o=- 111303624163344600 2 IN IP4 127.0.0.1
+s=Doubango Telecom - chrome
+t=0 0
+a=group:BUNDLE audio video
+a=msid-semantic: WMS UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4
+m=audio 63505 RTP/SAVPF 111 103 104 0 8 107 106 105 13 126
+c=IN IP4 50.156.118.130
+a=rtcp:63505 IN IP4 50.156.118.130
+a=candidate:1064188286 1 udp 2113937151 110.10.0.144 63505 typ host generation 0
+a=candidate:1064188286 2 udp 2113937151 110.10.0.144 63505 typ host generation 0
+a=candidate:3380494506 1 udp 1845501695 50.156.118.130 63505 typ srflx raddr 110.10.0.144 rport 63505 generation 0
+a=candidate:3380494506 2 udp 1845501695 50.156.118.130 63505 typ srflx raddr 110.10.0.144 rport 63505 generation 0
+a=candidate:1911408014 1 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=candidate:1911408014 2 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=ice-ufrag:5W9G5xYL7ZCRhmbM
+a=ice-pwd:QKX6vh+OuFyYzu8DLmEuw8Wd
+a=ice-options:google-ice
+a=mid:audio
+a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=sendrecv
+a=rtcp-mux
+a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:mV5cALPQIbzDAOlJN6kreE6/GZPtvqXhvGAY8Jiu
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10
+a=rtpmap:103 ISAC/16000
+a=rtpmap:104 ISAC/32000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=rtpmap:107 CN/48000
+a=rtpmap:106 CN/32000
+a=rtpmap:105 CN/16000
+a=rtpmap:13 CN/8000
+a=rtpmap:126 telephone-event/8000
+a=maxptime:60
+a=ssrc:3914011280 cname:dS9KLcuBaRTX1pBe
+a=ssrc:3914011280 msid:UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4 UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4a0
+a=ssrc:3914011280 mslabel:UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4
+a=ssrc:3914011280 label:UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4a0
+m=video 63505 RTP/SAVPF 100 116 117
+c=IN IP4 50.156.118.130
+a=rtcp:63505 IN IP4 50.156.118.130
+a=candidate:1064188286 1 udp 2113937151 110.10.0.144 63505 typ host generation 0
+a=candidate:1064188286 2 udp 2113937151 110.10.0.144 63505 typ host generation 0
+a=candidate:3380494506 1 udp 1845501695 50.156.118.130 63505 typ srflx raddr 110.10.0.144 rport 63505 generation 0
+a=candidate:3380494506 2 udp 1845501695 50.156.118.130 63505 typ srflx raddr 110.10.0.144 rport 63505 generation 0
+a=candidate:1911408014 1 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=candidate:1911408014 2 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=ice-ufrag:5W9G5xYL7ZCRhmbM
+a=ice-pwd:QKX6vh+OuFyYzu8DLmEuw8Wd
+a=ice-options:google-ice
+a=mid:video
+a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
+a=extmap:3 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
+a=sendrecv
+a=rtcp-mux
+a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:mV5cALPQIbzDAOlJN6kreE6/GZPtvqXhvGAY8Jiu
+a=rtpmap:100 VP8/90000
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack
+a=rtcp-fb:100 goog-remb
+a=rtpmap:116 red/90000
+a=rtpmap:117 ulpfec/90000
+a=ssrc:892749285 cname:dS9KLcuBaRTX1pBe
+a=ssrc:892749285 msid:UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4 UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4v0
+a=ssrc:892749285 mslabel:UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4
+a=ssrc:892749285 label:UKQolXdIO2SsCRLe8YPVfLC8OpCIO3FrvSC4v0
+
+*INFO: State machine: tsip_transac_ist_Started_2_Proceeding_X_INVITE
+*INFO: Add call-id = 'de742715-7f25-b976-1489-ce00e2190fdf' to peer with local fd = 12
+*INFO: State machine: x0500_Current_2_Current_X_iINVITE
+*INFO: tnet_ice_ctx_set_remote_candidates
+*INFO: tnet_ice_ctx_set_remote_candidates
+*INFO: tsk_timer_manager_start
+*INFO: tsk_timer_manager_start
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: Timer manager run()::enter
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: Timer manager run()::enter
+*INFO: TIMER MANAGER -- START
+*INFO: TIMER MANAGER -- START
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:44234]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:43898]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: ICE reflexive candidates gathering ...1,0
+*INFO: ICE reflexive candidates gathering ...1,0
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: ZOvZ7jDYF 1 udp 2130706431 172.31.32.194 44234 typ host
+*INFO: Candidate: ZOvZ7jDYF 2 udp 2130706430 172.31.32.194 44235 typ host
+*INFO: Candidate: srflxZOvZ 1 udp 1694498815 54.213.119.23 44234 typ srflx raddr 172.31.32.194 rport 44234
+*INFO: Candidate: srflxZOvZ 2 udp 1694498814 54.213.119.23 44235 typ srflx raddr 172.31.32.194 rport 44235
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: State machine: ICE_GatheringComplet_2_ConnChecking_X_ConnCheck
+*INFO: ICE Pair: [ZOvZ7jDYF 1 172.31.32.194 44234] -> [1064188286 1 110.10.0.144 63505]
+*INFO: ICE Pair: [ZOvZ7jDYF 1 172.31.32.194 44234] -> [3380494506 1 50.156.118.130 63505]
+*INFO: ICE Pair: [ZOvZ7jDYF 2 172.31.32.194 44235] -> [1064188286 2 110.10.0.144 63505]
+*INFO: ICE Pair: [ZOvZ7jDYF 2 172.31.32.194 44235] -> [3380494506 2 50.156.118.130 63505]
+*INFO: ICE Pair: [srflxZOvZ 1 54.213.119.23 44234] -> [1064188286 1 110.10.0.144 63505]
+*INFO: ICE Pair: [srflxZOvZ 1 54.213.119.23 44234] -> [3380494506 1 50.156.118.130 63505]
+*INFO: ICE Pair: [srflxZOvZ 2 54.213.119.23 44235] -> [1064188286 2 110.10.0.144 63505]
+*INFO: ICE Pair: [srflxZOvZ 2 54.213.119.23 44235] -> [3380494506 2 50.156.118.130 63505]
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: nTx6LjyeY 1 udp 2130706431 172.31.32.194 43898 typ host
+*INFO: Candidate: nTx6LjyeY 2 udp 2130706430 172.31.32.194 43899 typ host
+*INFO: Candidate: srflxnTx6 1 udp 1694498815 54.213.119.23 43898 typ srflx raddr 172.31.32.194 rport 43898
+*INFO: Candidate: srflxnTx6 2 udp 1694498814 54.213.119.23 43899 typ srflx raddr 172.31.32.194 rport 43899
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: tnet_ice_ctx_set_remote_candidates
+**WARN: function: "tnet_ice_ctx_set_remote_candidates()" 
+file: "src/ice/tnet_ice_ctx.c" 
+line: "502" 
+MSG: Adding Remote ICE candidates after pairs building
+*INFO: tnet_ice_ctx_set_remote_candidates
+*INFO: is_ro_provisional_final_matching=0,
+is_ro_media_lines_changed=0,
+is_ro_network_info_changed=0,
+is_ro_loopback_address=0,
+is_media_type_changed=0
+
+*INFO: tdav_consumer_audio_init()
+*INFO: Create SpeexDSP jitter buffer
+*INFO: Video 'zero-artifacts' option = no
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+*INFO: Remote SSRC = 3914011280
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+*INFO: Remote SSRC = 892749285
+*INFO: State machine: s0000_Started_2_Ringing_X_iINVITE
+*INFO: State machine: tsip_transac_ist_Proceeding_2_Proceeding_X_1xx
+*INFO: State machine: x0500_Current_2_Current_X_oINVITE
+*INFO: tsk_timer_manager_start
+*INFO: tsk_timer_manager_start
+*INFO: State machine: ICE_GatheringComplet_2_ConnChecking_X_ConnCheck
+*INFO: ICE Pair: [nTx6LjyeY 1 172.31.32.194 43898] -> [1064188286 1 110.10.0.144 63505]
+*INFO: ICE Pair: [nTx6LjyeY 1 172.31.32.194 43898] -> [3380494506 1 50.156.118.130 63505]
+*INFO: ICE Pair: [nTx6LjyeY 2 172.31.32.194 43899] -> [1064188286 2 110.10.0.144 63505]
+*INFO: ICE Pair: [nTx6LjyeY 2 172.31.32.194 43899] -> [3380494506 2 50.156.118.130 63505]
+*INFO: ICE Pair: [srflxnTx6 1 54.213.119.23 43898] -> [1064188286 1 110.10.0.144 63505]
+*INFO: ICE Pair: [srflxnTx6 1 54.213.119.23 43898] -> [3380494506 1 50.156.118.130 63505]
+*INFO: ICE Pair: [srflxnTx6 2 54.213.119.23 43899] -> [1064188286 2 110.10.0.144 63505]
+*INFO: ICE Pair: [srflxnTx6 2 54.213.119.23 43899] -> [3380494506 2 50.156.118.130 63505]
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: Timer manager run()::enter
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: Timer manager run()::enter
+*INFO: TIMER MANAGER -- START
+*INFO: TIMER MANAGER -- START
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:42022]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:45768]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: ICE reflexive candidates gathering ...1,0
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: BWX0e9VmI 1 udp 2130706431 172.31.32.194 42022 typ host
+*INFO: Candidate: BWX0e9VmI 2 udp 2130706430 172.31.32.194 42023 typ host
+*INFO: Candidate: srflxBWX0 2 udp 1694498814 54.213.119.23 42023 typ srflx raddr 172.31.32.194 rport 42023
+*INFO: Candidate: srflxBWX0 1 udp 1694498815 54.213.119.23 42022 typ srflx raddr 172.31.32.194 rport 42022
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: ICE reflexive candidates gathering ...1,0
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: xSOLl9eUw 1 udp 2130706431 172.31.32.194 45768 typ host
+*INFO: Candidate: xSOLl9eUw 2 udp 2130706430 172.31.32.194 45769 typ host
+*INFO: Candidate: srflxxSOL 2 udp 1694498814 54.213.119.23 45769 typ srflx raddr 172.31.32.194 rport 45769
+*INFO: Candidate: srflxxSOL 1 udp 1694498815 54.213.119.23 45768 typ srflx raddr 172.31.32.194 rport 45768
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: State machine: c0000_Started_2_Outgoing_X_oINVITE
+*INFO: tdav_consumer_audio_init()
+*INFO: Create SpeexDSP jitter buffer
+*INFO: Video 'zero-artifacts' option = no
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+*INFO: 
+
+SEND: INVITE sip:22223333@videolab.att.com SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK2103662707;rport
+From: <sip:+14082186576@attlabs.com>;tag=701295360
+To: <sip:22223333@videolab.att.com>
+Contact: <sip:+14082186576@172.31.32.194:5060;ws-src-ip=50.156.118.130;ws-src-port=58709;ws-src-proto=ws;transport=tcp>
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+CSeq: 2038970522 INVITE
+Content-Type: application/sdp
+Content-Length: 2726
+Max-Forwards: 70
+User-Agent: webrtc2sip Media Server 2.5.0
+
+v=0
+o=doubango 1983 678901 IN IP4 172.31.32.194
+s=-
+c=IN IP4 172.31.32.194
+t=0 0
+a=tcap:1 RTP/SAVPF RTP/SAVP RTP/AVPF
+m=audio 45768 RTP/AVP 8 0 3 101
+c=IN IP4 172.31.32.194
+a=ptime:20
+a=minptime:20
+a=maxptime:20
+a=silenceSupp:off - - - -
+a=rtpmap:8 PCMA/8000/1
+a=rtpmap:0 PCMU/8000/1
+a=rtpmap:3 GSM/8000/1
+a=rtpmap:101 telephone-event/8000/1
+a=fmtp:101 0-16
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:YGUtVVhG/j+QEslr2xbVpRQhwJvDD8u4ssnyslbM
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:uaAXi9bnD3ESosldQfHLnpdD+H0OiZQUWdAEgWnh
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:732962805 cname:8d8d0f7bd892b55cf65c0f79fa0a1178
+a=ssrc:732962805 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:732962805 label:doubango@audio
+a=ice-ufrag:KSFIhtcc7ch0KOy
+a=ice-pwd:M3Je4rH1s5HPDKzyYV5kz
+a=candidate:xSOLl9eUw 1 udp 2130706431 172.31.32.194 45768 typ host
+a=candidate:xSOLl9eUw 2 udp 2130706430 172.31.32.194 45769 typ host
+a=candidate:srflxxSOL 2 udp 1694498814 54.213.119.23 45769 typ srflx raddr 172.31.32.194 rport 45769
+a=candidate:srflxxSOL 1 udp 1694498815 54.213.119.23 45768 typ srflx raddr 172.31.32.194 rport 45768
+m=video 42022 RTP/AVP 100 104 105 34 103
+c=IN IP4 172.31.32.194
+a=rtcp-fb:* nack pli
+a=rtcp-fb:* ccm fir
+a=rtpmap:100 VP8/90000
+a=imageattr:100 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=rtpmap:104 H264/90000
+a=imageattr:104 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:104 profile-level-id=42001f; packetization-mode=1
+a=rtpmap:105 H264/90000
+a=imageattr:105 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:105 profile-level-id=4d001f; packetization-mode=1
+a=rtpmap:34 H263/90000
+a=fmtp:34 4CIF=2;CIF=2;QCIF=2;SQCIF=2
+a=rtpmap:103 H263-1998/90000
+a=fmtp:103 4CIF=2;CIF=2;QCIF=2;SQCIF=2
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:JjJA2BSTAZuugihWS5GlzVead2VUD/20sGovC6yV
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:4OuC4UJUexUpCAuCA62LlHJwMTYpzT8Hb7IqXBNm
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:895030803 cname:7cacd5c615c66a71d6206f450bb95684
+a=ssrc:895030803 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:895030803 label:doubango@video
+a=ice-ufrag:WYSz66YR0XFdwXE
+a=ice-pwd:yhehVBdsg1CYrgtsyDeir
+a=candidate:BWX0e9VmI 1 udp 2130706431 172.31.32.194 42022 typ host
+a=candidate:BWX0e9VmI 2 udp 2130706430 172.31.32.194 42023 typ host
+a=candidate:srflxBWX0 2 udp 1694498814 54.213.119.23 42023 typ srflx raddr 172.31.32.194 rport 42023
+a=candidate:srflxBWX0 1 udp 1694498815 54.213.119.23 42022 typ srflx raddr 172.31.32.194 rport 42022
+
+
+
+*INFO: Add call-id = '10746737-3205-353f-2116-51413b75ca18' to peer with local fd = 13
+*INFO: 
+
+RECV:SIP/2.0 100 Trying
+To: <sip:22223333@videolab.att.com>
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK2103662707;rport=52334;received=172.31.32.194
+CSeq: 2038970522 INVITE
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+From: <sip:+14082186576@attlabs.com>;tag=701295360
+Content-Length: 0
+
+
+
+
+*INFO: State machine: x0000_Any_2_Any_X_i1xx
+*INFO: 
+
+RECV:SIP/2.0 180 Ringing
+To: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK2103662707;rport=52334;received=172.31.32.194
+CSeq: 2038970522 INVITE
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+From: <sip:+14082186576@attlabs.com>;tag=701295360
+Contact: <sip:172.31.46.56:5060;transport=tcp>
+Content-Length: 0
+
+
+
+
+*INFO: State machine: x0000_Any_2_Any_X_i1xx
+*INFO: 
+
+RECV:SIP/2.0 200 OK
+To: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK2103662707;rport=52334;received=172.31.32.194
+CSeq: 2038970522 INVITE
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+From: <sip:+14082186576@attlabs.com>;tag=701295360
+Contact: <sip:172.31.46.56:5060;transport=tcp>
+Content-Type: application/sdp
+Content-Length: 671
+
+v=0
+o=Cisco-CTX-dtls-sdes 10552824758584 10552824758584 IN IP4 10.250.5.102
+s=-
+c=IN IP4 12.71.143.132
+b=AS:768
+t=0 0
+m=audio 54698 RTP/AVP 8 0 101
+a=sendrecv
+a=rtpmap:8 PCMA/8000/1
+a=rtpmap:0 PCMU/8000/1
+a=rtpmap:101 telephone-event/8000/1
+a=fmtp:101 0-15
+m=video 54700 RTP/AVP 104 34 103
+b=AS:4000
+a=sendrecv
+a=rtpmap:104 H264/90000
+a=rtpmap:34 H263/90000
+a=rtpmap:103 H263-1998/90000
+a=fmtp:104 profile-level-id=42e016;max-mbps=108000;max-fs=3600;max-dpb=5400;packetization-mode=1
+a=fmtp:34 CIF4=1;CIF=1;CIF=1;QCIF=1
+a=fmtp:103 CUSTOM=1280,720,1;CUSTOM=1024,768,1;CUSTOM=1024,576,1;CIF4=1;CUSTOM=512,288,1;CIF=1;CIF=1;QCIF=1
+a=rtcp-fb:* nack pli
+
+
+
+*INFO: State machine: c0000_Outgoing_2_Connected_X_i2xxINVITE
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+*INFO: is_ro_provisional_final_matching=0,
+is_ro_media_lines_changed=0,
+is_ro_network_info_changed=0,
+is_ro_loopback_address=0,
+is_media_type_changed=0
+
+*INFO: [H.264] Trying to match [fmtp:profile-level-id=42e016;max-mbps=108000;max-fs=3600;max-dpb=5400;packetization-mode=1]
+*INFO: SO_RCVBUF = 65535, SO_SNDBUF = 65535
+*INFO: rtcp.remote_ip=12.71.143.132, rtcp.remote_port=54699, rtcp.local_fd=20
+*INFO: tsk_timer_manager_start
+*INFO: Timer manager already running
+*INFO: State machine: ICE_Any_2_Started_X_Cancel
+*INFO: ICE callback: Cancelled
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=22
+*INFO: Socket added[RTP/RTCP Manager]: fd=22, tail.count=1
+*INFO: master fd=20
+*INFO: Socket added[RTP/RTCP Manager]: fd=20, tail.count=2
+warning: The VAD has been replaced by a hack pending a complete rewrite
+*INFO: State machine: ICE_Any_2_Started_X_Cancel
+*INFO: ICE callback: Cancelled
+[libx264 @ 0x7fa53002a3f0] Warning: not compiled with thread support, using thread emulation
+[libx264 @ 0x7fa53002a3f0] VBV maxrate specified, but no bufsize, ignored
+*INFO: Transport::run() - enter
+*INFO: Starting [RTP/RTCP Manager] server with IP {172.31.32.194} on port {45768} using fd {20} with type {3}...
+*INFO: ICE context not active
+[libx264 @ 0x7fa53002a3f0] using cpu capabilities: MMX2 SSE2Fast SSSE3 FastShuffle SSE4.2
+[libx264 @ 0x7fa53002a3f0] profile Constrained Baseline, level 2.2
+[libx264 @ 0x7fa53002a3f0] 264 - core 120 r2151 a3f4407 - H.264/MPEG-4 AVC codec - Copyleft 2003-2011 - http://www.videolan.org/x264.html - options: cabac=0 ref=1 deblock=1:1:1 analyse=0x1:0x111 me=dia subme=0 psy=1 psy_rd=0.40:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=1 sliced_threads=0 slice_max_size=900 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=375 keyint_min=15 scenecut=0 intra_refresh=0 rc=abr mbtree=0 bitrate=426 ratetol=1.0 qcomp=0.60 qpmin=10 qpmax=51 qpstep=4 ip_ratio=1.40 aq=1:0.60
+[h264 @ 0x7fa5303254d0] Warning: not compiled with thread support, using thread emulation
+*INFO: SO_RCVBUF = 65535, SO_SNDBUF = 65535
+*INFO: rtcp.remote_ip=12.71.143.132, rtcp.remote_port=54701, rtcp.local_fd=21
+*INFO: tsk_timer_manager_start
+*INFO: Timer manager already running
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=25
+*INFO: Socket added[RTP/RTCP Manager]: fd=25, tail.count=1
+*INFO: master fd=21
+*INFO: Socket added[RTP/RTCP Manager]: fd=21, tail.count=2
+*INFO: 
+
+SEND: ACK sip:172.31.46.56:5060;transport=tcp SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK292446211;rport
+From: <sip:+14082186576@attlabs.com>;tag=701295360
+To: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+Contact: <sip:+14082186576@172.31.32.194:5060;ws-src-ip=50.156.118.130;ws-src-port=58709;ws-src-proto=ws;transport=tcp>
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+CSeq: 2038970522 ACK
+Content-Length: 0
+Max-Forwards: 70
+User-Agent: webrtc2sip Media Server 2.5.0
+
+
+
+
+*INFO: Transport::run() - enter
+*INFO: Video jitter buffer thread - ENTER
+*INFO: Starting [RTP/RTCP Manager] server with IP {172.31.32.194} on port {42022} using fd {21} with type {3}...
+*INFO: ICE context not active
+*INFO: State machine: s0000_Ringing_2_Connected_X_Accept
+*INFO: State machine: tsip_transac_ist_Proceeding_2_Accepted_X_2xx
+*INFO: Receiving SIP o/ WebSocket message: ACK sip:22223333@172.31.32.194:5062;transport=ws;ws-src-ip=50.156.118.130;ws-src-port=58709;ws-src-proto=ws SIP/2.0
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKo7oLRJVQ7fETkRhWd3ss;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=vc93WTsTB7ceQ6MU2blr
+To: <sip:22223333@videolab.att.com>;tag=1440102041
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;click2call=no;transport=ws>;+g.oma.sip-im;+sip.ice;language="en,fr"
+Call-ID: de742715-7f25-b976-1489-ce00e2190fdf
+CSeq: 5091 ACK
+Content-Length: 0
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+Organization: Doubango Telecom
+
+
+*INFO: State machine: tsip_transac_ist_Accepted_2_Accepted_iACK
+*INFO: State machine: x0000_Connected_2_Connected_X_iACK
+*INFO: Mapped address different than local connection address...probably symetric NAT: 172.31.32.194#54.213.119.23 or 44234#44234
+*INFO: State machine: No matching state found.
+*INFO: State machine: ICE_ConnChecking_2_ConnCheckingCompleted_X_Success
+*INFO: ICE callback: ConnCheck succeed
+*INFO: Mapped address different than local connection address...probably symetric NAT: 172.31.32.194#54.213.119.23 or 43898#43898
+*INFO: State machine: No matching state found.
+*INFO: State machine: ICE_ConnChecking_2_ConnCheckingCompleted_X_Success
+*INFO: ICE callback: ConnCheck succeed
+*INFO: SO_RCVBUF = 65535, SO_SNDBUF = 65535
+*INFO: rtcp.remote_ip=50.156.118.130, rtcp.remote_port=63505, rtcp.local_fd=15
+*INFO: tsk_timer_manager_start
+*INFO: Timer manager already running
+*INFO: srtp_use_different_keys=false
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=27
+*INFO: Socket added[RTP/RTCP Manager]: fd=27, tail.count=1
+*INFO: master fd=15
+*INFO: Socket added[RTP/RTCP Manager]: fd=15, tail.count=2
+warning: The VAD has been replaced by a hack pending a complete rewrite
+*INFO: Transport::run() - enter
+*INFO: Starting [RTP/RTCP Manager] server with IP {172.31.32.194} on port {44234} using fd {15} with type {3}...
+*INFO: SO_RCVBUF = 65535, SO_SNDBUF = 65535
+*INFO: rtcp.remote_ip=50.156.118.130, rtcp.remote_port=63505, rtcp.local_fd=18
+*INFO: tsk_timer_manager_start
+*INFO: Timer manager already running
+*INFO: srtp_use_different_keys=false
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=29
+*INFO: Socket added[RTP/RTCP Manager]: fd=29, tail.count=1
+*INFO: master fd=18
+*INFO: Socket added[RTP/RTCP Manager]: fd=18, tail.count=2
+*INFO: Transport::run() - enter
+*INFO: Video jitter buffer thread - ENTER
+*INFO: Starting [RTP/RTCP Manager] server with IP {172.31.32.194} on port {43898} using fd {18} with type {3}...
+*INFO: Decoded VP8 IDR
+*INFO: IDR frame decoded
+*INFO: producer size = (640, 480)
+*INFO: Initializing new FFmpeg Video Converter src=(640x480) dst=(352x480)
+*INFO: Using symetric RTP for [12.71.143.132]:54698
+*INFO: Using symetric RTP for [12.71.143.132]:54700
+*INFO: Receiving SPS or PPS ...to be tied to an IDR
+*INFO: Receiving SPS or PPS ...to be tied to an IDR
+*INFO: Decoded H.264 IDR
+*INFO: IDR frame decoded
+*INFO: producer size = (0, 0)
+*INFO: Initializing new FFmpeg Video Converter src=(0x0) dst=(1280x720)
+*INFO: Using symetric RTCP for [12.71.143.132]:54699
+*INFO: ioctlt(4), len=0 returned zero or failed
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- FD_ACCEPT(fd=31)
+*INFO: Socket added[SIP transport]: fd=31, tail.count=4
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- TNET_POLLOUT
+*INFO: Stream Peer accepted/connected - 31
+*INFO: Stream Peer accepted/connected - 31
+*INFO: 
+
+RECV:INVITE sip:+14082186576@172.31.32.194:5060;ws-src-ip=50.156.118.130;ws-src-port=58709;ws-src-proto=ws;transport=tcp SIP/2.0
+CSeq: 1 INVITE
+From: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+To: <sip:+14082186576@attlabs.com>;tag=701295360
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+Max-Forwards: 69
+Contact: <sip:22223333@172.31.46.56:5060;transport=tcp>
+Content-Type: application/sdp
+Expires: 180
+Session-Expires: 1800;refresher=uac
+X-TAATag: b42b8a5c-fec9-11e2-86e3-0010f31b4f94
+Via: SIP/2.0/TCP 172.31.46.56:5060;branch=z9hG4bK182d975b-5654-462e-b6c4-324fd90143e2_700d280e_41553516980747
+Content-Length: 2977
+
+v=0
+o=Cisco-CTX-dtls-sdes 10552824758584 10552824758585 IN IP4 10.250.5.102
+s=-
+c=IN IP4 12.71.143.132
+b=AS:4000
+t=0 0
+m=audio 54698 RTP/AVP 107 113 108 96 109 110 98 99 102 9 106 105 0 8 15 18 4 101
+a=sendrecv
+a=rtpmap:107 MP4A-LATM/90000
+a=rtpmap:113 MP4A-LATM/90000
+a=rtpmap:108 MP4A-LATM/90000
+a=rtpmap:96 mpeg4-generic/48000
+a=rtpmap:109 MP4A-LATM/90000
+a=rtpmap:110 MP4A-LATM/90000
+a=rtpmap:98 MP4A-LATM/32000
+a=rtpmap:99 G7221/32000
+a=rtpmap:102 G7221/32000
+a=rtpmap:9 G722/8000
+a=rtpmap:106 G7221/16000
+a=rtpmap:105 G7221/16000
+a=rtpmap:0 PCMU/8000/1
+a=rtpmap:8 PCMA/8000/1
+a=rtpmap:15 G728/8000
+a=rtpmap:18 G729/8000
+a=rtpmap:4 G723/8000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:107 profile-level-id=25;config=4101731A001100;object=23;bi
+
+
+*INFO: No all SIP content in the TCP buffer (clen=2977 and 3653 > 1448).
+*INFO: 
+
+RECV:trate=128000
+a=fmtp:113 profile-level-id=24;object=23;bitrate=96000
+a=fmtp:108 profile-level-id=24;object=23;bitrate=64000
+a=fmtp:96 profile-level-id=16;streamtype=5;config=B98C00;mode=AAC-hbr;sizeLength=13;indexLength=3;indexDeltaLength=3;constantDuration=480
+a=fmtp:109 profile-level-id=24;object=23;bitrate=56000
+a=fmtp:110 profile-level-id=24;object=23;bitrate=48000
+a=fmtp:98 profile-level-id=2;object=2;bitrate=96000
+a=fmtp:99 bitrate=48000
+a=fmtp:102 bitrate=24000
+a=fmtp:106 bitrate=32000
+a=fmtp:105 bitrate=24000
+a=fmtp:18 annexb=no
+a=fmtp:101 0-15
+a=fingerprint:SHA-1 BC:46:6B:0E:00:0B:4D:20:49:D7:CF:EF:38:41:AF:A1:2B:7F:17:D1
+a=setup:actpass
+m=video 54700 RTP/AVP 104 97 103 34 31
+b=AS:4000
+a=sendrecv
+a=rtpmap:104 H264/90000
+a=rtpmap:97 H264/90000
+a=rtpmap:103 H263-1998/90000
+a=rtpmap:34 H263/90000
+a=rtpmap:31 H261/90000
+a=fmtp:104 profile-level-id=42e016;max-mbps=108000;max-fs=3600;max-dpb=5400;packetization-mode=1
+a=fmtp:97 profile-level-id=42e016;max-mbps=108000;max-fs=3600;max-dpb=5400
+a=fmtp:103 CUSTOM=1280,720,1;CUSTOM=1024,768,1;CUSTOM=1024,576,1;CIF4=1;CUSTOM=512,288,1;CIF=1;CIF=1;QCIF=1
+a=fmtp:34 CIF4=1;CIF=1;CIF=1;QCIF=1
+a=fmtp:31 CIF=1;QCIF=1
+a=rtcp-fb:* nack pli
+a=rtcp-fb:* ccm tmmbr
+a=fingerprint:SHA-1 BC:46:6B:0E:00:0B:4D:20:49:D7:CF:EF:38:41:AF:A1:2B:7F:17:D1
+a=setup:actpass
+a=content:main
+a=label:11
+m=application 54648 UDP/BFCP *
+a=floorctrl:s-only
+a=confid:1544617505
+a
+
+
+*INFO: No all SIP content in the TCP buffer (clen=2977 and 3653 > 2896).
+*INFO: 
+
+RECV:=floorid:2 mstrm:12
+a=userid:1251
+a=connection:new
+a=origRTP
+m=application 54684 RTP/AVP 100
+a=sendrecv
+a=rtpmap:100 H224/4800
+m=video 54686 RTP/AVP 103 104 97
+b=AS:768
+a=sendrecv
+a=rtpmap:103 H263-1998/90000
+a=rtpmap:104 H264/90000
+a=rtpmap:97 H264/90000
+a=fmtp:103 CUSTOM=1280,720,6;CUSTOM=1024,768,6;CUSTOM=1024,576,5;CUSTOM=848,480,3;CUSTOM=800,600,4;CIF4=3;CUSTOM=512,288,1;CIF=1;CIF=1;QCIF=1
+a=fmtp:104 profile-level-id=42e00d;max-mbps=18000;max-fs=3600;max-dpb=1350;packetization-mode=1
+a=fmtp:97 profile-level-id=42e00d;max-mbps=18000;max-fs=3600;max-dpb=1350
+a=rtcp-fb:* nack pli
+a=rtcp-fb:* ccm tmmbr
+a=fingerprint:SHA-1 BC:46:6B:0E:00:0B:4D:20:49:D7:CF:EF:38:41:AF:A1:2B:7F:17:D1
+a=setup:actpass
+a=content:slides
+a=label:12
+
+
+
+*INFO: State machine: tsip_transac_ist_Started_2_Proceeding_X_INVITE
+*INFO: 
+
+SEND: SIP/2.0 100 Trying (sent from the Transaction Layer)
+Via: SIP/2.0/TCP 172.31.46.56:5060;branch=z9hG4bK182d975b-5654-462e-b6c4-324fd90143e2_700d280e_41553516980747
+From: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+To: <sip:+14082186576@attlabs.com>;tag=701295360
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+CSeq: 1 INVITE
+Content-Length: 0
+
+
+
+
+*INFO: Cannot find peer with remote IP/Port=0.0.0.0/5060, connecting to the destination...
+**WARN: function: "tnet_sockfd_connectto()" 
+file: "src/tnet_utils.c" 
+line: "1612" 
+MSG: TNET_ERROR_WOULDBLOCK/TNET_ERROR_ISCONN/TNET_ERROR_INPROGRESS/TNET_ERROR_EAGAIN  ==> use tnet_sockfd_waitUntilWritable.
+*INFO: ioctlt(4), len=0 returned zero or failed
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- FD_ACCEPT(fd=33)
+*INFO: Socket added[SIP transport]: fd=33, tail.count=5
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- TNET_POLLOUT
+*INFO: Socket added[SIP transport]: fd=32, tail.count=6
+*INFO: Socket added (external call) 32
+*INFO: Add call-id = '10746737-3205-353f-2116-51413b75ca18' to peer with local fd = 32
+*INFO: Data send requested but peer not connected yet...saving data
+*INFO: State machine: Exec function failed. Moving to terminal state.
+*INFO: === IST terminated ===
+*INFO: *** IST destroyed ***
+*INFO: Stream Peer accepted/connected - 33
+*INFO: Stream Peer accepted/connected - 33
+*INFO: PipeR event = 1
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- TNET_POLLOUT
+*INFO: Stream Peer accepted/connected - 32
+*INFO: 
+
+RECV:SIP/2.0 100 Trying (sent from the Transaction Layer)
+Via: SIP/2.0/TCP 172.31.46.56:5060;branch=z9hG4bK182d975b-5654-462e-b6c4-324fd90143e2_700d280e_41553516980747
+From: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+To: <sip:+14082186576@attlabs.com>;tag=701295360
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+CSeq: 1 INVITE
+Content-Length: 0
+
+
+
+
+*INFO: According to rtp-timestamps ...FPS = 30 (clipped to 30) tail_max=60, latency_max=30
+*INFO: Using symetric RTCP for [12.71.143.132]:54701
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: According to rtp-timestamps ...FPS = 30 (clipped to 30) tail_max=60, latency_max=30
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: According to rtp-timestamps ...FPS = 11 (clipped to 11) tail_max=22, latency_max=11
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: According to rtp-timestamps ...FPS = 30 (clipped to 30) tail_max=60, latency_max=30
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: Receiving RTCP-PLI (895030803)
+*INFO: According to rtp-timestamps ...FPS = 30 (clipped to 30) tail_max=60, latency_max=30
+*INFO: According to rtp-timestamps ...FPS = 12 (clipped to 12) tail_max=24, latency_max=12
+*INFO: According to rtp-timestamps ...FPS = 30 (clipped to 30) tail_max=60, latency_max=30
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Packet loss (from JB) [24308 - 24310]
+*INFO: Request re-send(24309)
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24309, missing_seq_num_count=1, last_seq_num_with_mark=24305). Postpone :(
+*INFO: Request re-send(24309)
+*INFO: Packet late/duplicated/nack (from JB) [24313 - 24309]
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+***ERROR: function: "_trtp_manager_recv_data()" 
+file: "src/trtp_manager.c" 
+line: "418" 
+MSG: srtp_unprotect(RTP) failed with error code=9, seq_num=24309
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(32)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(32)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(33)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(34)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(35)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(36)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: According to rtp-timestamps ...FPS = 30 (clipped to 30) tail_max=60, latency_max=30
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(47)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(47)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(46)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Packet loss (from JB) [24514 - 24516]
+*INFO: Request re-send(24515)
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Packet late/duplicated/nack (from JB) [24516 - 24515]
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(45)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: According to rtp-timestamps ...FPS = 30 (clipped to 30) tail_max=60, latency_max=30
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(44)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(43)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Packet loss (from JB) [24737 - 24739]
+*INFO: Request re-send(24738)
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: Request re-send(24738)
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(42)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(41)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24738, missing_seq_num_count=1, last_seq_num_with_mark=24731). Postpone :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(12)>=latency_max(12)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: /!\Video stream corrupted because of packet loss [24737 - 24739]. Pause rendering if 'zero_artifacts' (supported = yes, enabled = no).
+*INFO: [VP8] Packet loss, seq_num=24738
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(36)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: === ICT terminated ===
+*INFO: *** ICT destroyed ***
+**WARN: function: "tsip_transac_fsm_act()" 
+file: "src/transactions/tsip_transac.c" 
+line: "265" 
+MSG: Invalid parameter.
+*INFO: State machine: tsip_transac_ist_Accepted_2_Terminated_timerL
+*INFO: === IST terminated ===
+*INFO: *** IST destroyed ***
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Packet loss (from JB) [24820 - 24822]
+*INFO: Request re-send(24821)
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Packet late/duplicated/nack (from JB) [24826 - 24821]
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Packet loss (from JB) [24830 - 24832]
+*INFO: Request re-send(24831)
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(36)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24831, missing_seq_num_count=1, last_seq_num_with_mark=24826). Postpone :(
+*INFO: Request re-send(24831)
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: Time to decode frame...but some RTP packets are missing (missing_seq_num_start=24831, missing_seq_num_count=1, last_seq_num_with_mark=24826). Postpone :(
+*INFO: Packet late/duplicated/nack (from JB) [24861 - 24831]
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(40)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(39)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(38)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(37)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(36)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(35)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(34)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(33)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(32)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(31)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: frames_count(30)>=latency_max(30)...decoding video frame even if pkts are missing :(
+*INFO: 
+
+RECV:BYE sip:+14082186576@172.31.32.194:5060;ws-src-ip=50.156.118.130;ws-src-port=58709;ws-src-proto=ws;transport=tcp SIP/2.0
+CSeq: 2 BYE
+From: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+To: <sip:+14082186576@attlabs.com>;tag=701295360
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+Max-Forwards: 70
+Via: SIP/2.0/TCP 172.31.46.56:5060;branch=z9hG4bK182d975b-5654-462e-b6c4-324fd90143e2_700d280e_41585944484821
+Content-Length: 0
+
+
+
+
+*INFO: State machine: tsip_transac_nist_Started_2_Trying_X_request
+*INFO: State machine: x0000_Any_2_Terminated_X_iBYE
+*INFO: State machine: tsip_transac_nist_Trying_2_Completed_X_send_200_to_699
+*INFO: 
+
+SEND: SIP/2.0 200 OK
+Via: SIP/2.0/TCP 172.31.46.56:5060;branch=z9hG4bK182d975b-5654-462e-b6c4-324fd90143e2_700d280e_41585944484821
+From: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+To: <sip:+14082186576@attlabs.com>;tag=701295360
+Contact: <sip:+14082186576@172.31.32.194:5060;transport=tcp>
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+CSeq: 2 BYE
+Content-Length: 0
+
+
+
+
+*INFO: === INVITE Dialog terminated ===
+*INFO: State machine: tsip_transac_nist_Any_2_Terminated_X_cancel
+*INFO: === NIST terminated ===
+*INFO: tmedia_session_mgr_stop()
+*INFO: Timer manager run()::exit
+*INFO: TIMER MANAGER -- STOP
+*INFO: ICE CTX::run -- STOP
+*INFO: Transport::run(RTP/RTCP Manager) - exit
+*INFO: Stopping [RTP/RTCP Manager] server with IP {172.31.32.194} on port {45768} with type {3}...
+*INFO: Stopped [RTP/RTCP Manager] server with IP {172.31.32.194} on port {45768}
+*INFO: Socket to remove: fd=22, index=0, tail.count=2
+*INFO: CloseSocket(fd=22)
+*INFO: Socket to remove: fd=20, index=0, tail.count=1
+*INFO: tdav_session_video_stop
+*INFO: tdav_video_jb_stop()
+*INFO: Video jitter buffer thread - EXIT
+*INFO: Audio producer not started yet
+*INFO: Timer manager run()::exit
+*INFO: TIMER MANAGER -- STOP
+*INFO: ICE CTX::run -- STOP
+*INFO: Transport::run(RTP/RTCP Manager) - exit
+*INFO: Stopping [RTP/RTCP Manager] server with IP {172.31.32.194} on port {42022} with type {3}...
+*INFO: Stopped [RTP/RTCP Manager] server with IP {172.31.32.194} on port {42022}
+*INFO: Socket to remove: fd=25, index=0, tail.count=2
+*INFO: CloseSocket(fd=25)
+*INFO: Socket to remove: fd=21, index=0, tail.count=1
+[libx264 @ 0x7fa53002a3f0] frame I:5     Avg QP:16.74  size: 13710
+[libx264 @ 0x7fa53002a3f0] frame P:394   Avg QP:17.99  size:  3431
+[libx264 @ 0x7fa53002a3f0] mb I  I16..4: 30.7%  0.0% 69.3%
+[libx264 @ 0x7fa53002a3f0] mb P  I16..4:  7.4%  0.0%  0.6%  P16..4: 41.2% 11.3%  2.5%  0.0%  0.0%    skip:37.0%
+[libx264 @ 0x7fa53002a3f0] final ratefactor: 23.96
+[libx264 @ 0x7fa53002a3f0] coded y,uvDC,uvAC intra: 16.9% 54.9% 22.1% inter: 23.1% 14.5% 0.2%
+[libx264 @ 0x7fa53002a3f0] i16 v,h,dc,p: 31% 28% 30% 11%
+[libx264 @ 0x7fa53002a3f0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 34% 13% 31%  5%  3%  3%  2%  4%  5%
+[libx264 @ 0x7fa53002a3f0] i8c dc,h,v,p: 48% 17% 25% 10%
+[libx264 @ 0x7fa53002a3f0] kb/s:427.17
+*INFO: State machine: x0000_Any_2_Trying_X_oBYE
+*INFO: State machine: tsip_transac_nict_Started_2_Trying_X_send
+*INFO: tmedia_session_mgr_stop()
+*INFO: Timer manager run()::exit
+*INFO: TIMER MANAGER -- STOP
+*INFO: ICE CTX::run -- STOP
+*INFO: Transport::run(RTP/RTCP Manager) - exit
+*INFO: Stopping [RTP/RTCP Manager] server with IP {172.31.32.194} on port {44234} with type {3}...
+*INFO: Stopped [RTP/RTCP Manager] server with IP {172.31.32.194} on port {44234}
+*INFO: Socket to remove: fd=27, index=0, tail.count=2
+*INFO: CloseSocket(fd=27)
+*INFO: Socket to remove: fd=15, index=0, tail.count=1
+*INFO: tdav_session_video_stop
+*INFO: tdav_video_jb_stop()
+*INFO: Video jitter buffer thread - EXIT
+*INFO: Timer manager run()::exit
+*INFO: TIMER MANAGER -- STOP
+*INFO: ICE CTX::run -- STOP
+*INFO: Transport::run(RTP/RTCP Manager) - exit
+*INFO: Stopping [RTP/RTCP Manager] server with IP {172.31.32.194} on port {43898} with type {3}...
+*INFO: Stopped [RTP/RTCP Manager] server with IP {172.31.32.194} on port {43898}
+*INFO: Socket to remove: fd=29, index=0, tail.count=2
+*INFO: CloseSocket(fd=29)
+*INFO: Socket to remove: fd=18, index=0, tail.count=1
+*INFO: tdav_codec_vp8_close_encoder(begin)
+*INFO: State machine: No matching state found.
+*INFO: === NIST terminated ===
+*INFO: [Stream] Removed call-id = '10746737-3205-353f-2116-51413b75ca18' from peer with local fd = 13
+*INFO: [Transport] Removed call-id = '10746737-3205-353f-2116-51413b75ca18' from transport with type = 8
+*INFO: [Transport Layer] Removed call-id = '10746737-3205-353f-2116-51413b75ca18' from transport layer
+*INFO: *** INVITE Dialog destroyed ***
+*INFO: *** NIST destroyed ***
+*INFO: 
+
+RECV:SIP/2.0 200 OK
+Via: SIP/2.0/TCP 172.31.46.56:5060;branch=z9hG4bK182d975b-5654-462e-b6c4-324fd90143e2_700d280e_41585944484821
+From: <sip:22223333@videolab.att.com>;tag=90260548_700d280e_182d975b-5654-462e-b6c4-324fd90143e2
+To: <sip:+14082186576@attlabs.com>;tag=701295360
+Contact: <sip:+14082186576@172.31.32.194:5060;transport=tcp>
+Call-ID: 10746737-3205-353f-2116-51413b75ca18
+CSeq: 2 BYE
+Content-Length: 0
+
+
+
+
+*INFO: tdav_codec_vp8_close_encoder(end)
+*INFO: tdav_codec_vp8_close_decoder(begin)
+*INFO: tdav_codec_vp8_close_decoder(end)
+*INFO: MPPeer object destroyed
+*INFO: MPSipSessionAV object destroyed
+*INFO: *** tdav_session_audio_t destroyed ***
+*INFO: MPProxyPluginConsumerAudio object destroyed
+*INFO: *** RTP manager destroyed ***
+*INFO: *** Audio session destroyed ***
+*INFO: *** tdav_session_video_t destroyed ***
+*INFO: tdav_session_video_stop
+*INFO: MPProxyPluginConsumerVideo object destroyed
+*INFO: twrap_producer_proxy_video_dtor()
+*INFO: ~ProxyVideoProducer
+*INFO: *** RTP manager destroyed ***
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+*INFO: *** Video session destroyed ***
+*INFO: *** SIP Session destroyed ***
+*INFO: MPSipSession object destroyed
+*INFO: MPSipSessionAV object destroyed
+*INFO: MPSipSession object destroyed
+*INFO: Receiving SIP o/ WebSocket message: SIP/2.0 200 OK
+Via: SIP/2.0/WS 172.31.32.194:5062;rport=5062;branch=z9hG4bK448580826
+From: <sip:22223333@videolab.att.com>;tag=1440102041
+To: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=vc93WTsTB7ceQ6MU2blr
+Contact: <sip:+14082186576@df7jal23ls0d.invalid;transport=ws>
+Call-ID: de742715-7f25-b976-1489-ce00e2190fdf
+CSeq: 1614668598 BYE
+Content-Length: 0
+
+
+*INFO: State machine: tsip_transac_nict_Trying_2_Completed_X_200_to_699
+*INFO: State machine: x0000_Any_2_Terminated_X_i2xxBYE
+*INFO: === INVITE Dialog terminated ===
+*INFO: State machine: tsip_transac_nict_Any_2_Terminated_X_cancel
+*INFO: === NICT terminated ===
+*INFO: === NICT terminated ===
+**WARN: function: "tsk_fsm_act()" 
+file: "src/tsk_fsm.c" 
+line: "133" 
+MSG: The FSM is in the final state.
+*INFO: [Stream] Removed call-id = 'de742715-7f25-b976-1489-ce00e2190fdf' from peer with local fd = 12
+*INFO: [Transport] Removed call-id = 'de742715-7f25-b976-1489-ce00e2190fdf' from transport with type = 64
+*INFO: [Transport Layer] Removed call-id = 'de742715-7f25-b976-1489-ce00e2190fdf' from transport layer
+*INFO: *** tdav_session_audio_t destroyed ***
+*INFO: MPProxyPluginConsumerAudio object destroyed
+*INFO: MPProxyPluginProducerAudio object destroyed
+*INFO: MPProxyPluginProducerAudio object destroyed
+*INFO: *** RTP manager destroyed ***
+*INFO: *** Audio session destroyed ***
+*INFO: *** tdav_session_video_t destroyed ***
+*INFO: tdav_session_video_stop
+*INFO: MPProxyPluginConsumerVideo object destroyed
+*INFO: MPProxyPluginProducerVideo object destroyed
+*INFO: twrap_producer_proxy_video_dtor()
+*INFO: MPProxyPluginProducerVideo object destroyed
+*INFO: ~ProxyVideoProducer
+*INFO: *** RTP manager destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: *** Video session destroyed ***
+*INFO: *** INVITE Dialog destroyed ***
+*INFO: *** NICT destroyed ***
+*INFO: *** SIP Session destroyed ***
+^A

@@ -59,14 +59,13 @@ public class CcReadSystemConfiguration {
 		try {
 			if (CcVerifyConfigurationFileAccess(SYSTEM_CONFIGURATION)) { // Verify File is readable
 																			
-				if (!CcReadFileParameters(SYSTEM_CONFIGURATION)) { // Read File parameters
-																
+				if (!CcReadFileParameters(SYSTEM_CONFIGURATION)) { 		// Read File parameters													
 					return false;
 				}
-				if (!CcVerifyFileParameters(SYSTEM_CONFIGURATION)) { // Verify File Parameters
-																		
+				if (!CcVerifyFileParameters(SYSTEM_CONFIGURATION)) { 	// Verify File Parameters																	
 					return false;
 				}
+				
 				return true;
 
 			} else {
@@ -74,6 +73,7 @@ public class CcReadSystemConfiguration {
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			logger.error("CcInitSystemConfiguration() CcInitConfigurationFile failed to initialize...");
 			e.printStackTrace();
 			return false;
 		}
@@ -134,12 +134,11 @@ public class CcReadSystemConfiguration {
 			while ((strLine = br.readLine()) != null) {
 				strLine = strLine.trim();
 				if (strLine.startsWith("#") || strLine.isEmpty()) {
-
+					//logger.info("Comment found!");
 				} else {
 					candidateParameters.add(strLine);
 				}
 			}
-
 			in.close();
 			if (CcDisplayCandidateParameters()) {
 				return true;
@@ -149,8 +148,9 @@ public class CcReadSystemConfiguration {
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			logger.info("CcDisplayCandidateRules() Candidate Parameters "
+			logger.error("CcDisplayCandidateRules() Candidate Parameters File error: "
 					+ e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 
@@ -289,8 +289,9 @@ public class CcReadSystemConfiguration {
 				return false;
 			}
 
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {		
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 
@@ -303,7 +304,7 @@ public class CcReadSystemConfiguration {
 	 */
 
 	public boolean verifyParameter(String configurationParameter, int checkParam) {
-		// Check all
+		// Check all parameters
 		if (checkParam == 0) {
 			logger.info("verifyParameter() checking all params in file");
 			if (initParams.contains(configurationParameter)) {
@@ -311,7 +312,7 @@ public class CcReadSystemConfiguration {
 						+ configurationParameter);
 			} 
 			else if (generalParams.contains(configurationParameter)) {
-
+				
 			} 
 			else if (fileParams.contains(configurationParameter)) {
 			
@@ -365,6 +366,7 @@ public class CcReadSystemConfiguration {
 		String[] paramType;
 		
 		if (Mode == 1) { // File mode
+			
 			for (String param : systemParameters) {
 				paramType = param.split(DELIMITER);
 				if (fileParams.contains(paramType[0].toString())) {
@@ -378,6 +380,7 @@ public class CcReadSystemConfiguration {
 				return true;
 			}
 		} else if (Mode == 2) { // DB mode
+			
 			for (String param : systemParameters) {
 				paramType = param.split(DELIMITER);
 				if (dbParams.contains(paramType[0].toString())) {
@@ -403,7 +406,9 @@ public class CcReadSystemConfiguration {
 			
 			
 		} else if (Mode == 3) {
+			
 			return true;
+			
 		} else {
 			logger.info("Invalid Mode");
 			return false;
