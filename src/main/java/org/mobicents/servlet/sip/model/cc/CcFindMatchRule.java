@@ -12,24 +12,28 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 
 /**
- * Return sipURI after parsing rule priority Algorithm: Find userURI, domainURI
- * and portURI Count Rules Match priority Order by priority If REGEX and _DNS_
- * select rule and return unmodified sipURI else if REGEX and not _DNS_ select
- * rule: parse rule Domain and Port parse SIP URI Domain and Port replace URI
- * Domain with rule Domain if URI Port if rule Port not empty replace URI port
- * with rule Port else (rule Port empty) attach original port to SIP URI port
+ * Return sipURI after parsing rule priority Algorithm: 
+ * Find userURI, domainURI and portURI
+ * Count Rules Match priority Order by priority 
+ * If REGEX and _DNS_ select rule and return unmodified sipURI 
+ * else if REGEX and not _DNS_ select rule: 
+ * 
+ * Parse rule Domain and Port parse SIP URI Domain and Port replace URI Domain with rule Domain 
+ * if URI Port and if rule Port not empty replace URI port with rule Port 
+ * else (rule Port empty) attach original port to SIP URI port
  * 
  */
 
 @SuppressWarnings("unused")
 public class CcFindMatchRule {
 
+	private static Logger logger = Logger.getLogger(CcFindMatchRule.class);
 	private Map<Object, String> rulesMatched = new HashMap<Object, String>();
 	private CcRule[] ruleArray = null;
 	private String originalURI[];
 	private String resultSipURI;
 	private CcUtils utilObj = new CcUtils();
-	private static Logger logger = Logger.getLogger(CcFindMatchRule.class);
+
 
 	/**
 	 * Constructor

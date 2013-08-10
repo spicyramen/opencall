@@ -6,10 +6,10 @@ import org.mobicents.servlet.sip.model.cc.CcReadSystemConfiguration;
 
 
 
-public class CcProcessor {
+public class CcCallProcessor {
 
 	private String INIT_FILE = "";
-	private CcInitConfigSrv readConfigRules = new CcInitConfigSrv();
+	private CcInitConfigSrv processConfigurationRules = new CcInitConfigSrv();
 	private boolean isStarted;
 		
 	
@@ -20,10 +20,10 @@ public class CcProcessor {
 	
 
 	private static Logger logger = Logger
-			.getLogger(CcProcessor.class);
+			.getLogger(CcCallProcessor.class);
 	
 	
-	public CcProcessor( String initFile) {
+	public CcCallProcessor( String initFile) {
 		logger.info("SipEngine() initializing...");
 		INIT_FILE = initFile;
 	}
@@ -40,8 +40,8 @@ public class CcProcessor {
 		readInitParameters.CcInitSystemConfiguration(); 				
 		
 		try {
-			readConfigRules.initializeConfiguration(readInitParameters.getSystemMode(),readInitParameters.getConnection());
-			if (readConfigRules.isStarted()) {
+			processConfigurationRules.initializeConfiguration(readInitParameters.getSystemMode(),readInitParameters.getConnection());
+			if (processConfigurationRules.isStarted()) {
 				isStarted=true;
 			} else {
 				isStarted=false;
@@ -57,13 +57,13 @@ public class CcProcessor {
 		
 	}
 	
-	public String processDigitsDialed (String sipUri) {
-			return readConfigRules.digitsDialed(sipUri);
+	public String processCallInformation (String callingNumber,String calledNumber,String redirectNumber) {
+			return processConfigurationRules.processNewCallInformationCc(callingNumber,calledNumber,redirectNumber);
 	
 	}
 	
 	public String getRuleTransport () {
-		return readConfigRules.getRuleTransport();
+		return processConfigurationRules.getRuleTransport();
 	}
 
 }

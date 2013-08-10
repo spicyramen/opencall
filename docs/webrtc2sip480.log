@@ -1,0 +1,587 @@
+root@ip-172-31-32-194:/etc/webrtc2sip/log# /usr/sbin/webrtc2sip > webrt2sip.log
+*INFO: transport = tcp://*:5060
+*INFO: transport = ws://*:5062
+*INFO: enable-rtp-symetric = yes
+*INFO: enable-100rel = yes
+*INFO: enable-media-coder = yes
+*INFO: enable-videojb = yes
+*INFO: video-size-pref = 720p
+*INFO: rtp-buffsize = 65535
+*INFO: avpf-tail-length = [100-400]
+*INFO: srtp-mode = optional
+*INFO: srtp-type = sdes;dtls
+*INFO: dtmf-type = rfc4733
+*INFO: codecs = opus;pcma;pcmu;gsm;vp8;h264-bp;h264-mp;h263;h263+
+*INFO: 'opus' codec enabled but not supported
+*INFO: codec-opus-maxrates = 48000;48000
+*INFO: nameserver = 172.31.0.2
+*INFO: Stack running in SERVER mode
+*INFO: tsk_timer_manager_start
+*INFO: Timer manager run()::enter
+*INFO: TIMER MANAGER -- START
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=5
+*INFO: Socket added[SIP transport]: fd=5, tail.count=1
+*INFO: master fd=3
+*INFO: Socket added[SIP transport]: fd=3, tail.count=2
+*INFO: tnet_transport_prepare()
+*INFO: pipeR fd=7
+*INFO: Socket added[SIP transport]: fd=7, tail.count=1
+*INFO: master fd=4
+*INFO: Socket added[SIP transport]: fd=4, tail.count=2
+*INFO: SIP STACK -- START
+*INFO: Transport::run() - enter
+*INFO: Transport::run() - enter
+*INFO: SIP STACK::run -- START
+*INFO: Starting [SIP transport] server with IP {172.31.32.194} on port {5062} using fd {4} with type {64}...
+*INFO: Starting [SIP transport] server with IP {172.31.32.194} on port {5060} using fd {3} with type {8}...
+*INFO: ioctlt(4), len=0 returned zero or failed
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- FD_ACCEPT(fd=9)
+*INFO: Socket added[SIP transport]: fd=9, tail.count=3
+*INFO: WebSocket Peer accepted/connected with fd = 9
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- TNET_POLLOUT
+*INFO: WebSocket Peer accepted/connected with fd = 9
+*INFO: *** Stream Peer destroyed ***
+*INFO: WebSocket handshake message: GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Host: ec2-54-213-119-23.us-west-2.compute.amazonaws.com:5062
+Origin: http://sipml5.org
+Sec-WebSocket-Protocol: sip
+Pragma: no-cache
+Cache-Control: no-cache
+Sec-WebSocket-Key: 28y2rY2S0WzRogocRe24Fw==
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Extensions: x-webkit-deflate-frame
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1578.3 Safari/537.36
+Cookie: __gads=ID=7451b26d279f8031:T=1368903289:S=ALNI_MbyN8VBjvbkE6RFmWI8YC85sJKZ6Q
+
+
+*INFO: Receiving SIP o/ WebSocket message: REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=gu8l9sSBOTLyslemSAwT
+To: "WebRTC client"<sip:+14082186576@attlabs.com>
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;transport=ws>;expires=200;click2call=no;+g.oma.sip-im;+audio;language="en,fr"
+Call-ID: 4565e982-2899-bda4-b57d-d5e433867020
+CSeq: 42762 REGISTER
+Content-Length: 0
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+Organization: Doubango Telecom
+Supported: path
+
+
+*INFO: State machine: tsip_transac_nict_Started_2_Trying_X_send
+*INFO: 
+
+SEND: REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=gu8l9sSBOTLyslemSAwT
+To: "WebRTC client"<sip:+14082186576@attlabs.com>
+Contact: "WebRTC client"<sip:+14082186576@172.31.32.194:5060;rtcweb-breaker=yes;transport=tcp;ws-src-ip=50.156.118.130;ws-src-port=50541;ws-src-proto=ws>;expires=200;click2call=no;+g.oma.sip-im;+audio;language="en,fr"
+Call-ID: 4565e982-2899-bda4-b57d-d5e433867020
+CSeq: 42762 REGISTER
+Content-Length: 0
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+Organization: Doubango Telecom
+Supported: path
+Via: SIP/2.0/TCP 50.156.118.130:50541;rport;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73;ws-hacked=WS
+
+
+
+
+*INFO: Cannot find peer with remote IP/Port=172.31.46.56/5060, connecting to the destination...
+**WARN: function: "tnet_sockfd_connectto()" 
+file: "src/tnet_utils.c" 
+line: "1612" 
+MSG: TNET_ERROR_WOULDBLOCK/TNET_ERROR_ISCONN/TNET_ERROR_INPROGRESS/TNET_ERROR_EAGAIN  ==> use tnet_sockfd_waitUntilWritable.
+*INFO: Socket added[SIP transport]: fd=10, tail.count=3
+*INFO: Socket added (external call) 10
+*INFO: Data send requested but peer not connected yet...saving data
+*INFO: PipeR event = 1
+*INFO: NETWORK EVENT FOR SERVER [SIP transport] -- TNET_POLLOUT
+*INFO: Stream Peer accepted/connected - 10
+*INFO: 
+
+RECV:SIP/2.0 200 OK
+To: "WebRTC client" <sip:+14082186576@attlabs.com>;tag=36873096_06d8ad6a_30eead52-af00-4e64-9639-fda3c6e0e2e6
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73;rport=41304;received=172.31.32.194
+Via: SIP/2.0/TCP 50.156.118.130:50541;rport;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73;ws-hacked=WS
+CSeq: 42762 REGISTER
+Call-ID: 4565e982-2899-bda4-b57d-d5e433867020
+From: "WebRTC client" <sip:+14082186576@attlabs.com>;tag=gu8l9sSBOTLyslemSAwT
+Content-Length: 0
+
+
+
+
+*INFO: State machine: tsip_transac_nict_Trying_2_Completed_X_200_to_699
+*INFO: No all data in the WS buffer
+*INFO: Receiving SIP o/ WebSocket message: INVITE sip:XXXXXXXX@myfakedomain.com SIP/2.0
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+To: <sip:XXXXXXXX@myfakedomain.com>
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;click2call=no;transport=ws>;impi=%2B14082186575;ha1=6bac5c78db407f29243556b8e7798edf;+g.oma.sip-im;+sip.ice;language="en,fr"
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+CSeq: 48810 INVITE
+Content-Type: application/sdp
+Content-Length: 3063
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+Organization: Doubango Telecom
+
+v=0
+o=- 5138663374484655000 2 IN IP4 127.0.0.1
+s=Doubango Telecom - chrome
+t=0 0
+a=group:BUNDLE audio video
+a=msid-semantic: WMS B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU
+m=audio 65300 RTP/SAVPF 111 103 104 0 8 107 106 105 13 126
+c=IN IP4 50.156.118.130
+a=rtcp:65300 IN IP4 50.156.118.130
+a=candidate:1064188286 1 udp 2113937151 110.10.0.144 65300 typ host generation 0
+a=candidate:1064188286 2 udp 2113937151 110.10.0.144 65300 typ host generation 0
+a=candidate:3380494506 1 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+a=candidate:3380494506 2 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+a=candidate:1911408014 1 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=candidate:1911408014 2 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=ice-ufrag:QIfq5vp3hxzjxDg7
+a=ice-pwd:hW/CWzNYNOdukLV8ZH752AdG
+a=ice-options:google-ice
+a=mid:audio
+a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=sendrecv
+a=rtcp-mux
+a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:fKSbo1aMGtWq/rOdp8aqovDkiDj46Dm1CpaZg35L
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10
+a=rtpmap:103 ISAC/16000
+a=rtpmap:104 ISAC/32000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=rtpmap:107 CN/48000
+a=rtpmap:106 CN/32000
+a=rtpmap:105 CN/16000
+a=rtpmap:13 CN/8000
+a=rtpmap:126 telephone-event/8000
+a=maxptime:60
+a=ssrc:1065073934 cname:3QUPfszxbENutPq5
+a=ssrc:1065073934 msid:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUa0
+a=ssrc:1065073934 mslabel:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU
+a=ssrc:1065073934 label:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUa0
+m=video 65300 RTP/SAVPF 100 116 117
+c=IN IP4 50.156.118.130
+a=rtcp:65300 IN IP4 50.156.118.130
+a=candidate:1064188286 1 udp 2113937151 110.10.0.144 65300 typ host generation 0
+a=candidate:1064188286 2 udp 2113937151 110.10.0.144 65300 typ host generation 0
+a=candidate:3380494506 1 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+a=candidate:3380494506 2 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+a=candidate:1911408014 1 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=candidate:1911408014 2 tcp 1509957375 110.10.0.144 0 typ host generation 0
+a=ice-ufrag:QIfq5vp3hxzjxDg7
+a=ice-pwd:hW/CWzNYNOdukLV8ZH752AdG
+a=ice-options:google-ice
+a=mid:video
+a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
+a=extmap:3 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
+a=sendrecv
+a=rtcp-mux
+a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:fKSbo1aMGtWq/rOdp8aqovDkiDj46Dm1CpaZg35L
+a=rtpmap:100 VP8/90000
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack
+a=rtcp-fb:100 goog-remb
+a=rtpmap:116 red/90000
+a=rtpmap:117 ulpfec/90000
+a=ssrc:3277481251 cname:3QUPfszxbENutPq5
+a=ssrc:3277481251 msid:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUv0
+a=ssrc:3277481251 mslabel:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU
+a=ssrc:3277481251 label:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUv0
+
+*INFO: State machine: tsip_transac_ist_Started_2_Proceeding_X_INVITE
+*INFO: Add call-id = 'bc025900-2212-2cdf-3e97-5624a5a10403' to peer with local fd = 9
+*INFO: State machine: x0500_Current_2_Current_X_iINVITE
+*INFO: tnet_ice_ctx_set_remote_candidates
+*INFO: tnet_ice_ctx_set_remote_candidates
+*INFO: tsk_timer_manager_start
+*INFO: tsk_timer_manager_start
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: Timer manager run()::enter
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:49182]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:58820]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: Timer manager run()::enter
+*INFO: TIMER MANAGER -- START
+*INFO: TIMER MANAGER -- START
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: FVYtFEKl9 1 udp 2130706431 172.31.32.194 49182 typ host
+*INFO: Candidate: FVYtFEKl9 2 udp 2130706430 172.31.32.194 49183 typ host
+*INFO: Candidate: srflxFVYt 1 udp 1694498815 54.213.119.23 49182 typ srflx raddr 172.31.32.194 rport 49182
+*INFO: Candidate: srflxFVYt 2 udp 1694498814 54.213.119.23 49183 typ srflx raddr 172.31.32.194 rport 49183
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: State machine: ICE_GatheringComplet_2_ConnChecking_X_ConnCheck
+*INFO: ICE Pair: [FVYtFEKl9 1 172.31.32.194 49182] -> [1064188286 1 110.10.0.144 65300]
+*INFO: ICE Pair: [FVYtFEKl9 1 172.31.32.194 49182] -> [3380494506 1 50.156.118.130 65300]
+*INFO: ICE Pair: [FVYtFEKl9 2 172.31.32.194 49183] -> [1064188286 2 110.10.0.144 65300]
+*INFO: ICE Pair: [FVYtFEKl9 2 172.31.32.194 49183] -> [3380494506 2 50.156.118.130 65300]
+*INFO: ICE Pair: [srflxFVYt 1 54.213.119.23 49182] -> [1064188286 1 110.10.0.144 65300]
+*INFO: ICE Pair: [srflxFVYt 1 54.213.119.23 49182] -> [3380494506 1 50.156.118.130 65300]
+*INFO: ICE Pair: [srflxFVYt 2 54.213.119.23 49183] -> [1064188286 2 110.10.0.144 65300]
+*INFO: ICE Pair: [srflxFVYt 2 54.213.119.23 49183] -> [3380494506 2 50.156.118.130 65300]
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: rktd9HGHK 1 udp 2130706431 172.31.32.194 58820 typ host
+*INFO: Candidate: rktd9HGHK 2 udp 2130706430 172.31.32.194 58821 typ host
+*INFO: Candidate: srflxrktd 1 udp 1694498815 54.213.119.23 58820 typ srflx raddr 172.31.32.194 rport 58820
+*INFO: Candidate: srflxrktd 2 udp 1694498814 54.213.119.23 58821 typ srflx raddr 172.31.32.194 rport 58821
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: tnet_ice_ctx_set_remote_candidates
+*INFO: tnet_ice_ctx_set_remote_candidates
+**WARN: function: "tnet_ice_ctx_set_remote_candidates()" 
+file: "src/ice/tnet_ice_ctx.c" 
+line: "502" 
+MSG: Adding Remote ICE candidates after pairs building
+*INFO: is_ro_provisional_final_matching=0,
+is_ro_media_lines_changed=0,
+is_ro_network_info_changed=0,
+is_ro_loopback_address=0,
+is_media_type_changed=0
+
+*INFO: tdav_consumer_audio_init()
+*INFO: Create SpeexDSP jitter buffer
+*INFO: Video 'zero-artifacts' option = no
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+*INFO: Remote SSRC = 1065073934
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+*INFO: Remote SSRC = 3277481251
+*INFO: State machine: s0000_Started_2_Ringing_X_iINVITE
+*INFO: State machine: tsip_transac_ist_Proceeding_2_Proceeding_X_1xx
+*INFO: State machine: x0500_Current_2_Current_X_oINVITE
+*INFO: tsk_timer_manager_start
+*INFO: tsk_timer_manager_start
+*INFO: State machine: ICE_GatheringComplet_2_ConnChecking_X_ConnCheck
+*INFO: ICE Pair: [rktd9HGHK 1 172.31.32.194 58820] -> [1064188286 1 110.10.0.144 65300]
+*INFO: ICE Pair: [rktd9HGHK 1 172.31.32.194 58820] -> [3380494506 1 50.156.118.130 65300]
+*INFO: ICE Pair: [rktd9HGHK 2 172.31.32.194 58821] -> [1064188286 2 110.10.0.144 65300]
+*INFO: ICE Pair: [rktd9HGHK 2 172.31.32.194 58821] -> [3380494506 2 50.156.118.130 65300]
+*INFO: ICE Pair: [srflxrktd 1 54.213.119.23 58820] -> [1064188286 1 110.10.0.144 65300]
+*INFO: ICE Pair: [srflxrktd 1 54.213.119.23 58820] -> [3380494506 1 50.156.118.130 65300]
+*INFO: ICE Pair: [srflxrktd 2 54.213.119.23 58821] -> [1064188286 2 110.10.0.144 65300]
+*INFO: ICE Pair: [srflxrktd 2 54.213.119.23 58821] -> [3380494506 2 50.156.118.130 65300]
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: Timer manager run()::enter
+*INFO: ICE CTX::run -- START
+*INFO: State machine: ICE_Started_2_GatheringHostCandidates_X_GatherHostCandidates
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:38552]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: RTP/RTCP manager[Begin]: Trying to bind to random ports [172.31.32.194:52360]
+*INFO: RTP/RTCP manager[End]: Trying to bind to random ports
+*INFO: local ip address = 172.31.32.194
+*INFO: State machine: ICE_GatheringHostCandidates_2_GatheringHostCandidatesDone_X_Success
+*INFO: ICE callback: Gathering host candidates succeed
+*INFO: State machine: ICE_GatheringHostCandidatesDone_2_GatheringReflexiveCandidates_X_GatherReflexiveCandidates
+*INFO: Timer manager run()::enter
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: TIMER MANAGER -- START
+*INFO: TIMER MANAGER -- START
+*INFO: ICE reflexive candidates gathering ...0,500000
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: h41k6W2zg 1 udp 2130706431 172.31.32.194 38552 typ host
+*INFO: Candidate: h41k6W2zg 2 udp 2130706430 172.31.32.194 38553 typ host
+*INFO: Candidate: srflxh41k 1 udp 1694498815 54.213.119.23 38552 typ srflx raddr 172.31.32.194 rport 38552
+*INFO: Candidate: srflxh41k 2 udp 1694498814 54.213.119.23 38553 typ srflx raddr 172.31.32.194 rport 38553
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: srflx_addr_count_added=2, srflx_addr_count_skipped=0
+*INFO: Candidate: pAJd8VmT6 1 udp 2130706431 172.31.32.194 52360 typ host
+*INFO: Candidate: pAJd8VmT6 2 udp 2130706430 172.31.32.194 52361 typ host
+*INFO: Candidate: srflxpAJd 1 udp 1694498815 54.213.119.23 52360 typ srflx raddr 172.31.32.194 rport 52360
+*INFO: Candidate: srflxpAJd 2 udp 1694498814 54.213.119.23 52361 typ srflx raddr 172.31.32.194 rport 52361
+*INFO: State machine: ICE_fsm_GatheringReflexiveCandidates_2_GatheringReflexiveCandidatesDone_X_Success
+*INFO: State machine: ICE_Any_2_GatheringCompleted_X_GatheringComplet
+*INFO: ICE callback: Gathering candidates completed
+*INFO: State machine: c0000_Started_2_Outgoing_X_oINVITE
+*INFO: tdav_consumer_audio_init()
+*INFO: Create SpeexDSP jitter buffer
+*INFO: Video 'zero-artifacts' option = no
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+**WARN: function: "tdav_session_av_prepare()" 
+file: "src/tdav_session_av.c" 
+line: "415" 
+MSG: DTLS-SRTP requested but not certificate provided, disabling this option :(
+*INFO: ICE enabled on RTP manager
+*INFO: 
+
+SEND: INVITE sip:XXXXXXXX@myfakedomain.com SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK922839836;rport
+From: <sip:+14082186576@attlabs.com>;tag=507994929
+To: <sip:XXXXXXXX@myfakedomain.com>
+Contact: <sip:+14082186576@172.31.32.194:5060;ws-src-ip=50.156.118.130;ws-src-port=50541;ws-src-proto=ws;transport=tcp>
+Call-ID: d2018fab-f89b-2ff4-3035-9db5acf9fbbe
+CSeq: 659893775 INVITE
+Content-Type: application/sdp
+Content-Length: 2715
+Max-Forwards: 70
+User-Agent: webrtc2sip Media Server 2.5.0
+Supported: 100rel
+
+v=0
+o=doubango 1983 678901 IN IP4 (null)
+s=-
+c=IN IP4 (null)
+t=0 0
+a=tcap:1 RTP/SAVPF RTP/SAVP RTP/AVPF
+m=audio 52360 RTP/AVP 8 0 3 101
+c=IN IP4 172.31.32.194
+a=ptime:20
+a=minptime:20
+a=maxptime:20
+a=silenceSupp:off - - - -
+a=rtpmap:8 PCMA/8000/1
+a=rtpmap:0 PCMU/8000/1
+a=rtpmap:3 GSM/8000/1
+a=rtpmap:101 telephone-event/8000/1
+a=fmtp:101 0-16
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:70hnm0R8wesBGcop7/VLwttARxEioePDT/Yn4Zl8
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:cJHqLljLDF87wLoy5JvL5K2Wl5PpjeJTyzrggy9v
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:1734331981 cname:0c9f5ceb9e80ef06885cf931e393a9f3
+a=ssrc:1734331981 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:1734331981 label:doubango@audio
+a=ice-ufrag:j5YXxGWSLPg9rke
+a=ice-pwd:o1tNmik6bPB8NIIPWt8D6
+a=candidate:pAJd8VmT6 1 udp 2130706431 172.31.32.194 52360 typ host
+a=candidate:pAJd8VmT6 2 udp 2130706430 172.31.32.194 52361 typ host
+a=candidate:srflxpAJd 1 udp 1694498815 54.213.119.23 52360 typ srflx raddr 172.31.32.194 rport 52360
+a=candidate:srflxpAJd 2 udp 1694498814 54.213.119.23 52361 typ srflx raddr 172.31.32.194 rport 52361
+m=video 38552 RTP/AVP 100 104 105 34 103
+c=IN IP4 172.31.32.194
+a=rtcp-fb:* nack pli
+a=rtcp-fb:* ccm fir
+a=rtpmap:100 VP8/90000
+a=imageattr:100 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=rtpmap:104 H264/90000
+a=imageattr:104 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:104 profile-level-id=42001f; packetization-mode=1
+a=rtpmap:105 H264/90000
+a=imageattr:105 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:105 profile-level-id=4d001f; packetization-mode=1
+a=rtpmap:34 H263/90000
+a=fmtp:34 4CIF=2;CIF=2;QCIF=2;SQCIF=2
+a=rtpmap:103 H263-1998/90000
+a=fmtp:103 4CIF=2;CIF=2;QCIF=2;SQCIF=2
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:0YmBdxCPKgm6CMUNuXspYs9TWacObzgQGNydUNAl
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:w0dmIfDXXGms5+A/skXqMtMvQIHxGyCygQkJ+Bn5
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:522032064 cname:6c5bd07804f01c8bc27c6eb8576b539e
+a=ssrc:522032064 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:522032064 label:doubango@video
+a=ice-ufrag:GiUECkFEUcoItKg
+a=ice-pwd:a9RkWK7lOKZAU5uEIIojD
+a=candidate:h41k6W2zg 1 udp 2130706431 172.31.32.194 38552 typ host
+a=candidate:h41k6W2zg 2 udp 2130706430 172.31.32.194 38553 typ host
+a=candidate:srflxh41k 1 udp 1694498815 54.213.119.23 38552 typ srflx raddr 172.31.32.194 rport 38552
+a=candidate:srflxh41k 2 udp 1694498814 54.213.119.23 38553 typ srflx raddr 172.31.32.194 rport 38553
+
+
+
+*INFO: Add call-id = 'd2018fab-f89b-2ff4-3035-9db5acf9fbbe' to peer with local fd = 10
+*INFO: 
+
+RECV:SIP/2.0 100 Trying
+To: <sip:XXXXXXXX@myfakedomain.com>
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK922839836;rport=41304;received=172.31.32.194
+CSeq: 659893775 INVITE
+Call-ID: d2018fab-f89b-2ff4-3035-9db5acf9fbbe
+From: <sip:+14082186576@attlabs.com>;tag=507994929
+Content-Length: 0
+
+
+
+
+*INFO: State machine: x0000_Any_2_Any_X_i1xx
+*INFO: 
+
+RECV:SIP/2.0 480 Temporarily Unavailable
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=80139486_700d280e_e1b3e760-7922-4ec2-8f1c-5fad7bc380c9
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK922839836;rport=41304;received=172.31.32.194
+CSeq: 659893775 INVITE
+Call-ID: d2018fab-f89b-2ff4-3035-9db5acf9fbbe
+From: <sip:+14082186576@attlabs.com>;tag=507994929
+Contact: <sip:172.31.46.56:5060;transport=tcp>
+Content-Length: 0
+
+
+
+
+***ERROR: function: "tsip_transport_layer_send()" 
+file: "src/transports/tsip_transport_layer.c" 
+line: "1009" 
+MSG: Failed to find valid transport
+*INFO: State machine: Exec function failed. Moving to terminal state.
+*INFO: === ICT terminated ===
+*INFO: State machine: No matching state found.
+*INFO: *** ICT destroyed ***
+*INFO: Receiving SIP o/ WebSocket message: CANCEL sip:XXXXXXXX@myfakedomain.com SIP/2.0
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+To: <sip:XXXXXXXX@myfakedomain.com>
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+CSeq: 48810 CANCEL
+Content-Length: 0
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+Max-Forwards: 70
+
+
+*INFO: State machine: s0000_Ringing_2_Terminated_X_iCANCEL
+*INFO: State machine: tsip_transac_ist_Proceeding_2_Completed_X_300_to_699
+*INFO: === INVITE Dialog terminated ===
+*INFO: State machine: tsip_transac_ist_Any_2_Terminated_X_cancel
+*INFO: === IST terminated ===
+*INFO: *** IST destroyed ***
+*INFO: Timer manager run()::exit
+*INFO: TIMER MANAGER -- STOP
+*INFO: ICE CTX::run -- STOP
+*INFO: Timer manager run()::exit
+*INFO: TIMER MANAGER -- STOP
+*INFO: ICE CTX::run -- STOP
+*INFO: [Stream] Removed call-id = 'bc025900-2212-2cdf-3e97-5624a5a10403' from peer with local fd = 9
+*INFO: [Transport] Removed call-id = 'bc025900-2212-2cdf-3e97-5624a5a10403' from transport with type = 64
+*INFO: [Transport Layer] Removed call-id = 'bc025900-2212-2cdf-3e97-5624a5a10403' from transport layer
+*INFO: *** INVITE Dialog destroyed ***
+*INFO: Receiving SIP o/ WebSocket message: ACK sip:XXXXXXXX@myfakedomain.com SIP/2.0
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=1729300438
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+CSeq: 48810 ACK
+Content-Length: 0
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+Max-Forwards: 70
+
+
+*INFO: State machine: tsip_transac_nict_Started_2_Trying_X_send
+*INFO: 
+
+SEND: ACK sip:XXXXXXXX@myfakedomain.com SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;rport
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=1729300438
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+CSeq: 48810 ACK
+Content-Length: 0
+Max-Forwards: 70
+Via: SIP/2.0/TCP 50.156.118.130:50541;rport;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;ws-hacked=WS
+
+
+
+
+*INFO: State machine: c0000_Outgoing_2_Cancelling_X_oCANCEL
+*INFO: State machine: tsip_transac_nict_Started_2_Trying_X_send
+*INFO: 
+
+SEND: CANCEL sip:XXXXXXXX@myfakedomain.com SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK922839836;rport
+From: <sip:+14082186576@attlabs.com>;tag=507994929
+To: <sip:XXXXXXXX@myfakedomain.com>
+Call-ID: d2018fab-f89b-2ff4-3035-9db5acf9fbbe
+CSeq: 659893775 CANCEL
+Content-Length: 0
+Max-Forwards: 70
+
+
+
+
+*INFO: MPPeer object destroyed
+*INFO: MPSipSessionAV object destroyed
+*INFO: MPSipSession object destroyed
+*INFO: MPSipSessionAV object destroyed
+*INFO: *** tdav_session_audio_t destroyed ***
+*INFO: MPProxyPluginConsumerAudio object destroyed
+*INFO: MPProxyPluginProducerAudio object destroyed
+*INFO: *** RTP manager destroyed ***
+*INFO: *** Audio session destroyed ***
+*INFO: *** tdav_session_video_t destroyed ***
+*INFO: tdav_session_video_stop
+*INFO: MPProxyPluginConsumerVideo object destroyed
+*INFO: twrap_producer_proxy_video_dtor()
+*INFO: MPProxyPluginProducerVideo object destroyed
+*INFO: ~ProxyVideoProducer
+*INFO: *** RTP manager destroyed ***
+*INFO: tdav_codec_h264_common_deinit
+*INFO: tdav_codec_h264_common_deinit
+*INFO: *** tdav_codec_vp8_dtor destroyed ***
+*INFO: *** Video session destroyed ***
+*INFO: *** SIP Session destroyed ***
+*INFO: MPSipSession object destroyed
+*INFO: 
+
+RECV:SIP/2.0 200 Canceling
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=6194335
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK922839836;rport=41304;received=172.31.32.194
+CSeq: 659893775 CANCEL
+Call-ID: d2018fab-f89b-2ff4-3035-9db5acf9fbbe
+From: <sip:+14082186576@attlabs.com>;tag=507994929
+Content-Length: 0
+
+
+
+
+*INFO: State machine: tsip_transac_nict_Trying_2_Completed_X_200_to_699
+*INFO: State machine: c0000_Cancelling_2_Cancelling_X_i2xx
+*INFO: State machine: tsip_transac_nict_Completed_2_Terminated_X_timerK
+*INFO: === NICT terminated ===
+*INFO: *** NICT destroyed ***
+

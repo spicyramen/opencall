@@ -12,9 +12,9 @@ public class CcDigitAnalysisEngine {
 
 	private static Logger logger = Logger
 			.getLogger(CcDigitAnalysisEngine.class);
-	//private Map<Object, String> systemTransformRules = new HashMap<Object, String>();
+	private Map<Object, String> systemTransformRules = new HashMap<Object, String>();
 	private Map<Object, String> systemCallRules = new HashMap<Object, String>();
-	private Map<Object, String> potentialMatchRules = new HashMap<Object, String>();
+	private Map<Object, String> potentialMatchCallRules = new HashMap<Object, String>();
 	private CcUtils utilObj = new CcUtils();
 	private static String DELIMITER = "@";
 	private static String SIP_PROTOCOL = "sip:";
@@ -50,7 +50,7 @@ public class CcDigitAnalysisEngine {
 	 * @return finalURI
 	 */
 	
-	public String getFinalURI() {
+	public String getSipCalledNumberURI() {
 		return finalURI;
 	}
 
@@ -61,18 +61,17 @@ public class CcDigitAnalysisEngine {
 	 * @param transformRules
 	 * @param callRules
 	 */
-	public CcDigitAnalysisEngine(Map<Object, String> transformRules,Map<Object, String> callRules) {
+	public CcDigitAnalysisEngine(Map<Object, String> transformRules,Map<Object, String> routeListsRules,Map<Object, String> callRules) {
 		logger.info("CcDigitAnalysisEngine() initializing...");
-		//systemTransformRules = transformRules;
+		
+		systemTransformRules = transformRules;
 		systemCallRules = callRules;	
 	}
 	
-	public CcDigitAnalysisEngine(Map<Object, String> callRules) {
-		logger.info("CcDigitAnalysisEngine() initializing...");
-		systemCallRules = callRules;
-	}
 	
 	public boolean isStarted() {
+		
+		// CallRules files is mandatory
 		if (systemCallRules != null)
 			return true;
 		else
@@ -81,19 +80,21 @@ public class CcDigitAnalysisEngine {
 
 	/**
 	 * Process SIP URI Invite Message from Opencall.java Main application
+	 * Intercept call and process Transform rules.
+	 * String callingNumber,String calledNumber,String redirectNumber
 	 * 
 	 */
 	
-	public boolean CcCallProcessSipMessage(String sipURI) {
+	public boolean CcCallProcessSipMessage(String callingNumber,String calledNumber,String redirectNumber) {
 		
-		logger.info("*************************** Parsing SIP URI " + "[" +
-		sipURI + "] " + "***************************");
+		logger.info("*************************** Parsing SIP URI. Called number: [" +
+				calledNumber + "] " + "***************************");
 
-		String[] resultURI = CcExtractURI(sipURI);
-		originalURI = sipURI;
+		String[] resultURI = CcExtractURI(calledNumber);
+		originalURI = calledNumber;
 
 		if (resultURI == null || resultURI[0] == null || resultURI[1] == null) {
-			logger.error("CcCallProcessMessage() Invalid SIP URI: " + sipURI);
+			logger.error("CcCallProcessMessage() Invalid SIP URI: " + calledNumber);
 			return false;
 		}
 
@@ -130,7 +131,7 @@ public class CcDigitAnalysisEngine {
 		domainURI = null;
 		portURI = null;
 
-		//logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
+		logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
 		if (sipURI.length() > SIPURI_LIMIT) {
 			logger.error("CcExtractURI() Error Parsing sipURI" + "[" + sipURI
 					+ "] Exceeded size: " + SIPURI_LIMIT);
@@ -237,7 +238,7 @@ public class CcDigitAnalysisEngine {
 	 * @param sipURI
 	 */
 
-	@SuppressWarnings({ "rawtypes", "unused", })
+	@SuppressWarnings({ "rawtypes"})
 	
 	private void CcProcessRules(String sipURI) {
 	
@@ -249,7 +250,6 @@ public class CcDigitAnalysisEngine {
 		while (systemRoutingRulesIt.hasNext()) 
 		{
 			Map.Entry mapa = (Map.Entry) systemRoutingRulesIt.next(); 	// key=value														
-			int key = (Integer) mapa.getKey(); 							// getKey is used to get key 											
 			String value = (String) mapa.getValue(); 					// getValue is used to get value
 														
 			if (CcProcessRulesCdcc(utilObj.getRuleValue(0, value), sipURI, value)) {
@@ -266,8 +266,8 @@ public class CcDigitAnalysisEngine {
 			logger.info("CcProcessRules() No Route pattern matches found");
 		}
 
-		logger.info("CcProcessRules() potentialMatchRules() cache cleaned");
-		potentialMatchRules.clear();
+		logger.info("CcProcessRules() potentialMatchCallRules() cache cleaned");
+		potentialMatchCallRules.clear();
 	}
 
 	/**
@@ -279,7 +279,11 @@ public class CcDigitAnalysisEngine {
 	private void CcSipInit(String sipURI) {
 
 		logger.info("CcSipInit() Processing Route Patterns Matches for [" + sipURI + "]");
-		Set<?> potentialSet = potentialMatchRules.entrySet();
+		
+		/**
+		 * 
+		 */
+		Set<?> potentialSet = potentialMatchCallRules.entrySet();
 		Iterator<?> it = potentialSet.iterator();
 		
 		while (it.hasNext()) {
@@ -299,11 +303,13 @@ public class CcDigitAnalysisEngine {
 
 	private void CcFindSipTrunk() {
 		
-		CcFindMatchRule finalSipURI = new CcFindMatchRule(CcExtractURI(originalURI), potentialMatchRules);
+		CcFindMatchRule finalSipURI = new CcFindMatchRule(CcExtractURI(originalURI), potentialMatchCallRules);
+		
 		logger.info("CcSipInit() Total rules processed: "
 				+ finalSipURI.getTotalRules());
 		
 		int ruleNumber = finalSipURI.CcProcessBestMatchAlgorithm(2);
+		
 		CcProcessFinalSipURI(originalURI,
 				utilObj.getRuleValue(0, CcExtractRuleParams(ruleNumber)));
 	}
@@ -465,7 +471,7 @@ public class CcDigitAnalysisEngine {
 	@SuppressWarnings("rawtypes")
 	private String CcExtractRuleParams(int rule) {
 	
-		Set<?> potentialSet = potentialMatchRules.entrySet();
+		Set<?> potentialSet = potentialMatchCallRules.entrySet();
 		Iterator<?> it = potentialSet.iterator();
 		
 		while (it.hasNext()) {	
@@ -530,9 +536,9 @@ public class CcDigitAnalysisEngine {
 		if (ruleType.equals("REGEX")) {
 			if (ruleString != null && !ruleString.isEmpty()) {
 				if (sipURI.matches(ruleString)) {
-					logger.info("CcProcessRulesRegexCdcc()  Digit analysis: potentialMatchRules=potentialMatchRulesExist: "
+					logger.info("CcProcessRulesRegexCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
 							+ sipURI + " in rule: " + value);
-					potentialMatchRules.put(
+					potentialMatchCallRules.put(
 							new Integer(Integer.parseInt(ruleNumber)), value);
 					return true;
 				}
@@ -600,9 +606,9 @@ public class CcDigitAnalysisEngine {
 					// + ruleString + " is valid!");
 					// We match only userURI portion
 					if (userURI.matches(ruleString) && !userURI.isEmpty()) {
-						logger.info("CcProcessRulesNumericCdcc()  Digit analysis: potentialMatchRules=potentialMatchRulesExist: "
+						logger.info("CcProcessRulesNumericCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
 								+ sipURI + " in rule: " + value);
-						potentialMatchRules.put(
+						potentialMatchCallRules.put(
 								new Integer(Integer.parseInt(ruleNumber)),
 								value);
 						return true;
@@ -662,9 +668,9 @@ public class CcDigitAnalysisEngine {
 					// + ruleString + " is valid!");
 					// We match only userURI portion
 					if (userURI.matches(newRuleString) && !userURI.isEmpty()) {
-						logger.info("CcProcessRulesWildCardCdcc()  Digit analysis: potentialMatchRules=potentialMatchRulesExist: "
+						logger.info("CcProcessRulesWildCardCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
 								+ sipURI + " in rule: " + value);
-						potentialMatchRules.put(
+						potentialMatchCallRules.put(
 								new Integer(Integer.parseInt(ruleNumber)),
 								value);
 						return true;
@@ -676,6 +682,5 @@ public class CcDigitAnalysisEngine {
 		return false;
 
 	}
-
 
 }

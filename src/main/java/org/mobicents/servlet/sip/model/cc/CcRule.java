@@ -15,9 +15,9 @@ class CcRule implements Comparable<CcRule> {
 	 * @param num
 	 * @param pri
 	 */
-	public CcRule(int num, int pri) {
+	public CcRule(int num, int priority) {
 		ruleNumber = num;
-		rulePriority = pri;
+		rulePriority = priority;
 	}
 
 	/**
@@ -29,9 +29,9 @@ class CcRule implements Comparable<CcRule> {
 	 * @param transport
 	 */
 
-	public CcRule(int num, int pri, String trunk, int port,String transport) {
+	public CcRule(int num, int priority, String trunk, int port,String transport) {
 		ruleNumber = num;
-		rulePriority = pri;
+		rulePriority = priority;
 		ruleTrunk = trunk;
 		rulePort = port;
 		ruleTransport = transport;

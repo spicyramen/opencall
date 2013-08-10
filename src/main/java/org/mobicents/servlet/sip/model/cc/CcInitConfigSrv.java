@@ -15,17 +15,24 @@ public class CcInitConfigSrv {
 	private static Logger logger = Logger.getLogger(CcInitConfigSrv.class);
 	private boolean isStarted = false;
 	private static String DELIMITER = "=";
-	private CcDigitAnalysisEngine DigitAnalysisModule = null;
-	private String finalURI = null;
+	private CcDigitAnalysisEngine DigitAnalysisEngine = null;
+	private String finalCalledNumberSipURI = null;
 
-	/**
-	 * Constructor Type 0 = Undefined 1 = Local File 2 = DB 3 = Local String 4 =
-	 * Other
-	 */
 
 	public CcInitConfigSrv() {
 
 	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+
+	public boolean isStarted() {
+		return isStarted;
+	}
+
 
 	/**
 	 * Initialize configuration based on type, read routing rules.
@@ -36,19 +43,68 @@ public class CcInitConfigSrv {
 	 * @throws Exception
 	 */
 
+	
 	public void initializeConfiguration(int Type, ArrayList<String> connectionInfo) throws Exception {
 
-		// We create a new Object to Read information.
-		// CcSystemConfigurationEngine will parse the Rules
+		/**
+		 * Type 1 = Local File 2 = DB 3 = Built-in		 
+		 * 
+		 */
 		
-		CcSystemConfigurationEngine initConfigModule = new CcSystemConfigurationEngine(Type, connectionInfo);
+		CcSystemConfigurationEngine validateRulesConfiguration = new CcSystemConfigurationEngine(Type, connectionInfo);
 
+		/**
+		 * Call Processing Algorithm:
+		 * 
+		 * Process files in the following order: CALLTRANSFORMS ROUTELIST CALLRULES 
+		 * 
+		 * Initialize CcStartCallTransformEngine
+		 * Validate CALLTRANSFORMS files
+		 * Insert valid CALLTRANSFORMS in Engine. Object CcCallTransforms Array []
+		 * 
+		 * Initialize CcStartRouteListEngine
+		 * Validate ROUTELIST rules in file
+		 * Insert valid ROUTELIST rules in Engine. Object CCRouteList Array [IPADDRESS:PORT:TRANSPORT]
+		 * Store ROUTELIST rules in Array, obtain info from Engine.
+		 * 
+		 * Initialize CcStartCallRulesEngine
+		 * Validate CALLRULES files
+		 * Import ROUTELISTS rules
+		 * If CALLRULES contains a ROUTELIST (Not valid IP, not valid HOSTNAME), create LinkedList from CALLRULE to ROUTELIST reference
+		 * Insert valid CALLRULES in Engine.
+		 * 
+		 * For Incoming SIP request:
+		 * 		Obtain CALLING, CALLED and REDIRECT number in Main Application for each SIP Request
+		 * 		Pass call Information to DA Engine digitDialed function (will become ProcessCallInfo), 3 parameters (CALLING,CALLED,REDIRECT).
+		 * 		Match CALLTRANSFORMS rules
+		 * 			If Block and rule enabled, REJECT CALL, return. (BlackList feature)
+		 * 
+		 * 			Find Rule definition.
+		 * 			Enter CallTransformation module:
+		 * 
+		 * 				If Match is CALLEDNUMBER, change SIP URI.  Process CallRules based on CALLED Number
+		 * 				If Match is CALLINGNUMBER, enable CALLINGNUMBER number flag. Process CallRules based on CALLED Number
+		 * 				If Match is REDIRECT, enable REDIRECT number flag. Process CallRules based on CALLED Number
+		 * 				
+		 * 			Process CALLRULES, match RULE, if ROUTELIST, process URI for each ROUTELIST member
+		 * 					populate ROUTELIST Array with candidate URIs		
+		 * 			Initialize SIP and Transport TIMERS
+		 * 			Process SIP URI for each ROUTELIST candidate URI
+		 * 			Send SIP Request	
+		 * 
+		 * 
+		 * 
+		 */
+		
+		
 		if (Type == 1) {
+			
 			String CALLRULES = "";
 			String CALLTRANSFORMS = "";
 			String ROUTELIST = "";
 			
 			String[] paramType;
+			
 			for (String fileParam : connectionInfo) {
 				paramType = fileParam.split(DELIMITER);
 				if (paramType[0].toString().equals("CALLRULES")) {
@@ -65,20 +121,56 @@ public class CcInitConfigSrv {
 				}
 			}
 
-			if (initConfigModule.CcStartCallRulesEngine(CALLRULES)) {
 			
-				// Obtain valid rules from File or DB
-				DigitAnalysisModule = new CcDigitAnalysisEngine(initConfigModule.CcGetRules());
-				if (DigitAnalysisModule.isStarted()) {
-					isStarted = true;
-				} else {
-					isStarted = false;
-					logger.error("Error InitializeConfiguration.CcStartFileEngine() failed to start.");
-				}
+			/**
+			 * Start Call Transforms file validation
+			 */
+			if (validateRulesConfiguration.CcStartCallTransformsEngine(CALLTRANSFORMS)) {
+				logger.info("Starting CcStartCallTransformsEngine...");
+				
 			} else {
-				logger.error("Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
+				logger.error("CcStartCallTransformsEngine() Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
 				isStarted = false;
 			}
+			
+			/**
+			 * Start RouteList file validation
+			 */
+			if (validateRulesConfiguration.CcStartRouteListEngine(ROUTELIST)) {
+				logger.info("Starting CcStartRouteListEngine...");
+				
+			} else {
+				logger.error("CcStartRouteListEngine() Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
+				isStarted = false;
+			}
+			
+			
+			/**
+			 * Start Call Rules file validation
+			 */
+			if (validateRulesConfiguration.CcStartCallRulesEngine(CALLRULES)) {
+				logger.info("Starting CcStartCallRulesEngine...");
+				
+			} else {
+				logger.error("CcStartCallRulesEngine() Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
+				isStarted = false;
+			}
+			
+			
+			/**
+			 * Obtain Valid Call Rules from File or DB and Initialize Digit Analisys Engine
+			 */
+			
+			DigitAnalysisEngine = new CcDigitAnalysisEngine(validateRulesConfiguration.CcGetTransformRules(),validateRulesConfiguration.CcGetRouteListsRules(),validateRulesConfiguration.CcGetCallRules());
+			
+			if (DigitAnalysisEngine.isStarted()) {
+				isStarted = true;
+			} 
+			else {
+				isStarted = false;
+				logger.fatal("Error InitializeConfiguration.CcStartFileEngine() failed to start.");
+			}
+			
 		}
 
 		else if (Type == 2) {
@@ -139,11 +231,12 @@ public class CcInitConfigSrv {
 
 			}
 
-			if (initConfigModule.CcStartDbEngine(DBTYPE, DBHOSTNAME, DBPORT,
+			if (validateRulesConfiguration.CcStartDbEngine(DBTYPE, DBHOSTNAME, DBPORT,
 					DBNAME, DBUSERNAME, DBPASSWORD)) {
-				DigitAnalysisModule = new CcDigitAnalysisEngine(
-						initConfigModule.CcGetDbRules());
-				if (DigitAnalysisModule.isStarted()) {
+				
+				DigitAnalysisEngine = new CcDigitAnalysisEngine(validateRulesConfiguration.CcGetTransformRules(),validateRulesConfiguration.CcGetRouteListsRules(),validateRulesConfiguration.CcGetCallRules());
+				
+				if (DigitAnalysisEngine.isStarted()) {
 					isStarted = true;
 				} else {
 					isStarted = false;
@@ -155,6 +248,10 @@ public class CcInitConfigSrv {
 			}
 
 		} else if (Type == 3) {
+			/**
+			 * Built-in rules
+			 * 1. DNS
+			 */
 			// TODO in a future
 		} else {
 			logger.error("Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
@@ -170,10 +267,11 @@ public class CcInitConfigSrv {
 	 * @return
 	 */
 
-	public String digitsDialed(String sipURI) {
-		if (DigitAnalysisModule.CcCallProcessSipMessage(sipURI)) {
-			finalURI = DigitAnalysisModule.getFinalURI();
-			return finalURI;
+	public String processNewCallInformationCc(String callingNumber,String calledNumber,String redirectNumber) {
+		
+		if (DigitAnalysisEngine.CcCallProcessSipMessage(callingNumber,calledNumber,redirectNumber)) {
+			finalCalledNumberSipURI = DigitAnalysisEngine.getSipCalledNumberURI();
+			return finalCalledNumberSipURI;
 		} else {
 			return null;
 		}
@@ -184,16 +282,7 @@ public class CcInitConfigSrv {
 	 * @return Transport defined in Call Rules
 	 */
 	public String getRuleTransport() {
-		return DigitAnalysisModule.getTransportURI();
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-
-	public boolean isStarted() {
-		return isStarted;
+		return DigitAnalysisEngine.getTransportURI();
 	}
 
 }

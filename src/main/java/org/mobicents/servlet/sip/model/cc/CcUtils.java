@@ -8,8 +8,9 @@ import org.apache.log4j.Logger;
 
 public class CcUtils {
 
-	private static int TOKEN_COUNT = 5;
-	private static int TOKEN_MAX = 7;
+	private static int RULE_TOKEN_COUNT = 5;
+	private static int RULE_TOKEN_MAX = 7;
+	private static int TRANSFORM_TOKEN_COUNT   = 7;
 	private static int START_PORT = 1;
 	private static int END_PORT = 65535;
 	private static int PRIORITY_LOWER = 1;
@@ -29,21 +30,21 @@ public class CcUtils {
 			return null;
 		}
 			
-		if (iToken < 0 || iToken > TOKEN_MAX) {
+		if (iToken < 0 || iToken > RULE_TOKEN_MAX) {
 			logger.warn("getRuleValue() Processing Tokens: " + iToken + " invalid index!");
 			return null;
 		}
 			
 
 		routeValue = routeValue.replaceAll("\\(\"|\"\\)", "\"");
-		String[] Tokens = new String[TOKEN_MAX + 1];
+		String[] Tokens = new String[RULE_TOKEN_MAX + 1];
 
 		//logger.info("getRuleValue() Find Token: [" + iToken + "] Rule Content: " + routeValue);
 		if (!routeValue.contains("\\(\"") && !routeValue.contains("\"\\)")) {
 			// logger.info("getRuleValue() Processing Tokens: " + routeValue);
 			StringTokenizer st = new StringTokenizer(routeValue, ",");
-			if (st.countTokens() >= TOKEN_COUNT
-					&& st.countTokens() <= TOKEN_MAX) {
+			if (st.countTokens() >= RULE_TOKEN_COUNT
+					&& st.countTokens() <= RULE_TOKEN_MAX) {
 				// logger.info("getRuleValue() Processing Tokens: (" +
 				// st.countTokens() + ")");
 				int tokenIndex = 1;
@@ -65,6 +66,7 @@ public class CcUtils {
 							Tokens[tokenIndex] = token;
 
 						} catch (NumberFormatException e) {
+							e.printStackTrace();
 							logger.info("getRuleValue() Invalid rule Number Value");
 							return null;
 						}
@@ -83,6 +85,7 @@ public class CcUtils {
 							} else
 								logger.error("getRuleValue() Invalid Priority Value");
 						} catch (NumberFormatException e) {
+							e.printStackTrace();
 							logger.error("getRuleValue() Invalid Priority Value");
 							return null;
 						}
@@ -172,6 +175,132 @@ public class CcUtils {
 		return Tokens;
 	}
 
+	public String[] getTransformValue(int iToken, String transformValue) {
+		// 0 returns all values from Rule
+
+		if (transformValue.isEmpty()) {
+			logger.warn("getTransformValue() Processing Tokens: " + transformValue + " is empty!");
+			return null;
+		}
+			
+		if (iToken < 0 || iToken > TRANSFORM_TOKEN_COUNT) {
+			logger.warn("getTransformValue() Processing Tokens: " + iToken + " invalid index!");
+			return null;
+		}
+		
+		// Replace ( and ) with "
+		transformValue = transformValue.replaceAll("\\(\"|\"\\)", "\"");
+		String[] Tokens = new String[TRANSFORM_TOKEN_COUNT + 1];
+
+		//logger.info("getTransformValue() Find Token: [" + iToken + "] Rule Content: " + routeValue);
+		if (!transformValue.contains("\\(\"") && !transformValue.contains("\"\\)")) {
+			// logger.info("getTransformValue() Processing Tokens: " + routeValue);
+			StringTokenizer st = new StringTokenizer(transformValue, ",");
+			if (st.countTokens() == TRANSFORM_TOKEN_COUNT) {
+				
+				// logger.info("getTransformValue() Processing Tokens: (" +
+				// st.countTokens() + ")");
+				
+				int tokenIndex = 1;
+				
+				while (st.hasMoreElements()) {
+					String token = st.nextElement().toString();
+					token = token.replaceAll("\"", "");
+					
+					if ((tokenIndex == 1 && tokenIndex == iToken)
+							|| (tokenIndex == 1 && iToken == 0)) { // RULE NUMBER
+																	
+						try {
+							Integer.parseInt(token);
+							// logger.info("getRuleValue() Token [" + tokenIndex
+							// + "]: " + Integer.parseInt(token));
+							Tokens[tokenIndex] = token;
+
+						} catch (NumberFormatException e) {
+							logger.error("getTransformValue() Invalid rule Number Value");
+							return null;
+						}
+					}
+					if ((tokenIndex == 2 && tokenIndex == iToken)
+							|| (tokenIndex == 2 && iToken == 0)) { // ENABLED
+
+						if (token.matches("TRUE") || token.matches("FALSE")) 
+						{
+							// logger.info("getRuleValue() Token [" + tokenIndex
+							// + "]: " + token);
+							Tokens[tokenIndex] = token;
+						} else {
+							logger.error("getTransformValue() Invalid Type Value");
+							return null;
+						}
+					}
+					if ((tokenIndex == 3 && tokenIndex == iToken)
+							|| (tokenIndex == 3 && iToken == 0)) { // TYPE
+
+						if (token.matches("REGEX") || token.matches("NUMERIC")
+								|| token.matches("WILDCARD")) {
+							// logger.info("getRuleValue() Token [" + tokenIndex
+							// + "]: " + token);
+							Tokens[tokenIndex] = token;
+						} else {
+							logger.error("getTransformValue() Invalid Type Value");
+							return null;
+						}
+					}
+					
+					if ((tokenIndex == 4 && tokenIndex == iToken)
+							|| (tokenIndex == 4 && iToken == 0)) { // STRING
+						// logger.info("getRuleValue() Token [" + tokenIndex +
+						// "]: " + token);
+						Tokens[tokenIndex] = token;
+					}
+					
+					if ((tokenIndex == 5 && tokenIndex == iToken)
+							|| (tokenIndex == 4 && iToken == 0)) { // STRING
+						// logger.info("getRuleValue() Token [" + tokenIndex +
+						// "]: " + token);
+						Tokens[tokenIndex] = token;
+					}
+					
+					if ((tokenIndex == 6 && tokenIndex == iToken)
+							|| (tokenIndex == 6 && iToken == 0)) { // PORT or TRANSPORT
+						
+						if (token.matches("CALLED") || token.matches("CALLING") || token.matches("REDIRECT")) 
+						{
+							// logger.info("getRuleValue() Token [" + tokenIndex
+							// + "]: " + token);
+							Tokens[tokenIndex] = token;
+						} else {
+							logger.error("getTransformValue() Invalid Type Value");
+							return null;
+						}
+						
+					}
+					if ((tokenIndex == 7 && tokenIndex == iToken)
+							|| (tokenIndex == 7 && iToken == 0)) { // ENABLED
+
+						if (token.matches("TRUE") || token.matches("FALSE")) 
+						{
+							// logger.info("getRuleValue() Token [" + tokenIndex
+							// + "]: " + token);
+							Tokens[tokenIndex] = token;
+						} else {
+							logger.error("getTransformValue() Invalid Type Value");
+							return null;
+						}
+					}
+					
+					tokenIndex++;
+				}
+
+			} else {
+				logger.error("getTransformValue() Invalid Rule");
+				return null;
+			}
+		}
+
+		return Tokens;
+	}
 	/**
 	 * 
 	 * @param routeValue

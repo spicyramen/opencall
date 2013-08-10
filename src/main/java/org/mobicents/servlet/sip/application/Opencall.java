@@ -38,7 +38,8 @@ import javax.servlet.sip.SipServletResponse;
 import javax.servlet.sip.SipSession;
 import javax.servlet.sip.SipURI;
 import javax.servlet.sip.UAMode;
-import org.mobicents.servlet.sip.controller.CcProcessor;
+
+import org.mobicents.servlet.sip.controller.CcCallProcessor;
 import org.apache.log4j.Logger;
 
 /**
@@ -73,7 +74,7 @@ public class Opencall extends SipServlet {
 	private static final String VERSION = "1.1 Belador";
 	private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
 	B2buaHelper helper = null;
-	private CcProcessor openCallSipEngine =  null;
+	private CcCallProcessor openCallSipEngine =  null;
 
 	/** Creates a new instance of opencall */
 	public Opencall() {
@@ -95,7 +96,7 @@ public class Opencall extends SipServlet {
 				logger.info("OpenCall() sip servlet reading init parameters: " + INIT_FILE);
 				
 				try {
-					openCallSipEngine = new CcProcessor(INIT_FILE);
+					openCallSipEngine = new CcCallProcessor(INIT_FILE);
 					openCallSipEngine.startService();
 					if (openCallSipEngine.isStarted()) {
 						logger.info("OpenCall() Engine started succesfully.");
@@ -160,7 +161,19 @@ public class Opencall extends SipServlet {
 
 		if (request.isInitial()) {
 			
-			String finalSipUri = openCallSipEngine.processDigitsDialed(request.getTo().getURI().toString());
+			/**
+			 * 	Obtain SIP info:
+			 *  Obtain 3 parameters: CALLING, CALLED, REDIRECT NUMBER
+			 *  RFC 3261 	8.1.1.3 From field
+			 *  			8.1.1.1 Request-URI
+			 *  Process ROUTELIST 
+			 */
+	
+			
+			String finalSipUri = 
+					openCallSipEngine.processCallInformation(request.getFrom().getURI().toString(),request.getTo().getURI().toString(),"");
+			
+			
 			String finalTransport = openCallSipEngine.getRuleTransport();
 			
 			if (finalSipUri != null && finalSipUri.length() > 0) {
@@ -208,7 +221,9 @@ public class Opencall extends SipServlet {
 				 */
 				
 				try {
+					
 					inviteRequest.send();
+				
 				}
 				catch (Exception exc) {
 					
@@ -402,7 +417,7 @@ public class Opencall extends SipServlet {
 	protected void doErrorResponse(SipServletResponse sipServletResponse) throws ServletException, IOException {
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("Got : " + sipServletResponse.getStatus() + " "
+			logger.warn("Error response received got : " + sipServletResponse.getStatus() + " "
 					+ sipServletResponse.getReasonPhrase());
 		}
 

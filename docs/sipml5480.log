@@ -1,0 +1,458 @@
+ SIPml-api.js?svn=179:1
+State machine: tsip_dialog_register_InProgress_2_Connected_X_2xx SIPml-api.js?svn=179:1
+==session event = sent_request SIPml-api.js?svn=179:1
+__tsip_transport_ws_onclose SIPml-api.js?svn=179:1
+==stack event = stopped SIPml-api.js?svn=179:1
+State machine: tsip_dialog_register_Connected_2_InProgress_X_oRegister SIPml-api.js?svn=179:1
+Failed to find transport SIPml-api.js?svn=179:1
+==session event = sent_request SIPml-api.js?svn=179:1
+State machine: tsip_dialog_register_Any_2_Terminated_X_transportError SIPml-api.js?svn=179:1
+=== REGISTER Dialog terminated === SIPml-api.js?svn=179:1
+==session event = transport_error SIPml-api.js?svn=179:1
+==session event = terminated SIPml-api.js?svn=179:1
+The FSM is in the final state SIPml-api.js?svn=179:1
+s_websocket_server_url=ws://ec2-54-213-119-23.us-west-2.compute.amazonaws.com:5062 SIPml-api.js?svn=179:1
+s_sip_outboundproxy_url=tcp://ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060 SIPml-api.js?svn=179:1
+b_rtcweb_breaker_enabled=yes SIPml-api.js?svn=179:1
+b_click2call_enabled=no SIPml-api.js?svn=179:1
+b_early_ims=yes SIPml-api.js?svn=179:1
+b_enable_media_stream_cache=no SIPml-api.js?svn=179:1
+o_bandwidth={} SIPml-api.js?svn=179:1
+o_video_size={} SIPml-api.js?svn=179:1
+SIP stack start: proxy='ns313841.ovh.net:10062', realm='<sip:172.31.46.56>', impi='+14082186576', impu='"WebRTC client"<sip:+14082186576@attlabs.com>' SIPml-api.js?svn=179:1
+Connecting to 'ws://ec2-54-213-119-23.us-west-2.compute.amazonaws.com:5062' SIPml-api.js?svn=179:1
+==stack event = starting SIPml-api.js?svn=179:1
+__tsip_transport_ws_onopen SIPml-api.js?svn=179:1
+==stack event = started SIPml-api.js?svn=179:1
+State machine: tsip_dialog_register_Started_2_InProgress_X_oRegister SIPml-api.js?svn=179:1
+SEND: REGISTER sip:172.31.46.56 SIP/2.0
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73;rport
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=gu8l9sSBOTLyslemSAwT
+
+To: "WebRTC client"<sip:+14082186576@attlabs.com>
+
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;transport=ws>;expires=200;click2call=no;+g.oma.sip-im;+audio;language="en,fr"
+
+Call-ID: 4565e982-2899-bda4-b57d-d5e433867020
+
+CSeq: 42762 REGISTER
+
+Content-Length: 0
+
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+
+Max-Forwards: 70
+
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+
+Organization: Doubango Telecom
+
+Supported: path
+
+
+
+ SIPml-api.js?svn=179:1
+==session event = connecting SIPml-api.js?svn=179:1
+==session event = sent_request SIPml-api.js?svn=179:1
+__tsip_transport_ws_onmessage SIPml-api.js?svn=179:1
+recv=SIP/2.0 200 OK
+
+Via: SIP/2.0/TCP 172.31.32.194:5060;rport=41304;received=172.31.32.194;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=gu8l9sSBOTLyslemSAwT
+
+To: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=36873096_06d8ad6a_30eead52-af00-4e64-9639-fda3c6e0e2e6
+
+Call-ID: 4565e982-2899-bda4-b57d-d5e433867020
+
+CSeq: 42762 REGISTER
+
+Content-Length: 0
+
+Via: SIP/2.0/TCP 50.156.118.130:50541;rport;branch=z9hG4bKAqCx56EgzPSQFaBQ1TUV50dymfhHQB73;ws-hacked=WS
+
+
+
+ SIPml-api.js?svn=179:1
+State machine: tsip_dialog_register_InProgress_2_Connected_X_2xx SIPml-api.js?svn=179:1
+==session event = connected SIPml-api.js?svn=179:1
+State machine: c0000_Started_2_Outgoing_X_oINVITE SIPml-api.js?svn=179:1
+Video Contraints:{"mandatory":{},"optional":[]} SIPml-api.js?svn=179:1
+ICE servers:[{"url":"stun:stun.l.google.com:19302"},{"url":"stun:stun.counterpath.net:3478"},{"url":"stun:numb.viagenie.ca:3478"}] SIPml-api.js?svn=179:1
+==stack event = m_permission_requested SIPml-api.js?svn=179:1
+==session event = connecting SIPml-api.js?svn=179:1
+onGetUserMediaSuccess SIPml-api.js?svn=179:1
+createOffer SIPml-api.js?svn=179:1
+onCreateSdpSuccess SIPml-api.js?svn=179:1
+==stack event = m_permission_accepted SIPml-api.js?svn=179:1
+==session event = m_stream_video_local_added SIPml-api.js?svn=179:1
+==session event = m_stream_audio_local_added SIPml-api.js?svn=179:1
+onSetLocalDescriptionSuccess SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+onIceCandidate = undefined SIPml-api.js?svn=179:1
+ICE GATHERING COMPLETED! SIPml-api.js?svn=179:1
+onIceGatheringCompleted SIPml-api.js?svn=179:1
+SEND: INVITE sip:XXXXXXXX@myfakedomain.com SIP/2.0
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;rport
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+
+To: <sip:XXXXXXXX@myfakedomain.com>
+
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;click2call=no;transport=ws>;impi=%2B14082186575;ha1=6bac5c78db407f29243556b8e7798edf;+g.oma.sip-im;+sip.ice;language="en,fr"
+
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+
+CSeq: 48810 INVITE
+
+Content-Type: application/sdp
+
+Content-Length: 3063
+
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+
+Max-Forwards: 70
+
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+
+Organization: Doubango Telecom
+
+
+
+v=0
+
+o=- 5138663374484655000 2 IN IP4 127.0.0.1
+
+s=Doubango Telecom - chrome
+
+t=0 0
+
+a=group:BUNDLE audio video
+
+a=msid-semantic: WMS B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU
+
+m=audio 65300 RTP/SAVPF 111 103 104 0 8 107 106 105 13 126
+
+c=IN IP4 50.156.118.130
+
+a=rtcp:65300 IN IP4 50.156.118.130
+
+a=candidate:1064188286 1 udp 2113937151 110.10.0.144 65300 typ host generation 0
+
+a=candidate:1064188286 2 udp 2113937151 110.10.0.144 65300 typ host generation 0
+
+a=candidate:3380494506 1 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+
+a=candidate:3380494506 2 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+
+a=candidate:1911408014 1 tcp 1509957375 110.10.0.144 0 typ host generation 0
+
+a=candidate:1911408014 2 tcp 1509957375 110.10.0.144 0 typ host generation 0
+
+a=ice-ufrag:QIfq5vp3hxzjxDg7
+
+a=ice-pwd:hW/CWzNYNOdukLV8ZH752AdG
+
+a=ice-options:google-ice
+
+a=mid:audio
+
+a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+
+a=sendrecv
+
+a=rtcp-mux
+
+a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:fKSbo1aMGtWq/rOdp8aqovDkiDj46Dm1CpaZg35L
+
+a=rtpmap:111 opus/48000/2
+
+a=fmtp:111 minptime=10
+
+a=rtpmap:103 ISAC/16000
+
+a=rtpmap:104 ISAC/32000
+
+a=rtpmap:0 PCMU/8000
+
+a=rtpmap:8 PCMA/8000
+
+a=rtpmap:107 CN/48000
+
+a=rtpmap:106 CN/32000
+
+a=rtpmap:105 CN/16000
+
+a=rtpmap:13 CN/8000
+
+a=rtpmap:126 telephone-event/8000
+
+a=maxptime:60
+
+a=ssrc:1065073934 cname:3QUPfszxbENutPq5
+
+a=ssrc:1065073934 msid:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUa0
+
+a=ssrc:1065073934 mslabel:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU
+
+a=ssrc:1065073934 label:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUa0
+
+m=video 65300 RTP/SAVPF 100 116 117
+
+c=IN IP4 50.156.118.130
+
+a=rtcp:65300 IN IP4 50.156.118.130
+
+a=candidate:1064188286 1 udp 2113937151 110.10.0.144 65300 typ host generation 0
+
+a=candidate:1064188286 2 udp 2113937151 110.10.0.144 65300 typ host generation 0
+
+a=candidate:3380494506 1 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+
+a=candidate:3380494506 2 udp 1845501695 50.156.118.130 65300 typ srflx raddr 110.10.0.144 rport 65300 generation 0
+
+a=candidate:1911408014 1 tcp 1509957375 110.10.0.144 0 typ host generation 0
+
+a=candidate:1911408014 2 tcp 1509957375 110.10.0.144 0 typ host generation 0
+
+a=ice-ufrag:QIfq5vp3hxzjxDg7
+
+a=ice-pwd:hW/CWzNYNOdukLV8ZH752AdG
+
+a=ice-options:google-ice
+
+a=mid:video
+
+a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
+
+a=extmap:3 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
+
+a=sendrecv
+
+a=rtcp-mux
+
+a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:fKSbo1aMGtWq/rOdp8aqovDkiDj46Dm1CpaZg35L
+
+a=rtpmap:100 VP8/90000
+
+a=rtcp-fb:100 ccm fir
+
+a=rtcp-fb:100 nack
+
+a=rtcp-fb:100 goog-remb
+
+a=rtpmap:116 red/90000
+
+a=rtpmap:117 ulpfec/90000
+
+a=ssrc:3277481251 cname:3QUPfszxbENutPq5
+
+a=ssrc:3277481251 msid:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUv0
+
+a=ssrc:3277481251 mslabel:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhU
+
+a=ssrc:3277481251 label:B4ftwpEm3YviDpER9dGQYjFzuiztYmD1SNhUv0
+
+ SIPml-api.js?svn=179:1
+__tsip_transport_ws_onmessage SIPml-api.js?svn=179:1
+recv=SIP/2.0 100 Trying (sent from the Transaction Layer)
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;rport;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+
+To: <sip:XXXXXXXX@myfakedomain.com>
+
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+
+CSeq: 48810 INVITE
+
+Content-Length: 0
+
+
+
+ SIPml-api.js?svn=179:1
+State machine: x0000_Any_2_Any_X_i1xx SIPml-api.js?svn=179:1
+==session event = i_ao_request SIPml-api.js?svn=179:1
+__tsip_transport_ws_onmessage SIPml-api.js?svn=179:1
+recv=SIP/2.0 180 Ringing
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;rport;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=1729300438
+
+Contact: <sip:22223333@172.31.32.194:5062;transport=ws;ws-src-ip=50.156.118.130;ws-src-port=50541;ws-src-proto=ws>
+
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+
+CSeq: 48810 INVITE
+
+Content-Length: 0
+
+Allow: ACK,BYE,CANCEL,INVITE,MESSAGE,NOTIFY,OPTIONS,PRACK,REFER,UPDATE
+
+
+
+ SIPml-api.js?svn=179:1
+State machine: x0000_Any_2_Any_X_i1xx SIPml-api.js?svn=179:1
+==session event = i_ao_request SIPml-api.js?svn=179:1
+==session event = m_stream_video_local_added SIPml-api.js?svn=179:1
+==session event = m_stream_audio_local_added SIPml-api.js?svn=179:1
+State machine: c0000_Outgoing_2_Cancelling_X_oCANCEL SIPml-api.js?svn=179:1
+PeerConnection::stop() SIPml-api.js?svn=179:1
+SEND: CANCEL sip:XXXXXXXX@myfakedomain.com SIP/2.0
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;rport
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+
+To: <sip:XXXXXXXX@myfakedomain.com>
+
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+
+CSeq: 48810 CANCEL
+
+Content-Length: 0
+
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+
+Max-Forwards: 70
+
+
+
+ SIPml-api.js?svn=179:1
+==session event = terminating SIPml-api.js?svn=179:1
+__tsip_transport_ws_onmessage SIPml-api.js?svn=179:1
+recv=SIP/2.0 200 OK
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;rport;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=1729300438
+
+Contact: <sip:22223333@172.31.32.194:5062;transport=ws;ws-src-ip=50.156.118.130;ws-src-port=50541;ws-src-proto=ws>
+
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+
+CSeq: 48810 CANCEL
+
+Content-Length: 0
+
+
+
+ SIPml-api.js?svn=179:1
+State machine: c0000_Cancelling_2_Cancelling_X_i2xx SIPml-api.js?svn=179:1
+__tsip_transport_ws_onmessage SIPml-api.js?svn=179:1
+recv=SIP/2.0 487 Request Cancelled
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;rport;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=1729300438
+
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+
+CSeq: 48810 INVITE
+
+Content-Length: 0
+
+Reason: text="Request Cancelled";cause=487;text="Request Cancelled"
+
+
+
+ SIPml-api.js?svn=179:1
+SEND: ACK sip:XXXXXXXX@myfakedomain.com SIP/2.0
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKs3L5LsVQoodga38cV8oMFnQJWPZZkpko;rport
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=RJKKilZiGhKLLzUolD4q
+
+To: <sip:XXXXXXXX@myfakedomain.com>;tag=1729300438
+
+Call-ID: bc025900-2212-2cdf-3e97-5624a5a10403
+
+CSeq: 48810 ACK
+
+Content-Length: 0
+
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+
+Max-Forwards: 70
+
+
+
+ SIPml-api.js?svn=179:1
+State machine: c0000_Cancelling_2_Terminated_X_i300_to_699 SIPml-api.js?svn=179:1
+=== INVITE Dialog terminated === SIPml-api.js?svn=179:1
+PeerConnection::stop() SIPml-api.js?svn=179:1
+==session event = terminated SIPml-api.js?svn=179:1
+2
+The FSM is in the final state SIPml-api.js?svn=179:1
+State machine: tsip_dialog_register_Connected_2_InProgress_X_oRegister SIPml-api.js?svn=179:1
+SEND: REGISTER sip:172.31.46.56 SIP/2.0
+
+Via: SIP/2.0/WS df7jal23ls0d.invalid;branch=z9hG4bKvwGDnQWhiAio6TmZ1Wk5vaQ6p7L3Xs19;rport
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=gu8l9sSBOTLyslemSAwT
+
+To: "WebRTC client"<sip:+14082186576@attlabs.com>
+
+Contact: "WebRTC client"<sip:+14082186576@df7jal23ls0d.invalid;rtcweb-breaker=yes;transport=ws>;expires=200;click2call=no;+g.oma.sip-im;+audio;language="en,fr"
+
+Call-ID: 4565e982-2899-bda4-b57d-d5e433867020
+
+CSeq: 42763 REGISTER
+
+Content-Length: 0
+
+Route: <sip:ec2-54-213-122-112.us-west-2.compute.amazonaws.com:5060;lr;sipml5-outbound;transport=tcp>
+
+Max-Forwards: 70
+
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.06B
+
+Organization: Doubango Telecom
+
+
+
+ SIPml-api.js?svn=179:1
+==session event = sent_request SIPml-api.js?svn=179:1
+__tsip_transport_ws_onmessage SIPml-api.js?svn=179:1
+recv=SIP/2.0 200 OK
+
+Via: SIP/2.0/TCP 172.31.32.194:5060;rport=41304;received=172.31.32.194;branch=z9hG4bKvwGDnQWhiAio6TmZ1Wk5vaQ6p7L3Xs19
+
+From: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=gu8l9sSBOTLyslemSAwT
+
+To: "WebRTC client"<sip:+14082186576@attlabs.com>;tag=25335163_06d8ad6a_eaeb3f1f-bbe1-4e36-bad2-2a795b3ea737
+
+Call-ID: 4565e982-2899-bda4-b57d-d5e433867020
+
+CSeq: 42763 REGISTER
+
+Content-Length: 0
+
+Via: SIP/2.0/TCP 50.156.118.130:50541;rport;branch=z9hG4bKvwGDnQWhiAio6TmZ1Wk5vaQ6p7L3Xs19;ws-hacked=WS
+
+
+
+ SIPml-api.js?svn=179:1
+State machine: tsip_dialog_register_InProgress_2_Connected_X_2xx 
