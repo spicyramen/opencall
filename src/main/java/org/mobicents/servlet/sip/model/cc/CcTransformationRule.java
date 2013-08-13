@@ -31,7 +31,7 @@ class CcTransformationRule implements Comparable<CcTransformationRule> {
 	 * @param transport
 	 */
 
-	public CcTransformationRule(int num,boolean enabled,String type, String srcNumber, String dstNumber,String apply,boolean block) {
+	public CcTransformationRule(int num,boolean enabled,String type, String srcNumber, String dstNumber,String apply, boolean block) {
 		transformNumber = num;
 		transformEnabled = enabled;
 		transformType = type;

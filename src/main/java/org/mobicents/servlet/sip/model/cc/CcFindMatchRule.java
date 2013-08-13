@@ -50,6 +50,7 @@ public class CcFindMatchRule {
 				originalURI = sipURI;
 				ruleArray = new CcRule[rulesMatched.size()];
 			} catch (Exception e) {
+				e.printStackTrace();
 				rulesMatched = null;
 				originalURI = null;
 			}

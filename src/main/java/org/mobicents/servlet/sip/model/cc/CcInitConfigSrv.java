@@ -16,7 +16,7 @@ public class CcInitConfigSrv {
 	private boolean isStarted = false;
 	private static String DELIMITER = "=";
 	private CcDigitAnalysisEngine DigitAnalysisEngine = null;
-	private String finalCalledNumberSipURI = null;
+	private String finalCalledSipURI = null;
 
 
 	public CcInitConfigSrv() {
@@ -269,10 +269,18 @@ public class CcInitConfigSrv {
 
 	public String processNewCallInformationCc(String callingNumber,String calledNumber,String redirectNumber) {
 		
-		if (DigitAnalysisEngine.CcCallProcessSipMessage(callingNumber,calledNumber,redirectNumber)) {
-			finalCalledNumberSipURI = DigitAnalysisEngine.getSipCalledNumberURI();
-			return finalCalledNumberSipURI;
-		} else {
+		/**
+		 *  Process Initial SIP Message and verify if it matches Transformed rules
+		 */
+		DigitAnalysisEngine.CcDigitAnalysisReq(callingNumber,calledNumber,redirectNumber);
+			
+		if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedSipURI())) {
+			
+			finalCalledSipURI = DigitAnalysisEngine.getSipCalledNumberURI();
+			return finalCalledSipURI;
+		} 
+		else {
+			logger.error("processNewCallInformationCc() Unable to process SIP Message");
 			return null;
 		}
 	}

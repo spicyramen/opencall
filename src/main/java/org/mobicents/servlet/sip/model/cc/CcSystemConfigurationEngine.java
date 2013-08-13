@@ -797,15 +797,27 @@ public class CcSystemConfigurationEngine implements
 
 		String ruleNumber = null;
 		String ruleValues[] = null;
-			
+		String ruleEnabled = null;
 		
 		if (type == 1) {
-			ruleValues = utilObj.getTransformValue(0, ruleValue);
-			ruleNumber = ruleValues[1];
-			logger.info("CcDigitAnalisysEngineInit() Inserting TransformRule into DA engine. Rule Number ["
-					+ Integer.parseInt(ruleNumber) + "]");
+			ruleValues  = utilObj.getTransformValue(0, ruleValue);
+			ruleNumber  = ruleValues[1];
+			ruleEnabled = ruleValues[2];
 			
-			callTransformRules.put(new Integer(Integer.parseInt(ruleNumber)), ruleValue);
+			ruleEnabled = ruleEnabled.toUpperCase();
+			
+			if (ruleEnabled.matches("TRUE")) {
+				logger.info("CcDigitAnalisysEngineInit() Inserting TransformRule into DA engine. Rule Number ["
+						+ Integer.parseInt(ruleNumber) + "]");
+				
+				callTransformRules.put(new Integer(Integer.parseInt(ruleNumber)), ruleValue);
+			}
+			else {
+				logger.info("CcDigitAnalisysEngineInit() Rule Number ["
+						+ Integer.parseInt(ruleNumber) + "] is disabled");
+				
+			}
+			
 		}
 		else if (type == 2) {
 			logger.info("CcDigitAnalisysEngineInit() Inserting RouteList into DA engine. Rule Number ["

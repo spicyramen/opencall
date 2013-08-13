@@ -56,12 +56,18 @@ import org.apache.log4j.Logger;
  * 
  * 
  * 
- * Version 1.1  Belador
- *    Route Control
- *    DB, 
- *    File connection, 
- *    API,
+ * Version 1.1  Belador:
+ * 
+ * 	  Transport support
+ * 	  Transformations
+ *    Route Control via Route List
+ *    DB enhancements
+ *    File connection enhancements 
+ *    Twilio module (SIP to Twilio)
+ *    CDR
+ *    API
  *    Security module
+ *   
  */
  
 
