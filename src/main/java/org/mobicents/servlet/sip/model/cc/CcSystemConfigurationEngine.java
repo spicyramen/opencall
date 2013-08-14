@@ -848,7 +848,7 @@ public class CcSystemConfigurationEngine implements
 	 */
 
 	public Map<Object, String> CcGetTransformRules() throws InterruptedException {
-		logger.info("CcGetRules() Displaying Valid Transform Patterns");
+		logger.info("CcGetTransformRules() Displaying Valid Transform Patterns");
 		
 
 		Set<?> s = callTransformRules.entrySet();
@@ -859,13 +859,12 @@ public class CcSystemConfigurationEngine implements
 			Map.Entry mapa = (Map.Entry) it.next(); // getKey is used to get key
 			int key = (Integer) mapa.getKey(); // getValue is used to get value
 			String value = (String) mapa.getValue();
-		//	totalRules++;
-			logger.info("CcGetRules() [" + key + "]\t Value: " + value); // key=value
+			logger.info("CcGetTransformRules() [" + key + "]\t Value: " + value); // key=value
 																		
 		}
 
 		if (callTransformRules.size() == 0) {
-			logger.error("CcGetRules() No rules found!");
+			logger.error("CcGetTransformRules() No rules found!");
 		}
 
 		return callTransformRules;
@@ -879,7 +878,7 @@ public class CcSystemConfigurationEngine implements
 	 */
 
 	public Map<Object, String> CcGetRouteListsRules() throws InterruptedException {
-		logger.info("CcGetRules() Displaying Valid Route Lists Patterns");
+		logger.info("CcGetRouteListsRules() Displaying Valid Route Lists Patterns");
 		
 
 		Set<?> s = routeListRules.entrySet();
@@ -891,12 +890,12 @@ public class CcSystemConfigurationEngine implements
 			int key = (Integer) mapa.getKey(); // getValue is used to get value
 			String value = (String) mapa.getValue();
 		//	totalRules++;
-			logger.info("CcGetRules() [" + key + "]\t Value: " + value); // key=value
+			logger.info("CcGetRouteListsRules() [" + key + "]\t Value: " + value); // key=value
 																		
 		}
 
 		if (routeListRules.size() == 0) {
-			logger.error("CcGetRules() No rules found!");
+			logger.error("CcGetRouteListsRules() No rules found!");
 		}
 
 		return routeListRules;
@@ -909,7 +908,7 @@ public class CcSystemConfigurationEngine implements
 	 */
 
 	public Map<Object, String> CcGetCallRules() throws InterruptedException {
-		logger.info("CcGetRules() Displaying Valid Route Patterns");
+		logger.info("CcGetCallRules() Displaying Valid Route Patterns");
 		
 
 		Set<?> s = callRoutingRules.entrySet();
@@ -921,12 +920,12 @@ public class CcSystemConfigurationEngine implements
 			int key = (Integer) mapa.getKey(); // getValue is used to get value
 			String value = (String) mapa.getValue();
 		//	totalRules++;
-			logger.info("CcGetRules() [" + key + "]\t Value: " + value); // key=value
+			logger.info("CcGetCallRules() [" + key + "]\t Value: " + value); // key=value
 																		
 		}
 
 		if (callRoutingRules.size() == 0) {
-			logger.error("CcGetRules() No rules found!");
+			logger.error("CcGetCallRules() No rules found!");
 		}
 
 		return callRoutingRules;

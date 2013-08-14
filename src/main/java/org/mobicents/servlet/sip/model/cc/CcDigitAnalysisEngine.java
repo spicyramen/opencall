@@ -27,6 +27,8 @@ public class CcDigitAnalysisEngine {
 	
 	private String transformedSipURI = null;
 	private String originalSipURI = null;
+	private String originalCallingSipURI = null;
+	
 	private String userURI = null;
 	private String domainURI = null;
 	private String portURI = null;
@@ -34,6 +36,15 @@ public class CcDigitAnalysisEngine {
 	private String finalSipURI = null;
 
 	
+	public boolean isStarted() {
+		
+		// CallRules files is mandatory
+		if (systemCallRules != null)
+			return true;
+		else
+			return false;
+	}
+
 	/**
 	 * 
 	 * @return finalSipURI
@@ -57,6 +68,9 @@ public class CcDigitAnalysisEngine {
 	 * @return transportURI
 	 */
 	public String getTransportURI() {
+		
+		// No RouteLists implemented
+		
 		if (transportURI!=null) {
 			transportURI = transportURI.toLowerCase();
 			logger.info("Transport: " + transportURI);
@@ -81,17 +95,30 @@ public class CcDigitAnalysisEngine {
 		systemCallRules = callRules;	
 	}
 	
+	/**
+	 * 
+	 * @param callingNumber
+	 * @param calledNumber
+	 * @param redirectNumber
+	 */
+	
 	public void CcDigitAnalysisReq(String callingNumber,String calledNumber,String redirectNumber) {
 		logger.info("Digit Analysis: wait_DaReq");
 		
+		/**
+		 * Type: 	
+		 * 	1: Calling
+		 *  2: Called
+		 *  3: Redirect
+		 */
+		transformedSipURI = calledNumber;
+		originalCallingSipURI = callingNumber;
+		
 		if (systemTransformRules.size()!=0) {
 			
-			logger.info("*************************** CcDigitAnalysisReq Parsing SIP URI. Called number: [" +
-					calledNumber + "] " + "***************************");
-			
-			CcProcessNumber(callingNumber,1);
-			CcProcessNumber(calledNumber,2);
-			CcProcessNumber(redirectNumber,3);
+			CcProcessNumberTransformations(callingNumber,1);
+			CcProcessNumberTransformations(calledNumber,2);
+			CcProcessNumberTransformations(redirectNumber,3);
 			
 		} else {
 			transformedSipURI = calledNumber;
@@ -100,41 +127,51 @@ public class CcDigitAnalysisEngine {
 			
 	}
 	
-	private boolean CcProcessNumber(String number,int type) {
+	private boolean CcProcessNumberTransformations(String Uri,int type) {
 		
-		String[] resultURI = CcExtractURI(number);
-
-		if (resultURI == null || resultURI[0] == null || resultURI[1] == null) {
-			logger.error("CcProcessNumber() Invalid SIP URI: " + number);
+		
+		if (type==1) {
+			logger.info("*************************** CcProcessNumberTransformations Parsing SIP URI. Calling number: [" +
+					Uri + "] " + "***************************");
+		}
+		else if (type ==2) {
+			logger.info("*************************** CcProcessNumberTransformations Parsing SIP URI. Called number: [" +
+					Uri + "] " + "***************************");
+		}
+		else if (type ==3 ) {
+			logger.info("*************************** CcProcessNumberTransformations Parsing SIP URI. Redirect number: [" +
+					Uri + "] " + "***************************");
+		}
+		else {
 			return false;
 		}
 
+		String[] resultURI = CcExtractURI(Uri);	
+		
+		if (resultURI == null || resultURI[0] == null || resultURI[1] == null) {
+			logger.error("CcProcessNumberTransformations() Invalid SIP URI: " + Uri);
+			return false;
+		}
+		
 		if (resultURI[2] != null) {
 			/*user + domain + port*/
-			logger.info("CcProcessNumber() URI:\t" + SIP_PROTOCOL
+			logger.info("CcProcessNumberTransformations() URI:\t" + SIP_PROTOCOL
 					+ resultURI[0].toString() + "@" + resultURI[1].toString()
 					+ ":" + resultURI[2].toString());
-			CcDigitAnalysisTransformation(resultURI[0], resultURI[1], resultURI[2]);
+			CcDigitAnalysisTransformation(resultURI[0], resultURI[1], resultURI[2],type);
 			return true;
 			
 		} else {
 			/*user + domain*/
-			logger.info("CcProcessNumber() URI:\t" + SIP_PROTOCOL
+			logger.info("CcProcessNumberTransformations() URI:\t" + SIP_PROTOCOL
 					+ resultURI[0].toString() + "@" + resultURI[1].toString());
-			CcDigitAnalysisTransformation(resultURI[0], resultURI[1], "");
+			CcDigitAnalysisTransformation(resultURI[0], resultURI[1], "",type);
 			return true;
 		}
 		
 	}
 	
-	public boolean isStarted() {
-		
-		// CallRules files is mandatory
-		if (systemCallRules != null)
-			return true;
-		else
-			return false;
-	}
+	
 
 	/**
 	 * Process SIP URI Invite Message from Opencall.java Main application
@@ -145,12 +182,16 @@ public class CcDigitAnalysisEngine {
 	
 	public boolean CcCallProcessSipMessage(String calledNumber) {
 		
-		
-		logger.info("*************************** Parsing SIP URI. Called number: [" +
+		logger.info("Digit Analysis: getDaRes");
+		logger.info("*************************** CcCallProcessSipMessage Parsing SIP URI. Called number: [" +
 				calledNumber + "] " + "***************************");
 
+		if(calledNumber==null || calledNumber.isEmpty())
+			return false;
+		
 		String[] resultURI = CcExtractURI(calledNumber);
 		originalSipURI = calledNumber;
+		
 
 		if (resultURI == null || resultURI[0] == null || resultURI[1] == null) {
 			logger.error("CcCallProcessMessage() Invalid SIP URI: " + calledNumber);
@@ -190,7 +231,7 @@ public class CcDigitAnalysisEngine {
 		domainURI = null;
 		portURI = null;
 
-		logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
+		//logger.info("CcExtractURI Parsing sipURI " + "[" + sipURI + "] ");
 		if (sipURI.length() > SIPURI_LIMIT) {
 			logger.error("CcExtractURI() Error Parsing sipURI" + "[" + sipURI
 					+ "] Exceeded size: " + SIPURI_LIMIT);
@@ -292,20 +333,20 @@ public class CcDigitAnalysisEngine {
 		}
 	}
 
-	private void CcDigitAnalysisTransformation(String userURI, String domainURI, String portURI) {
+	private void CcDigitAnalysisTransformation(String userURI, String domainURI, String portURI,int type) {
 		
 		// No Port defined in SIP URI
 		if (portURI.equals("")) 
 		{
 			logger.info("CcTransformationDigitAnalysis() URI:\t" + SIP_PROTOCOL + userURI + "@"
 					+ domainURI);
-			CcProcessTransformRules(userURI + DELIMITER + domainURI);
+			CcProcessTransformRules(userURI + DELIMITER + domainURI,type);
 		} 
 		else 
 		{
 			logger.info("CcTransformationDigitAnalysis() URI:\t" + SIP_PROTOCOL + userURI + "@"
 					+ domainURI + ":" + portURI);
-			CcProcessTransformRules(userURI + DELIMITER + domainURI + ":" + portURI);
+			CcProcessTransformRules(userURI + DELIMITER + domainURI + ":" + portURI,type);
 		}
 	}
 
@@ -316,7 +357,6 @@ public class CcDigitAnalysisEngine {
 	 */
 
 	@SuppressWarnings({ "rawtypes"})
-	
 	private void CcProcessCallRules(String sipURI) {
 	
 		logger.info("CcProcessCallRules()  Displaying Potential Route Patterns matches");
@@ -357,9 +397,10 @@ public class CcDigitAnalysisEngine {
 	 */
 
 	@SuppressWarnings({ "rawtypes"})
-	private void CcProcessTransformRules(String sipURI) {
+	private void CcProcessTransformRules(String sipURI,int type) {
 		
-		logger.info("CcProcessTransformRules()  Displaying Potential Route Patterns matches");
+		logger.info("CcProcessTransformRules()  Displaying Potential Transform Patterns matches:");
+		
 		boolean foundRuleMatch = false;
 		Set<?> systemTransformRulesSet = systemTransformRules.entrySet();
 		Iterator<?> systemTransformRulesIt = systemTransformRulesSet.iterator();
@@ -382,7 +423,12 @@ public class CcDigitAnalysisEngine {
 			CcTransformInit(sipURI);
 
 		} else {
-			logger.info("CcProcessTransformRules() No Transform patterns matches found");
+			if(type==1)
+				logger.warn("CcProcessTransformRules() No Transform patterns matches found for type: CALLING " + originalCallingSipURI);
+			if(type==2)
+				logger.warn("CcProcessTransformRules() No Transform patterns matches found for type: CALLED " + originalSipURI );
+			if(type==3)
+				logger.warn("CcProcessTransformRules() No Transform patterns matches found for type: REDIRECT " + originalSipURI);		
 		}
 
 		logger.info("CcProcessTransformRules() potentialMatchCallRules() cache cleaned");
@@ -394,16 +440,12 @@ public class CcDigitAnalysisEngine {
 	 * @param sipURI
 	 */
 
-	@SuppressWarnings({ "rawtypes", "unused" })
 	private void CcTransformInit(String sipURI) {
 
 		logger.info("CcSipInit() Processing Transform Patterns Matches for [" + sipURI + "]");
 		
 		/**
-		 * 
-		 */
-		
-		Set<?> potentialSet = potentialMatchTransformRules.entrySet();
+		 * Set<?> potentialSet = potentialMatchTransformRules.entrySet();
 		Iterator<?> it = potentialSet.iterator();
 		
 		while (it.hasNext()) {
@@ -413,23 +455,39 @@ public class CcDigitAnalysisEngine {
 			String value = (String) mapa.getValue();
 
 		}
+		 */
 
-		CcFindSipTrunk();
+		CcFindTransformMatch();
 	}
 	
+
+	
+	private void CcFindTransformMatch() {
+		
+		CcFindMatchRule finalSipURI = new CcFindMatchRule(CcExtractURI(originalSipURI), potentialMatchCallRules);
+		
+		logger.info("CcSipInit() Total rules processed: "
+				+ finalSipURI.getTotalRules());
+		/**
+		 * Obtain matching rules by rule number
+		 */
+		int ruleNumber = finalSipURI.CcProcessBestMatchAlgorithm(2);
+		
+		CcProcessFinalSipURI(originalSipURI,
+				utilObj.getRuleValue(0, CcExtractRuleParams(ruleNumber)));
+	}
+
 	/**
 	 * 
 	 * @param sipURI
 	 */
 
-	@SuppressWarnings({ "rawtypes", "unused" })
 	private void CcSipInit(String sipURI) {
 
 		logger.info("CcSipInit() Processing Route Patterns Matches for [" + sipURI + "]");
 		
 		/**
-		 * 
-		 */
+		
 		Set<?> potentialSet = potentialMatchCallRules.entrySet();
 		Iterator<?> it = potentialSet.iterator();
 		
@@ -440,10 +498,11 @@ public class CcDigitAnalysisEngine {
 			String value = (String) mapa.getValue();
 
 		}
+		 */
+		
 
 		CcFindSipTrunk();
 	}
-
 	/**
 	 * 
 	 */
@@ -463,6 +522,8 @@ public class CcDigitAnalysisEngine {
 				utilObj.getRuleValue(0, CcExtractRuleParams(ruleNumber)));
 	}
 
+	
+	
 	
 	/**
 	 * Process SIP URI  based on Call Rules	
@@ -537,7 +598,10 @@ public class CcDigitAnalysisEngine {
 			 */
 			
 			if (ruleParams[6] != null && ruleParams[7] == null) {
-			
+				
+				/**
+				 * Port is defined
+				 */
 				if(utilObj.isPortOrTransport(ruleParams[6])==1) {
 					rulePort = ruleParams[6].toString();
 					portURI = rulePort;
@@ -577,17 +641,34 @@ public class CcDigitAnalysisEngine {
 			}
 		}
 
+		/**
+		 * Create Final SIP URI
+		 */
 		if (ruleParams[6] != null) {
+			
 			logger.info("CcProcessFinalSipURI Building New SIP URI ["
 					+ SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
 					+ portURI + "]");
+			
+			// ValidPort is defined
+			if (portURI!=null)
 			finalSipURI = SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
 					+ portURI;
+			// Transport is defined
+			else {
+				logger.info("CcProcessFinalSipURI Building New SIP URI ["
+						+ SIP_PROTOCOL + userURI + DELIMITER + domainURI  + "] Transport defined: " + transportURI);
+				finalSipURI = SIP_PROTOCOL + userURI + DELIMITER + domainURI;
+			}
+			
+		
+		
 		} 
 		else if (ruleParams[7] != null) {
 			logger.info("CcProcessFinalSipURI Building New SIP URI ["
 					+ SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
 					+ portURI + "] Transport defined: " + transportURI);
+			if (portURI!=null)
 			finalSipURI = SIP_PROTOCOL + userURI + DELIMITER + domainURI + ":"
 					+ portURI;
 		}
@@ -680,8 +761,7 @@ public class CcDigitAnalysisEngine {
 	private boolean CcProcessTransformRulesCdcc(String[] ruleValue, String sipURI,
 			String value) {
 
-		// logger.info("CcProcessRulesCdcc()  Searching Rules for SIP URI: " +
-		// "sip:" + sipURI);
+		logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
 		boolean foundRuleMatch = false;
 
 		if (ruleValue[3].equals("REGEX")) {
@@ -704,6 +784,9 @@ public class CcDigitAnalysisEngine {
 	
 
 	private boolean CcProcessTransformRulesRegexCdcc(String[] Tokens, String sipURI,String value) {
+		
+		logger.info("CcProcessTransformRulesRegexCdcc()  New Instance SIP URI: " +  "sip:" + sipURI);
+		
 		
 		if (Tokens == null) {
 			return false;

@@ -274,8 +274,11 @@ public class CcInitConfigSrv {
 		 */
 		DigitAnalysisEngine.CcDigitAnalysisReq(callingNumber,calledNumber,redirectNumber);
 			
+		/**
+		 * After processing Transformation rules, proceed to match Call Routing rules
+		 */
+		
 		if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedSipURI())) {
-			
 			finalCalledSipURI = DigitAnalysisEngine.getSipCalledNumberURI();
 			return finalCalledSipURI;
 		} 
