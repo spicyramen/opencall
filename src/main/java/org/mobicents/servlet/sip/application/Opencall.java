@@ -96,7 +96,8 @@ public class Opencall extends SipServlet {
 		logger.info("System Folder: " + CURRENT_DIRECTORY);
 		
 		super.init(servletConfig);
-		Thread initOpenCallService = new Thread(new Runnable() {
+		
+		Thread initializeMainServices = new Thread(new Runnable() {
 			
 			public void run() {
 				logger.info("OpenCall() sip servlet reading init parameters: " + INIT_FILE);
@@ -105,24 +106,25 @@ public class Opencall extends SipServlet {
 					openCallSipEngine = new CcCallProcessor(INIT_FILE);
 					openCallSipEngine.startService();
 					if (openCallSipEngine.isStarted()) {
-						logger.info("OpenCall() Engine started succesfully.");
+						logger.info("OpenCall() Engine started succesfully...");
 					} else {
-						logger.fatal("OpenCall() Engine unable to start.");
+						logger.fatal("OpenCall() Engine unable to start...");
 					}
 					
 				} catch (Exception e) {	
-					logger.fatal("OpenCall() Exception during system initialization");
+					logger.fatal("OpenCall() Exception during system initialization...");
 					e.printStackTrace();
 				}
 			}
 		});
 		
-		initOpenCallService.start();
+		initializeMainServices.start();
         
         try {
-        	initOpenCallService.join();
+        	initializeMainServices.join();
 		} catch (InterruptedException e) {
 			logger.fatal("OpenCall() Exception occured during system initialization" + e.getMessage());
+			e.printStackTrace();
 			
 		}
 		

@@ -80,7 +80,7 @@ class CcTransformationRule implements Comparable<CcTransformationRule> {
 
 	@Override
 	public String toString() {
-		return "rule id=" + this.transformNumber;
+		return "rule id=" + this.transformNumber + ", rule block=" + this.transformBlock;
 	}
 
 	public static Comparator<CcTransformationRule> RuleNumberComparator = new Comparator<CcTransformationRule>() {
