@@ -916,7 +916,7 @@ public class CcDigitAnalysisEngine {
 	private boolean CcProcessTransformRulesCdcc(String[] ruleValue, String sipURI,
 			String value) {
 
-		logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
+		//logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
 		boolean foundRuleMatch = false;
 
 		if (ruleValue[3].equals("REGEX")) {
@@ -937,12 +937,16 @@ public class CcDigitAnalysisEngine {
 
 	}
 	
-
+	/**
+	 * 
+	 * @param Tokens
+	 * @param sipURI
+	 * @param value
+	 * @return
+	 */
 	private boolean CcProcessTransformRulesRegexCdcc(String[] Tokens, String sipURI,String value) {
 		
-		//logger.info("CcProcessTransformRulesRegexCdcc()  |New Instance| SIP URI: " +  "sip:" + sipURI);
-		
-		
+		//logger.info("CcProcessTransformRulesRegexCdcc()  |New Instance| SIP URI: " +  "sip:" + sipURI);	
 		if (Tokens == null) {
 			return false;
 		}

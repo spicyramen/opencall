@@ -376,6 +376,7 @@ public class CcUtils {
 			else
 				return false;
 		} catch (UnknownHostException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -429,6 +430,8 @@ public class CcUtils {
 			validTransport.add("TLS");
 			validTransport.add("WS");
 			validTransport.add("WSS");
+			validTransport.add("TWILIO");
+			validTransport.add("GTALK");
 			
 			try {
 				transport = transport.toUpperCase();
