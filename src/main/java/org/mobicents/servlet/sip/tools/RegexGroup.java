@@ -9,9 +9,6 @@ public class RegexGroup {
  /**
   * group 1: index start: 15 index end: 29 offset: 16 elements: 8
 	group 2: index start: 35 index end: 37 offset: 4  elements: 2
-	private LinkedList<RegexGroup> Groups = new LinkedList<RegexGroup>();
-	
-		
   */
 	
 	private int indexStart = 0;
@@ -82,7 +79,7 @@ public class RegexGroup {
 			return;
 		}
 
-		System.out.println("processElements() groupId:" + groupId);
+		//System.out.println("processElements() groupId:" + groupId);
 		for (int i=0;i<regexGroupElements.size();i++) {		
 			if( i+1 < regexGroupElements.size()) {
 					if(regexGroupElements.get(i) == regexGroupElements.get(i+1) - digits.length()) {	
@@ -109,7 +106,7 @@ public class RegexGroup {
 		
 		setIndexStart(regexGroupElementsList.get(0));
 		setIndexEnd(regexGroupElementsList.get(regexGroupElementsList.size()-1));
-		setOffset((getIndexEnd() - getIndexStart())*2);
+		setOffset((getIndexEnd() - getIndexStart())+digits.length());
 		setElements(regexGroupElementsList.size());
 		
 }
