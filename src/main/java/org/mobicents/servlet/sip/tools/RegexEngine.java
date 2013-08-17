@@ -21,7 +21,8 @@ public class RegexEngine {
 	private String PATTERN;
 	private int[] FAILURE;
 	private int MATCHPOINT;
-	  
+	
+	
 	//private static Logger logger = Logger.getLogger(CcUtils.class);
 	
 	public RegexEngine() {
@@ -34,12 +35,12 @@ public class RegexEngine {
 	 * @param pattern
 	 */
 	
-	public void KMPMatch(String string, String pattern) {
+	public void KMPInit(String string, String pattern) {
 		
 		    this.REGEX = string;
 		    this.PATTERN = pattern;
 		    FAILURE = new int[pattern.length()];
-		    computeFAILURE();
+		    computeFailure();
 	}
 		      
 	public void setRegex(String regex) {
@@ -54,9 +55,14 @@ public class RegexEngine {
 		return MATCHPOINT;
 	}
 	  
-		  
-	private boolean match() {
-	// Tries to find an occurrence of the pattern in the string
+	
+	/**
+	 *  Tries to find an occurrence of the pattern in the string
+	 * @return
+	 */
+	
+	private boolean KMPmatch() {
+	
 		    
 		    int j = 0;
 		    if (REGEX.length() == 0) return false;
@@ -79,7 +85,7 @@ public class RegexEngine {
 	  * Computes the FAILURE function using a boot-strapping process,
       * where the pattern is matched against itself.
 	  */
-	private void computeFAILURE() {
+	private void computeFailure() {
 
 		    int j = 0;
 		    for (int i = 1; i < PATTERN.length(); i++) {
@@ -103,6 +109,7 @@ public class RegexEngine {
 	 * @param prototype
 	 * @return
 	 */
+	
 	private static String generateRegexpEngine(String prototype) {
 
 		StringBuilder stringBuilder = new StringBuilder();
@@ -158,15 +165,18 @@ public class RegexEngine {
 		} catch (PatternSyntaxException ex) {
 	    	ex.printStackTrace();
 	    	System.out.println("Syntax error in the regular expression");
+	    	return false;
 		} catch (IllegalArgumentException ex) {
 			ex.printStackTrace();
 			System.out.println("Syntax error in the replacement text (unescaped $ signs?)");
+			return false;
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
 			System.out.println("Non-existent backreference used the replacement text");
+			return false;
 		}
 				
-		System.out.println("validateRule() Valid Regex generated: " + regexPrototype);
+		//System.out.println("validateRule() Valid Regex generated: " + regexPrototype);
 		return true;
 			
 	}
@@ -177,14 +187,15 @@ public class RegexEngine {
 	 * @return
 	 */
 	
-	private static String simplifyregexGroup(String regexPrototype) {
+	private static String generateRegexGroup(String regexPrototype) {
 		
 		String digits = "\\d";
-		
+	    List<RegexGroup> regexGroupObjectList = new ArrayList<RegexGroup>();
 		List<Integer> regexGroupElementsList = new ArrayList<Integer>();
-		int groups = 0;
+		
 		int lastIndex = 0;
     	int count = 0;
+    	int groupId = 0;
     	
     	if(regexPrototype.length()<=0 || StringUtils.countMatches(regexPrototype, digits)==0) {
     		return null;
@@ -195,9 +206,9 @@ public class RegexEngine {
     	 */
     	
     	RegexEngine matcher = new RegexEngine();
-    	matcher.KMPMatch(regexPrototype,digits);
+    	matcher.KMPInit(regexPrototype,digits);
     	
-    	if (matcher.match()) {
+    	if (matcher.KMPmatch()) {
     		System.out.println("-----------------------------------------------------------------");
     		System.out.println("Knuth-Morris-Pratt match. Index match: " + matcher.getMatchPoint());
     	}
@@ -221,34 +232,68 @@ public class RegexEngine {
 		
 		/**
 		 * Find number of groups
+		 * Create Object
+		 * Process String
 		 * 	
 		 */
 			
-		for (int i=0;i<regexGroupElementsList.size();i++) {				
+		for (int i=0;i<regexGroupElementsList.size();i++) {		
+			
 				if(i+1 < regexGroupElementsList.size()) {
 						if(regexGroupElementsList.get(i) == regexGroupElementsList.get(i+1) - digits.length()) {	
-							if(groups==0) {
-								System.out.printf("New Regex Group found index: %d\n",regexGroupElementsList.get(i));
-								groups++;
+							if(groupId==0) {
+								//System.out.printf("New Regex Group found index: %d\n",regexGroupElementsList.get(i));
+								regexGroupObjectList.add(new RegexGroup(1));
+								regexGroupObjectList.get(0).processElements(1, regexGroupElementsList);	
+								regexGroupObjectList.get(0).setIndexStart(regexGroupElementsList.get(i));
+								groupId++;
 							}
 						}
 						else {
-							System.out.printf("New Regex Group found index: %d\n",regexGroupElementsList.get(i+1));
-							groups++;
+							//System.out.printf("New Regex Group found index: %d\n",regexGroupElementsList.get(i+1));
+							regexGroupObjectList.add(new RegexGroup(groupId+1));
+							regexGroupObjectList.get(groupId).processElements(groupId+1, regexGroupElementsList);
+							regexGroupObjectList.get(groupId).setIndexStart(regexGroupElementsList.get(i+1));
+							groupId++;
 						}
 				}	
 				
 		}
 	
-		System.out.println("Pattern found: " + count + " time(s). Regex Groups: " + groups + " Indexes: " + regexGroupElementsList);
-		System.out.println("-----------------------------------------------------------------");
-    	
+		System.out.println("Pattern found: " + count + " time(s). Regex Groups: " + regexGroupObjectList.size() + " " + " Indexes: " + regexGroupElementsList); 	
+		System.out.println("All elements:" + regexGroupElementsList);
+		   
 		/**
-		 * Create new Regex
+		 * Create new Regex Group
+		 * Print Group contents
+		 */
+		if(regexGroupObjectList.size()==1) {
+			System.out.println("Group ID: " + regexGroupObjectList.get(0).getGroupID());
+			System.out.println("Contents: " + regexGroupObjectList.get(0).regexGroupElementsList.toString());	
+			System.out.println("Index Start: " + regexGroupObjectList.get(0).getIndexStart());
+			System.out.println("Index End: " + regexGroupObjectList.get(0).getIndexEnd());
+			System.out.println("Offset: " + regexGroupObjectList.get(0).getOffset());
+			System.out.println("Elements: " + regexGroupObjectList.get(0).getElements());
+		}
+		else {
+			for(int i=0;i<regexGroupObjectList.size();i++) {
+				System.out.println("Group ID: " + regexGroupObjectList.get(i).getGroupID());
+				System.out.println("Contents: " + regexGroupObjectList.get(i).regexGroupElementsList.toString());
+				System.out.println("Index Start: " + regexGroupObjectList.get(i).getIndexStart());
+				System.out.println("Index End: " + regexGroupObjectList.get(i).getIndexEnd());
+				System.out.println("Offset: " + regexGroupObjectList.get(i).getOffset());
+				System.out.println("Elements: " + regexGroupObjectList.get(i).getElements());
+		
+			}
+		}
+		
+		System.out.println("-----------------------------------------------------------------");
+		
+		/**
+		 * Convert Original string to New String
 		 */
 		
-		//System.out.println("Pattern found: " + count + " time(s). Regex Groups: " + groups);
-		//System.out.println("Original Regex: " + regexPrototype + " New Regex: " + regexPrototype);
+		
 		
 		
     	}
@@ -264,9 +309,8 @@ public class RegexEngine {
 		
         Pattern pattern = generateRegex(input);
         System.out.println(String.format("Test() String: %s -> Regex: %s", input, pattern));
-        
         validateRule(pattern.toString());
-    	simplifyregexGroup(pattern.toString());
+        generateRegexGroup(pattern.toString());
         
     }
 	
