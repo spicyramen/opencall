@@ -1027,7 +1027,7 @@ public class CcDigitAnalysisEngine {
 		ruleSrcString = Tokens[4];
 		ruleDstString = Tokens[5];
 		
-		logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
+		//logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
 		
 		
 		String resultURI[] = CcExtractURI("sip:" + sipURI);
@@ -1191,7 +1191,7 @@ public class CcDigitAnalysisEngine {
 		ruleSrcString = Tokens[4];
 		ruleDstString = Tokens[5];
 		
-		logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
+	//	logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
 		
 		
 		String resultURI[] = CcExtractURI("sip:" + sipURI);

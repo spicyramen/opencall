@@ -75,7 +75,7 @@ public class CcFindMatchTransformationRule {
 	
 	public void CcPopulateRouteCache() {
 	
-		logger.info("CcPopulateRouteCache() Ordering Route Patterns");
+		logger.info("CcPopulateRouteCache() Ordering Transform Patterns");
 		int ruleFound = 0;
 		String[] ruleValue = null;
 		Set<?> potentialSet = rulesMatched.entrySet();
@@ -88,8 +88,7 @@ public class CcFindMatchTransformationRule {
 			ruleValue = utilObj.getTransformValue(0, value);
 			//CcTransformationRule(int num,boolean enabled,String type, String srcNumber, String dstNumber,String apply, boolean block) {
 			
-			ruleArray[ruleFound] = (new CcTransformationRule(Integer.parseInt(ruleValue[1]
-					.toString())));
+			ruleArray[ruleFound] = (new CcTransformationRule(Integer.parseInt(ruleValue[1].toString()),ruleValue[6],ruleValue[7]));
 			ruleFound++;
 		}
 	}

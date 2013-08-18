@@ -10,7 +10,7 @@ class CcTransformationRule implements Comparable<CcTransformationRule> {
 	public String transformSrcString;
 	public String transformDestString;
 	public String transformApply;
-	public boolean transformBlock;
+	public String transformBlock;
 
 
 	/**
@@ -18,8 +18,10 @@ class CcTransformationRule implements Comparable<CcTransformationRule> {
 	 * @param num
 	 * @param pri
 	 */
-	public CcTransformationRule(int num) {
+	public CcTransformationRule(int num,String apply, String block) {
 		transformNumber = num;
+		transformApply = apply;
+		transformBlock = block;
 	}
 
 	/**
@@ -31,7 +33,7 @@ class CcTransformationRule implements Comparable<CcTransformationRule> {
 	 * @param transport
 	 */
 
-	public CcTransformationRule(int num,boolean enabled,String type, String srcNumber, String dstNumber,String apply, boolean block) {
+	public CcTransformationRule(int num,boolean enabled,String type, String srcNumber, String dstNumber,String apply, String block) {
 		transformNumber = num;
 		transformEnabled = enabled;
 		transformType = type;
@@ -62,7 +64,7 @@ class CcTransformationRule implements Comparable<CcTransformationRule> {
 		return transformApply;
 	}
 
-	public boolean isTransformBlock() {
+	public String isTransformBlock() {
 		return transformBlock;
 	}
 
@@ -80,7 +82,7 @@ class CcTransformationRule implements Comparable<CcTransformationRule> {
 
 	@Override
 	public String toString() {
-		return "rule id=" + this.transformNumber + ", rule block=" + this.transformBlock;
+		return "rule id=" + this.transformNumber + " rule apply to=" + this.transformApply.toLowerCase() + " rule block=" + this.transformBlock.toLowerCase();
 	}
 
 	public static Comparator<CcTransformationRule> RuleNumberComparator = new Comparator<CcTransformationRule>() {
