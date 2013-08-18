@@ -895,8 +895,7 @@ public class CcDigitAnalysisEngine {
 	 * @param value
 	 * @return
 	 */
-	private boolean CcProcessTransformRulesCdcc(String[] ruleValue, String sipURI,
-			String value) {
+	private boolean CcProcessTransformRulesCdcc(String[] ruleValue, String sipURI,String value) {
 
 		//logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
 		boolean foundRuleMatch = false;
@@ -926,9 +925,9 @@ public class CcDigitAnalysisEngine {
 	 * @param value
 	 * @return
 	 */
-	private boolean CcProcessTransformRulesRegexCdcc(String[] Tokens, String sipURI,String value) {
+	private boolean CcProcessTransformRulesRegexCdcc(String[] Tokens, String sipURI,String RuleId) {
 		
-		//logger.info("CcProcessTransformRulesRegexCdcc()  |New Instance| SIP URI: " +  "sip:" + sipURI);	
+		//logger.info("CcProcessTransformRulesRegexCdcc()  |New Instance| SIP URI: " +  "sip:" + sipURI + " Value: " + RuleId);	
 		if (Tokens == null) {
 			return false;
 		}
@@ -948,13 +947,19 @@ public class CcDigitAnalysisEngine {
 		
 		if (ruleType.equals("REGEX")) {
 			if (ruleSrcString != null && !ruleSrcString.isEmpty()) {
-				if (sipURI.matches(ruleSrcString)) {
-					logger.info("CcProcessRulesRegexCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
-							+ sipURI + " in rule: " + value);
-					potentialMatchTransformRules.put(
-							new Integer(Integer.parseInt(ruleNumber)), value);
-					return true;
+				try {
+					if (sipURI.matches(ruleSrcString)) {
+						logger.info("CcProcessRulesRegexCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
+								+ sipURI + " in rule: " + RuleId);
+						potentialMatchTransformRules.put(
+								new Integer(Integer.parseInt(ruleNumber)), RuleId);
+						return true;
+					}
 				}
+				catch (Exception e) {
+					return false;
+				}
+				
 			}
 		} else {
 			
@@ -979,13 +984,19 @@ public class CcDigitAnalysisEngine {
 
 		if (ruleType.equals("REGEX")) {
 			if (ruleString != null && !ruleString.isEmpty()) {
-				if (sipURI.matches(ruleString)) {
-					logger.info("CcProcessRulesRegexCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
-							+ sipURI + " in rule: " + value);
-					potentialMatchCallRules.put(
-							new Integer(Integer.parseInt(ruleNumber)), value);
-					return true;
+				try {
+					if (sipURI.matches(ruleString)) {
+						logger.info("CcProcessRulesRegexCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
+								+ sipURI + " in rule: " + value);
+						potentialMatchCallRules.put(
+								new Integer(Integer.parseInt(ruleNumber)), value);
+						return true;
+					}
 				}
+				catch(Exception e) {
+					return false;
+				}
+				
 			}
 		} else {
 			
@@ -1016,7 +1027,7 @@ public class CcDigitAnalysisEngine {
 		ruleSrcString = Tokens[4];
 		ruleDstString = Tokens[5];
 		
-		//logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
+		logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
 		
 		
 		String resultURI[] = CcExtractURI("sip:" + sipURI);
@@ -1057,14 +1068,21 @@ public class CcDigitAnalysisEngine {
 					// logger.info("CcProcessRulesNumericCdcc() Token RULE STRING NUMERIC "
 					// + ruleString + " is valid!");
 					// We match only userURI portion
-					if (userURI.matches(ruleSrcString) && !userURI.isEmpty()) {
-						logger.info("CcProcessRulesNumericCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
-								+ sipURI + " in rule: " + value);
-						potentialMatchTransformRules.put(
-								new Integer(Integer.parseInt(ruleNumber)),
-								value);
-						return true;
+					
+					try {
+						if (userURI.matches(ruleSrcString) && !userURI.isEmpty()) {
+							logger.info("CcProcessRulesNumericCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
+									+ sipURI + " in rule: " + value);
+							potentialMatchTransformRules.put(
+									new Integer(Integer.parseInt(ruleNumber)),
+									value);
+							return true;
+						}
 					}
+					catch(Exception e) {
+						return false;
+					}
+					
 				}
 			}
 
@@ -1128,14 +1146,20 @@ public class CcDigitAnalysisEngine {
 					// logger.info("CcProcessRulesNumericCdcc() Token RULE STRING NUMERIC "
 					// + ruleString + " is valid!");
 					// We match only userURI portion
-					if (userURI.matches(ruleString) && !userURI.isEmpty()) {
-						logger.info("CcProcessRulesNumericCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
-								+ sipURI + " in rule: " + value);
-						potentialMatchCallRules.put(
-								new Integer(Integer.parseInt(ruleNumber)),
-								value);
-						return true;
+					try {
+						if (userURI.matches(ruleString) && !userURI.isEmpty()) {
+							logger.info("CcProcessRulesNumericCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
+									+ sipURI + " in rule: " + value);
+							potentialMatchCallRules.put(
+									new Integer(Integer.parseInt(ruleNumber)),
+									value);
+							return true;
+						}
 					}
+					catch(Exception e) {
+						return false;
+					}
+					
 				}
 			}
 
@@ -1167,7 +1191,7 @@ public class CcDigitAnalysisEngine {
 		ruleSrcString = Tokens[4];
 		ruleDstString = Tokens[5];
 		
-		//logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
+		logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
 		
 		
 		String resultURI[] = CcExtractURI("sip:" + sipURI);

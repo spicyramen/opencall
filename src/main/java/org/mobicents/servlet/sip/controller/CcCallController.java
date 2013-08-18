@@ -68,10 +68,10 @@ public class CcCallController {
 			 */
 		
 		
-			logger.info("CcCallController() New Call(" + Id + ")" );		
+			logger.info("CcCallController() New Call(" + Id + ")" );	
+			String[] callInfo = new String[4];
 			Thread newThreadedCall = new Thread(new CcSipCall(Id));
 			newThreadedCall.start();
-			String[] callInfo = new String[4];
 			
 			callInfo = processConfigurationRules.processNewCallInformationCc(callingNumber,calledNumber,redirectNumber);
 			

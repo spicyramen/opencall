@@ -6,7 +6,8 @@ Export-Package: org.mobicents.servlet.sip.application;uses:="javax.ser
  org.mobicents.servlet.sip.controller;uses:="org.mobicents.servlet.sip
  .model.cc,org.apache.log4j",org.mobicents.servlet.sip.model.cc;uses:=
  "org.apache.log4j",org.mobicents.servlet.sip.model.cdr,org.mobicents.
- servlet.sip.model.clf,org.mobicents.servlet.sip.model.lua
+ servlet.sip.model.clf,org.mobicents.servlet.sip.model.lua,org.mobicen
+ ts.servlet.sip.tools;uses:="org.apache.commons.lang"
 Implementation-Title: org.mobicents.servlet.sip.examples:opencall
 Implementation-Version: 1.1.0-BELADOR
 Built-By: gogasca
@@ -17,7 +18,7 @@ Implementation-URL: http://www.mobicents.org
 Implementation-Vendor-Id: TeleStax, Inc.
 Build-Jdk: 1.6.0_45
 Bundle-Version: 1.1.0.BELADOR
-Bnd-LastModified: 1376373276753
+Bnd-LastModified: 1376814782344
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.gnu.org/licenses/lgpl.html
 Bundle-Description: Gonzalo Gasca MezaOxford UniversityDepartment of C
@@ -25,6 +26,6 @@ Bundle-Description: Gonzalo Gasca MezaOxford UniversityDepartment of C
  dom+44 1865 273838
 Import-Package: com.twilio.sdk,com.twilio.sdk.resource.factory,com.twi
  lio.sdk.resource.instance,javax.servlet,javax.servlet.sip,org.apache.
- log4j;version="[1.2,2)"
+ commons.lang,org.apache.log4j;version="[1.2,2)"
 Bundle-SymbolicName: org.mobicents.servlet.sip.examples.opencall
 

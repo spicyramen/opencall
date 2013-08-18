@@ -61,8 +61,8 @@ public class CcFindMatchTransformationRule {
 	public int CcProcessBestMatchAlgorithm(int type) {
 		CcPopulateRouteCache();
 		int resultRule = orderRules(type);
-		logger.info("Rule match: [" + resultRule + "]");
-		logger.info("Rules list sorted by Priority:\n"
+		logger.info("Transform Rule match: [" + resultRule + "]");
+		logger.info("Transform Rules sorted by Priority:\n"
 				+ Arrays.toString(ruleArray));
 		return resultRule;
 	}

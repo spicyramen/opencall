@@ -176,6 +176,7 @@ public class CcUtils {
 	}
 
 	public String[] getTransformValue(int iToken, String transformValue) {
+		
 		// 0 returns all values from Rule
 
 		if (transformValue.isEmpty()) {
@@ -257,7 +258,7 @@ public class CcUtils {
 					}
 					
 					if ((tokenIndex == 5 && tokenIndex == iToken)
-							|| (tokenIndex == 4 && iToken == 0)) { // STRING
+							|| (tokenIndex == 5 && iToken == 0)) { // STRING
 						// logger.info("getRuleValue() Token [" + tokenIndex +
 						// "]: " + token);
 						Tokens[tokenIndex] = token;
@@ -371,6 +372,11 @@ public class CcUtils {
 	 * @return
 	 */
 	public static boolean isValidHostName(String hostName) {
+		
+		if(hostName.matches("_DNS_")) {
+			return true;
+		}
+		
 		try {
 			InetAddress in = InetAddress.getByName(hostName);
 
