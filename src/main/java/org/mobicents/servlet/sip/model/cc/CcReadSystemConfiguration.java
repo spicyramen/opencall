@@ -147,7 +147,6 @@ public class CcReadSystemConfiguration {
 			}
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			logger.error("CcDisplayCandidateRules() Candidate Parameters File error: "
 					+ e.getMessage());
 			e.printStackTrace();

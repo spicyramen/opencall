@@ -25,16 +25,22 @@ public class CcDigitAnalysisEngine {
 	private static String SIP_PORT = "5060";
 	private static int SIPURI_LIMIT = 64; // Including sip: + @ + :, hence Total 58 chars										
 	
-	private String transformedSipURI = null;
+	private String transformedCallingSipURI = null;
+	private String transformedCalledSipURI = null;
+	private String transformedRedirectedSipURI = null;
+	
 	private String originalSipURI = null;
 	private String originalCallingSipURI = null;
 	private String originalRedirectSipURI = null;
+
+	
 	
 	private String userURI = null;
 	private String domainURI = null;
 	private String portURI = null;
 	private String transportURI = null;
 	private String finalSipURI = null;
+	private boolean isBlocked = false;
 
 	
 	public boolean isStarted() {
@@ -60,10 +66,19 @@ public class CcDigitAnalysisEngine {
 	 * @return
 	 */
 	
-	public String getTransformedSipURI() {
-		return transformedSipURI;
+
+	public String getTransformedCallingSipURI() {
+		return transformedCallingSipURI;
+	}
+
+	public String getTransformedCalledSipURI() {
+		return transformedCalledSipURI;
 	}
 	
+	public String getTransformedRedirectedSipURI() {
+		return transformedRedirectedSipURI;
+	}
+
 	/**
 	 * 
 	 * @return transportURI
@@ -83,6 +98,10 @@ public class CcDigitAnalysisEngine {
 		//TODO return default Transport
 	}
 	
+	public boolean isCallBlocked() {
+		return isBlocked;
+	}
+
 	/**
 	 * 	
 	 * Constructor is initialized with call routing rules processed from opencallrules.cfg file or database.
@@ -112,7 +131,7 @@ public class CcDigitAnalysisEngine {
 		 *  2: Called
 		 *  3: Redirect
 		 */
-		transformedSipURI = calledNumber;
+		transformedCalledSipURI = calledNumber;
 		originalSipURI = calledNumber;
 		originalCallingSipURI = callingNumber;
 		originalRedirectSipURI = redirectNumber;
@@ -124,7 +143,7 @@ public class CcDigitAnalysisEngine {
 			CcProcessNumberTransformation(redirectNumber,3);
 			
 		} else {
-			transformedSipURI = calledNumber;
+			transformedCalledSipURI = calledNumber;
 			return;
 		}
 			
@@ -546,11 +565,11 @@ public class CcDigitAnalysisEngine {
 
 		String rulePort = null;
 		logger.info("DeviceManager::star_DmPidReq");
-		logger.info("CcProcessTransformSipURI() Original SIP URI: [" + origSipURI
+		logger.info("CcProcessFinalTransformSipURI() Original SIP URI: [" + origSipURI
 				+ "]");
 
 		if (ruleParams[7] != null) {
-			logger.info("CcProcessTransformSipURI() [1] "
+			logger.info("CcProcessFinalTransformSipURI() [1] "
 					+ ruleParams[1].toString() + " [2] "
 					+ ruleParams[2].toString() + " [3] "
 					+ ruleParams[3].toString() + " [4] "
@@ -561,69 +580,32 @@ public class CcDigitAnalysisEngine {
 			
 		} 	
 		else {
-			logger.error("CcProcessTransformSipURI() Invalid rule");
+			logger.error("CcProcessFinalTransformSipURI() Invalid rule");
 			return null;
 
 		}
-
-		if (ruleParams[3].toString().matches("REGEX")
-				&& ruleParams[5].toString().matches("_DNS_")) {
-			// TODO: DE1 Call Routing Rules transport support DNS trunk type should allow Transport definition
+		
+		String isBlockedEnabled = ruleParams[7].toString();
+		isBlockedEnabled = isBlockedEnabled.toUpperCase();
+		
+		if (isBlockedEnabled.matches("TRUE")) {
+			isBlocked = true;
+		}
+		else if(ruleParams[5].toString().length()==0 || ruleParams[5].toString()==null) {
 			this.finalSipURI = origSipURI;
-			logger.info("CcProcessTransformSipURI() Final SIP URI: " + finalSipURI);
+			logger.info("CcProcessFinalTransformSipURI() Final SIP URI: " + finalSipURI);
 			return finalSipURI;
-			
-		} 
+		}
 		else {
 
-			String ruleDomain = ruleParams[5].toString();
+			String srcString = ruleParams[4].toString();
+			String dstString = ruleParams[5].toString();
 			
-			/**
-			 * If Port is defined:
-			 */
-			
-			if (ruleParams[6] != null && ruleParams[7] == null) {
-				
-				/**
-				 * Port is defined
-				 */
-				if(utilObj.isPortOrTransport(ruleParams[6])==1) {
-					rulePort = ruleParams[6].toString();
-					portURI = rulePort;
-					domainURI = ruleDomain;
-				}
-				
-				/**
-				 *  Transport is defined
-				 */
-				else if(utilObj.isPortOrTransport(ruleParams[6])==2) {
-					transportURI = ruleParams[6].toString();
-					domainURI = ruleDomain;
-				}
-				else {
-					logger.error("Invalid parameter");
-				}
-				
-			}
 			
 			/**
 			 * Transport is defined
 			 */
-			else if (ruleParams[7] != null) {
-				
-				if(utilObj.isPortOrTransport(ruleParams[7])==2) {
-					portURI = ruleParams[6].toString();
-					transportURI = ruleParams[7].toString();
-					domainURI = ruleDomain;
-				}
-				else {
-					logger.error("Invalid parameter");
-				}
-			}
 			
-			else {
-				domainURI = ruleDomain;
-			}
 		}
 
 		/**
@@ -1290,7 +1272,6 @@ public class CcDigitAnalysisEngine {
 				}
 			}
 		}
-
 		return false;
 
 	}

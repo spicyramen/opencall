@@ -16,7 +16,10 @@ public class CcInitConfigSrv {
 	private boolean isStarted = false;
 	private static String DELIMITER = "=";
 	private CcDigitAnalysisEngine DigitAnalysisEngine = null;
+	private String finalCallingSipURI = null;
 	private String finalCalledSipURI = null;
+	private String finalRedirectSipURI = null;
+	private String finalTransport = null;
 
 
 	public CcInitConfigSrv() {
@@ -267,7 +270,7 @@ public class CcInitConfigSrv {
 	 * @return
 	 */
 
-	public String processNewCallInformationCc(String callingNumber,String calledNumber,String redirectNumber) {
+	public String[] processNewCallInformationCc(String callingNumber,String calledNumber,String redirectNumber) {
 		
 		/**
 		 *  Process Initial SIP Message and verify if it matches Transformed rules
@@ -277,10 +280,25 @@ public class CcInitConfigSrv {
 		/**
 		 * After processing Transformation rules, proceed to match Call Routing rules
 		 */
+		String[] callInfo = new String[4];
 		
-		if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedSipURI())) {
+		if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedCalledSipURI())) {
+			
+			if(DigitAnalysisEngine.isCallBlocked()) {
+				return null;
+			}
+			
+			finalCallingSipURI = DigitAnalysisEngine.getTransformedCallingSipURI();
 			finalCalledSipURI = DigitAnalysisEngine.getSipCalledNumberURI();
-			return finalCalledSipURI;
+			finalRedirectSipURI = DigitAnalysisEngine.getTransformedRedirectedSipURI();
+			finalTransport	= DigitAnalysisEngine.getTransportURI();
+			
+			callInfo[0] = finalCallingSipURI;
+			callInfo[1] = finalCalledSipURI;
+			callInfo[2] = finalRedirectSipURI;
+			callInfo[3] = finalTransport;
+			
+			return callInfo;
 		} 
 		else {
 			logger.error("processNewCallInformationCc() Unable to process SIP Message");
@@ -288,12 +306,5 @@ public class CcInitConfigSrv {
 		}
 	}
 	
-	/**
-	 * 
-	 * @return Transport defined in Call Rules
-	 */
-	public String getRuleTransport() {
-		return DigitAnalysisEngine.getTransportURI();
-	}
 
 }

@@ -196,6 +196,7 @@ public class CcUtils {
 		if (!transformValue.contains("\\(\"") && !transformValue.contains("\"\\)")) {
 			// logger.info("getTransformValue() Processing Tokens: " + routeValue);
 			StringTokenizer st = new StringTokenizer(transformValue, ",");
+			
 			if (st.countTokens() == TRANSFORM_TOKEN_COUNT) {
 				
 				// logger.info("getTransformValue() Processing Tokens: (" +
@@ -326,6 +327,8 @@ public class CcUtils {
 		// logger.info("getWildCard() " + routeString);
 		// Add + Support for E164 dialing
 		routeString = routeString.replace("+", "\\+");
+		// logger.info("getWildCard() Return: " + routeString);
+		routeString = routeString.replace("-", "\\-");
 		// logger.info("getWildCard() Return: " + routeString);
 		return routeString;
 

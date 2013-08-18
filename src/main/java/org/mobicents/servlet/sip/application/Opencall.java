@@ -38,8 +38,7 @@ import javax.servlet.sip.SipServletResponse;
 import javax.servlet.sip.SipSession;
 import javax.servlet.sip.SipURI;
 import javax.servlet.sip.UAMode;
-
-import org.mobicents.servlet.sip.controller.CcCallProcessor;
+import org.mobicents.servlet.sip.controller.CcCallController;
 import org.apache.log4j.Logger;
 
 /**
@@ -79,8 +78,10 @@ public class Opencall extends SipServlet {
 	private static final String RECEIVED = "Received";
 	private static final String VERSION = "1.1 Belador";
 	private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
+	private CcCallController opencallSipEngine =  null;
+	private int callID = 1;
 	B2buaHelper helper = null;
-	private CcCallProcessor openCallSipEngine =  null;
+	
 
 	/** Creates a new instance of opencall */
 	public Opencall() {
@@ -98,20 +99,28 @@ public class Opencall extends SipServlet {
 		super.init(servletConfig);
 		
 		Thread initializeMainServices = new Thread(new Runnable() {
-			
 			public void run() {
 				logger.info("OpenCall() sip servlet reading init parameters: " + INIT_FILE);
 				
 				try {
-					openCallSipEngine = new CcCallProcessor(INIT_FILE);
-					openCallSipEngine.startService();
-					if (openCallSipEngine.isStarted()) {
+					/**
+					 * Read Rules
+					 */
+					
+					opencallSipEngine = new CcCallController(INIT_FILE);
+					opencallSipEngine.startService();
+					
+					if (opencallSipEngine.isStarted()) {
+						
 						logger.info("OpenCall() Engine started succesfully...");
-					} else {
+					} 
+					else {
+					
 						logger.fatal("OpenCall() Engine unable to start...");
 					}
 					
 				} catch (Exception e) {	
+					
 					logger.fatal("OpenCall() Exception during system initialization...");
 					e.printStackTrace();
 				}
@@ -178,13 +187,13 @@ public class Opencall extends SipServlet {
 			 */
 	
 			
-			String finalSipUri = 
-					openCallSipEngine.processCallInformation(request.getFrom().getURI().toString(),request.getTo().getURI().toString(),"");
+			String[] finalSipCallInfo = 
+					opencallSipEngine.newCallProcessor(callID++,request.getFrom().getURI().toString(),request.getTo().getURI().toString(),"");
 			
 			
-			String finalTransport = openCallSipEngine.getRuleTransport();
+			String finalTransport = finalSipCallInfo[3];
 			
-			if (finalSipUri != null && finalSipUri.length() > 0) {
+			if (finalSipCallInfo != null && finalSipCallInfo[1].length() > 0) {
 				
 				helper = request.getB2buaHelper();
 				request.getSession().setAttribute("INVITE", RECEIVED);
@@ -194,7 +203,7 @@ public class Opencall extends SipServlet {
 
 				Map<String, List<String>> headers = new HashMap<String, List<String>>();
 				List<String> toHeaderSet = new ArrayList<String>();
-				toHeaderSet.add(finalSipUri);
+				toHeaderSet.add(finalSipCallInfo[1]);
 				headers.put("To", toHeaderSet);
 
 				SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
@@ -205,7 +214,7 @@ public class Opencall extends SipServlet {
                 	
                 }
                 
-				SipURI sipUri = (SipURI) sipFactory.createURI(finalSipUri);
+				SipURI sipUri = (SipURI) sipFactory.createURI(finalSipCallInfo[1]);
 				inviteRequest.setRequestURI(sipUri);
 		
 				
@@ -229,13 +238,13 @@ public class Opencall extends SipServlet {
 				 */
 				
 				try {
-					
+				
 					inviteRequest.send();
 				
 				}
 				catch (Exception exc) {
 					
-					logger.error("Unable to send SIP INVITE: " + finalSipUri);
+					logger.error("Unable to send SIP INVITE: " + finalSipCallInfo[1]);
 					logger.error("Error: " + exc.getMessage());
 					exc.printStackTrace();
 					SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_SERVICE_UNAVAILABLE);
