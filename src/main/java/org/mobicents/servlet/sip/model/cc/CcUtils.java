@@ -15,6 +15,11 @@ public class CcUtils {
 	private static int END_PORT = 65535;
 	private static int PRIORITY_LOWER = 1;
 	private static int PRIORITY_UPPER = 100;
+	private static String DELIMITER = "@";
+	private static String SIP_PROTOCOL = "sip:";
+	private static int SIPURI_LIMIT = 64; // Including sip: + @ + :, hence Total 58 chars										
+
+	
 	private static Logger logger = Logger.getLogger(CcUtils.class);
 	
 
@@ -175,6 +180,13 @@ public class CcUtils {
 		return Tokens;
 	}
 
+	/**
+	 * 
+	 * @param iToken
+	 * @param transformValue
+	 * @return
+	 */
+	
 	public String[] getTransformValue(int iToken, String transformValue) {
 		
 		// 0 returns all values from Rule
@@ -390,6 +402,98 @@ public class CcUtils {
 		}
 	}
 
+	
+	public boolean isValidSipUri(String sipURI) {
+		String[] routeType;
+		String[] sipProtocolURI;
+		String[] domainPort;
+		String[] resultURI = new String[3];
+		String 	userURI = null;
+		String domainURI = null;
+		String 	portURI = null;
+		
+		//logger.info("isValidSipUri Parsing sipURI " + "[" + sipURI + "] ");
+		
+		
+		if (sipURI.length() > SIPURI_LIMIT) {
+			logger.error("CcExtractURI() Error Parsing sipURI" + "[" + sipURI + "] Exceeded size: " + SIPURI_LIMIT);
+			return false;
+		}
+				
+			if (!sipURI.isEmpty()) {
+					// Extract all values before @ and after @ 
+					routeType = sipURI.split(DELIMITER);
+
+					if (routeType.length != 2 || routeType[0].toString() == null
+							|| routeType[1].toString() == null) {
+						logger.error("CcExtractURI() Error Parsing sipURI" + "["
+								+ sipURI + "] ");
+						return false;
+					}
+					
+					else {
+						sipProtocolURI = routeType[0].split(SIP_PROTOCOL);
+						if (sipProtocolURI.length != 2
+								|| sipProtocolURI[0].toString() == null
+								|| sipProtocolURI[1].toString() == null) {
+							logger.error("CcExtractURI() Error Parsing sipURI USER SIDE"
+									+ "[" + sipURI + "] ");
+							return false;
+						}
+						userURI = sipProtocolURI[1].toString();
+						resultURI[0] = userURI;
+						//logger.info("CcExtractURI USER:\t" + userURI);
+						domainURI = routeType[1].toString();
+						resultURI[1] = domainURI;
+						
+						try {
+							//Verify if port is listed
+							domainPort = domainURI.split(":");
+							portURI = domainPort[1].toString();
+							if ((Integer.parseInt(portURI) > 0 && Integer
+									.parseInt(portURI) <= 65535) && portURI != null) {
+								
+								resultURI[1] = domainURI;
+								resultURI[2] = portURI;
+							
+							} else {
+								 logger.error("CcExtractURI Invalid Port: " + portURI);
+							}
+						} catch (Exception e) {
+							resultURI[2] = null;
+						}
+					
+					}	
+				} 
+			else {
+					logger.error("CcExtractURI Empty SIP URI!");
+					return false;
+			}
+							
+			// Verify user & domain length as well as validate domain portion
+			if (userURI.isEmpty()
+					|| domainURI.isEmpty()
+					|| (!CcUtils.isValidHostName(domainURI) && !CcUtils
+							.isValidIP(domainURI)))
+				return false;
+			else {
+				if (portURI == null) {
+					logger.info("isValidSipUri URI:\t" + SIP_PROTOCOL + userURI +
+					 "@" + domainURI);
+				} else {
+					logger.info("isValidSipUri URI:\t" + SIP_PROTOCOL + userURI +
+					 "@" + domainURI + ":" + portURI);
+				}
+				
+				return true;
+			}
+			
+	}
+	
+	
+
+
+	
 	public int isPortOrTransport(String param) {
 		
 		/*

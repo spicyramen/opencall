@@ -1,9 +1,10 @@
 package org.mobicents.servlet.sip.controller;
 
+import java.util.Arrays;
+
 import org.apache.log4j.Logger;
 import org.mobicents.servlet.sip.model.cc.CcInitConfigSrv;
 import org.mobicents.servlet.sip.model.cc.CcReadSystemConfiguration;
-import org.mobicents.servlet.sip.model.cc.CcSipCall;
 
 
 
@@ -12,6 +13,7 @@ public class CcCallController {
 	private String INIT_FILE = "";
 	private CcInitConfigSrv processConfigurationRules = new CcInitConfigSrv();
 	private boolean isStarted;
+	private String[] callInformation;
 		
 	
 	public boolean isStarted() {
@@ -42,7 +44,7 @@ public class CcCallController {
 		try {
 			processConfigurationRules.initializeConfiguration(readInitParameters.getSystemMode(),readInitParameters.getConnection());
 			if (processConfigurationRules.isStarted()) {
-				logger.info("SipEngine() started...Initialization completed.");
+				logger.info("SipEngine() started...");
 				isStarted=true;
 			} else {
 				isStarted=false;
@@ -60,22 +62,26 @@ public class CcCallController {
 	
 	public String[] newCallProcessor(int Id, String callingNumber, String calledNumber, String redirectNumber) {
 					
-			/**
-			 	callInfo[0] = finalCallingSipURI;
-				callInfo[1] = finalCalledSipURI;
-				callInfo[2] = finalRedirectSipURI;
-				callInfo[3] = finalTransport;
-			 */
+		/**
+	 	callInfo[0] = finalCallingSipURI;
+		callInfo[1] = finalCalledSipURI;
+		callInfo[2] = finalRedirectSipURI;
+		callInfo[3] = finalTransport;
 		
 		
-			logger.info("CcCallController() New Call(" + Id + ")" );	
-			String[] callInfo = new String[4];
-			Thread newThreadedCall = new Thread(new CcSipCall(Id));
-			newThreadedCall.start();
+		
+		*/
+		
+		String[] callInfo = new String[4];
+		
+		try {
 			
-			callInfo = processConfigurationRules.processNewCallInformationCc(callingNumber,calledNumber,redirectNumber);
+			logger.info("newCallProcessor() Processing Call Info: (" + Id + ") " + callingNumber + " " + calledNumber + " " + redirectNumber);
+			callInfo = processConfigurationRules.processNewCallInformationCc(Id,callingNumber,calledNumber,redirectNumber);
+			callInformation = callInfo;
 			
-			if (callInfo[1]!=null) {
+			if (callInfo[1] != null) {
+				logger.info("newCallProcessor() Processed Call Info completed");
 				return callInfo;
 			}
 			else {
@@ -84,7 +90,23 @@ public class CcCallController {
 			}
 			// Return Called number
 			
+		} catch (Exception e) {
+			logger.error("newCallProcessor() Error processing new call (" + Id + ")");
+			e.printStackTrace();
+			return null;
+		}
+			
 	
+	}
+
+	public String[] getCallInformation() {
+		return callInformation;
+	}
+
+	@Override
+	public String toString() {
+		return "CcCallController [callInformation="
+				+ Arrays.toString(callInformation) + "]";
 	}
 	
 

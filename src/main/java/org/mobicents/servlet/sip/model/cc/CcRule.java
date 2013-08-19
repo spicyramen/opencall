@@ -65,7 +65,7 @@ class CcRule implements Comparable<CcRule> {
 
 	@Override
 	public String toString() {
-		return "rule id=" + this.ruleNumber + ", rule priority="
+		return "rule id=" + this.ruleNumber + ", priority="
 				+ this.rulePriority;
 	}
 

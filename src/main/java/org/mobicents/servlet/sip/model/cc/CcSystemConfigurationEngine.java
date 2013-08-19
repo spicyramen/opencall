@@ -566,7 +566,7 @@ public class CcSystemConfigurationEngine implements
 						}
 						} 
 						else {
-							logger.error("CcVerifyFileTransformRules() Error in VerifyRuleType Rule"
+							logger.error("CcVerifyFileTransformRules() Error in VerifyRuleSyntax Rule"
 									+ "(" + index + ") " + transform + "\n");
 						}
 					}			
@@ -1429,7 +1429,7 @@ public class CcSystemConfigurationEngine implements
 							logger.info("Token (" + tokenIndex + "): " + token);
 						}
 						
-						if (tokenIndex == 6) { // NUMBER 
+						if (tokenIndex == 6) { // NUMBER TYPE 
 							token = token.toUpperCase();
 							if (token.matches("CALLED")
 									|| token.matches("CALLING")

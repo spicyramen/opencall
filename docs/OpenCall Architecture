@@ -39,5 +39,10 @@ Opencall.java Initializes and reads opencall.ini:
 					CcSystemConfigurationEngine.CcInitConfigurationValues
 					CcSystemConfigurationEngine.CcInitConfigurationFile
 					
-	CcCallProcessSipMessage				
+	New SIP Call:
+	
+	CcCallProcessSipMessage
+		CcExtractURI
+			CcDA
+				CcProcessRules
 					

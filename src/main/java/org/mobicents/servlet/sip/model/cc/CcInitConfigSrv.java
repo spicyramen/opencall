@@ -20,6 +20,8 @@ public class CcInitConfigSrv {
 	private String finalCalledSipURI = null;
 	private String finalRedirectSipURI = null;
 	private String finalTransport = null;
+//	private String finalIsBlocked = null;
+	
 
 
 	public CcInitConfigSrv() {
@@ -270,40 +272,58 @@ public class CcInitConfigSrv {
 	 * @return
 	 */
 
-	public String[] processNewCallInformationCc(String callingNumber,String calledNumber,String redirectNumber) {
+	public String[] processNewCallInformationCc(int Id,String callingNumber,String calledNumber,String redirectNumber) {
 		
-		/**
-		 *  Process Initial SIP Message and verify if it matches Transformed rules
-		 */
-		DigitAnalysisEngine.CcDigitAnalysisReq(callingNumber,calledNumber,redirectNumber);
-			
-		/**
-		 * After processing Transformation rules, proceed to match Call Routing rules
-		 */
-		String[] callInfo = new String[4];
+
+		logger.info("processNewCallInformationCc() New Call(" + Id + ")" );
+		CcSipCall newCallRequest = new CcSipCall(Id,callingNumber,calledNumber,redirectNumber);
+		Thread newThreadedCall = new Thread(newCallRequest);
+		newThreadedCall.start();
+	
 		
-		if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedCalledSipURI())) {
+		try {
 			
-			if(DigitAnalysisEngine.isCallBlocked()) {
+			/**
+			 *  Process Initial SIP Message and verify if it matches Transformed rules
+			 */
+			DigitAnalysisEngine.CcDigitAnalysisReq(newCallRequest);
+				
+			/**
+			 * After processing Transformation rules, proceed to match Call Routing rules
+			 */
+			String[] callInfo = new String[4];
+			
+			if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedCalledSipURI())) {
+				
+				if(DigitAnalysisEngine.isCallBlocked()) {
+					logger.info("processNewCallInformationCc() New Call(" + Id + ") is rejected" );
+				}
+				
+				finalCalledSipURI = DigitAnalysisEngine.CcDigitAnalysisRes();
+				finalCallingSipURI = DigitAnalysisEngine.getTransformedCallingSipURI();
+				finalRedirectSipURI = DigitAnalysisEngine.getTransformedRedirectedSipURI();
+				finalTransport	= DigitAnalysisEngine.getTransportURI();
+					
+				callInfo[0] = finalCallingSipURI;
+				callInfo[1] = finalCalledSipURI;
+				callInfo[2] = finalRedirectSipURI;
+				callInfo[3] = finalTransport;
+				
+				logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
+				return callInfo;
+				
+			} 
+			else {
+				logger.error("processNewCallInformationCc() Unable to process SIP Message CcCallProcessSipMessage_Res Error!");
 				return null;
 			}
-			
-			finalCallingSipURI = DigitAnalysisEngine.getTransformedCallingSipURI();
-			finalCalledSipURI = DigitAnalysisEngine.getSipCalledNumberURI();
-			finalRedirectSipURI = DigitAnalysisEngine.getTransformedRedirectedSipURI();
-			finalTransport	= DigitAnalysisEngine.getTransportURI();
-			
-			callInfo[0] = finalCallingSipURI;
-			callInfo[1] = finalCalledSipURI;
-			callInfo[2] = finalRedirectSipURI;
-			callInfo[3] = finalTransport;
-			
-			return callInfo;
-		} 
-		else {
-			logger.error("processNewCallInformationCc() Unable to process SIP Message");
+		}
+		catch (Exception e) {
+			logger.error("processNewCallInformationCc() Unable to process SIP Message: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport);
+			e.printStackTrace();
 			return null;
 		}
+		
 	}
 	
 
