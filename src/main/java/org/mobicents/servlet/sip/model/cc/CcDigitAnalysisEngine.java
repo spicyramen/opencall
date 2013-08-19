@@ -900,8 +900,8 @@ public class CcDigitAnalysisEngine {
 			String value = (String) mapa.getValue(); 	// getValue 
 													
 			if (rule == key) {
-				logger.info("CcExtractTransformRule() Rule:\t" + key + "  Value:\t"
-						+ value);
+				//logger.info("CcExtractTransformRule() Rule:\t" + key + "  Value:\t"
+				//		+ value);
 				return value;
 			}
 		}

@@ -77,7 +77,7 @@ public class Opencall extends SipServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String RECEIVED = "Received";
 	private static final String VERSION = "1.1 Belador";
-	private static final String UA = "RamenNetworks " + VERSION;
+	private static final String UA = "OpenCall " + VERSION;
 	private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
 	private CcCallController opencallSipEngine =  null;
 	private int callID = 1;
@@ -168,14 +168,19 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doInvite(final SipServletRequest request) throws ServletException,IOException {
 		
+	
+		
 		if (logger.isInfoEnabled()) {
 			
 				logger.info("Opencall() New SIP Call Detected: " + request.toString());
-				logger.info("Opencall() From: " + request.getFrom().getURI().toString());
+				logger.info("Opencall() Display Name: " + request.getFrom().getDisplayName().toString());
+				logger.info("Opencall() From: " + request.getFrom().getURI().toString());		
 				logger.info("Opencall() To: " + request.getTo().getURI().toString());
 				logger.info("Opencall() Supported transports:  "
 						+ getServletContext().getAttribute(
 								"javax.servlet.sip.outboundInterfaces"));
+				
+				
 		}
 
 		if (request.isInitial()) {
@@ -195,6 +200,7 @@ public class Opencall extends SipServlet {
 			
 			try {
 			
+				//String DisplayName = request.getFrom().getDisplayName();
 				String[] finalSipCallInfo  = opencallSipEngine.newCallProcessor(callID++,request.getFrom().getURI().toString(),request.getTo().getURI().toString(),"");
 				if (logger.isInfoEnabled()) {
 					logger.info("Opencall() newCallProcessor() Call info processed completed");
@@ -215,9 +221,9 @@ public class Opencall extends SipServlet {
 					List<String> fromHeaderSet = new ArrayList<String>();
 					List<String> UAHeaderSet = new ArrayList<String>();
 					List<String> OrgHeaderSet = new ArrayList<String>();
-					
-					fromHeaderSet.add(finalSipCallInfo[0]);
+									
 					toHeaderSet.add(finalSipCallInfo[1]);
+					fromHeaderSet.add(finalSipCallInfo[0]);
 					UAHeaderSet.add(UA);
 					OrgHeaderSet.add("Ramen Networks");
 					
@@ -225,9 +231,9 @@ public class Opencall extends SipServlet {
 					headers.put("To", toHeaderSet);
 					headers.put("Organization", OrgHeaderSet);
 					headers.put("User-Agent", UAHeaderSet);
-					
-					
+				
 					SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
+				
 					String transport = inviteRequest.getTransport();
 	                
 	                if(logger.isInfoEnabled()) {
