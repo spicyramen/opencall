@@ -57,13 +57,15 @@ import org.apache.log4j.Logger;
  * 
  * Version 1.1  Belador:
  * 
- * 	  Transport support
- * 	  Transformations
- *    Route Control via Route List
- *    DB enhancements
+ * 	  Transport support (TCP, UDP, TLS, WS, WSS, Twilio/JSON)
+ * 	  Transformations   (Calling,Called, Redirect)
+ *    Route Control via Route List (Route List implementation, send call up to 5 devices)
  *    File connection enhancements 
- *    Twilio module (SIP to Twilio)
- *    CDR
+ *    Twilio module (SIP to Twilio. SIP Device <-sip-> OpenCall <-twilio api-> Twilio)
+ *    CDR	(Push new call info to CDR file)
+ *    CLF	(Push new call info to CLF file)
+ *	  DB enhancements   (Update DB schema for previous enhancements)
+ *	  Optimization and Multithreading
  *    API
  *    Security module
  *   
@@ -76,9 +78,9 @@ public class Opencall extends SipServlet {
 	private String INIT_FILE = "../standalone/configuration/opencall/opencall.ini";
 	private static final long serialVersionUID = 1L;
 	private static final String RECEIVED = "Received";
+	private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
 	private static final String VERSION = "1.1 Belador";
 	private static final String UA = "OpenCall " + VERSION;
-	private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
 	private CcCallController opencallSipEngine =  null;
 	private int callID = 1;
 	B2buaHelper helper = null;
@@ -233,7 +235,11 @@ public class Opencall extends SipServlet {
 					headers.put("User-Agent", UAHeaderSet);
 				
 					SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
-				
+					
+					/**
+					 * Process Transport
+					 */
+					
 					String transport = inviteRequest.getTransport();
 	                
 	                if(logger.isInfoEnabled()) {
