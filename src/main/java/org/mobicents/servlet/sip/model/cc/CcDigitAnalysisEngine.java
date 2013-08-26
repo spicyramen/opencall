@@ -575,7 +575,7 @@ public class CcDigitAnalysisEngine {
 	
 	private String CcDigitAnalysisTransformationRes(String[] ruleParams) {
 
-		// TRANSFORM=("2","FALSE","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED","FALSE")
+		// TRANSFORM=("2","TRUE","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED","FALSE")
 
 		logger.info("DigitAnalysis::TransformationRes_");
 
@@ -598,7 +598,9 @@ public class CcDigitAnalysisEngine {
 		
 		String isBlockedEnabled = ruleParams[7].toString();
 		isBlockedEnabled = isBlockedEnabled.toUpperCase();
+		
 		// Call is blocked
+		
 		if (isBlockedEnabled.matches("TRUE")) {
 			logger.info("CcDigitAnalysisTransformationRes() Call Rejected by Rule [" + ruleParams[1] + "]");
 			isBlocked = true;
@@ -1076,7 +1078,7 @@ public class CcDigitAnalysisEngine {
 			if (ruleSrcString != null && !ruleSrcString.isEmpty()) {
 				try {
 					if (sipURI.matches(ruleSrcString)) {
-						logger.info("CcProcessRulesRegexCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
+						logger.info("CcProcessTransformRulesRegexCdcc()  Digit analysis: potentialMatchCallRules=potentialMatchRulesExist: "
 								+ sipURI + " in rule: " + RuleId);
 						potentialMatchTransformRules.put(
 								new Integer(Integer.parseInt(ruleNumber)), RuleId);
@@ -1156,7 +1158,6 @@ public class CcDigitAnalysisEngine {
 		
 		//logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
 		
-		
 		String resultURI[] = CcExtractURI("sip:" + sipURI);
 		
 		String userURI = resultURI[0].toString();
@@ -1192,6 +1193,7 @@ public class CcDigitAnalysisEngine {
 					return false;
 				} 
 				else {
+					
 					// logger.info("CcProcessRulesNumericCdcc() Token RULE STRING NUMERIC "
 					// + ruleString + " is valid!");
 					// We match only userURI portion

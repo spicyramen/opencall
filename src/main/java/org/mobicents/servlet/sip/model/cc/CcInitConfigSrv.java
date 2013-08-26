@@ -20,7 +20,7 @@ public class CcInitConfigSrv {
 	private String finalCalledSipURI = null;
 	private String finalRedirectSipURI = null;
 	private String finalTransport = null;
-//	private String finalIsBlocked = null;
+	private String finalIsBlocked = null;
 	
 
 
@@ -276,39 +276,43 @@ public class CcInitConfigSrv {
 		
 
 		logger.info("processNewCallInformationCc() New Call(" + Id + ")" );
-		CcSipCall newCallRequest = new CcSipCall(Id,callingNumber,calledNumber,redirectNumber);
-		Thread newThreadedCall = new Thread(newCallRequest);
-		newThreadedCall.start();
-	
+		CcSipCall newSipCallObject = new CcSipCall(Id,callingNumber,calledNumber,redirectNumber);
+		Thread newSipCall = new Thread(newSipCallObject);
+		newSipCall.start();
+		
 		
 		try {
 			
 			/**
 			 *  Process Initial SIP Message and verify if it matches Transformed rules
 			 */
-			DigitAnalysisEngine.CcDigitAnalysisReq(newCallRequest);
+			newSipCall.join();			
+			DigitAnalysisEngine.CcDigitAnalysisReq(newSipCallObject);
 				
 			/**
 			 * After processing Transformation rules, proceed to match Call Routing rules
 			 */
-			String[] callInfo = new String[4];
+			String[] callInfo = new String[5];
 			
 			if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedCalledSipURI())) {
 				
+				finalCalledSipURI = 	DigitAnalysisEngine.CcDigitAnalysisRes();
+				finalCallingSipURI = 	DigitAnalysisEngine.getTransformedCallingSipURI();
+				finalRedirectSipURI = 	DigitAnalysisEngine.getTransformedRedirectedSipURI();
+				finalTransport	= 		DigitAnalysisEngine.getTransportURI();
+				finalIsBlocked = 		DigitAnalysisEngine.isStringCallBlocked();
+				
+				
 				if(DigitAnalysisEngine.isCallBlocked()) {
-					logger.info("processNewCallInformationCc() New Call(" + Id + ") is rejected" );
+					logger.info("processNewCallInformationCc() New Call(" + Id + ") is rejected" );					
 				}
 				
-				finalCalledSipURI = DigitAnalysisEngine.CcDigitAnalysisRes();
-				finalCallingSipURI = DigitAnalysisEngine.getTransformedCallingSipURI();
-				finalRedirectSipURI = DigitAnalysisEngine.getTransformedRedirectedSipURI();
-				finalTransport	= DigitAnalysisEngine.getTransportURI();
-					
 				callInfo[0] = finalCallingSipURI;
 				callInfo[1] = finalCalledSipURI;
 				callInfo[2] = finalRedirectSipURI;
 				callInfo[3] = finalTransport;
-				
+				callInfo[4] = finalIsBlocked;
+								
 				logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
 				return callInfo;
 				

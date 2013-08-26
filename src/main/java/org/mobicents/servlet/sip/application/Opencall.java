@@ -207,6 +207,26 @@ public class Opencall extends SipServlet {
 				if (logger.isInfoEnabled()) {
 					logger.info("Opencall() newCallProcessor() Call info processed completed");
 				}
+				
+				if (finalSipCallInfo[4].matches("TRUE")) {
+					
+					try {
+						
+						logger.error("Unable to send SIP INVITE: " + finalSipCallInfo[1] + " Call is Rejected");			
+						SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_FORBIDDEN);
+						sipServletResponse.send();
+						return;
+					}					
+					catch(Exception exc) {
+						
+						logger.error("Error: " + exc.getMessage());
+						exc.printStackTrace();
+						
+						
+					}
+					
+				}
+				
 				String finalTransport = finalSipCallInfo[3];
 				
 				if (finalSipCallInfo != null && finalSipCallInfo[1].length() > 0) {

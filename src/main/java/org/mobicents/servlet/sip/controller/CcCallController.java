@@ -67,12 +67,13 @@ public class CcCallController {
 		callInfo[1] = finalCalledSipURI;
 		callInfo[2] = finalRedirectSipURI;
 		callInfo[3] = finalTransport;
+		callInfo[4] = finalIsBlocked;
 		
 		
 		
 		*/
 		
-		String[] callInfo = new String[4];
+		String[] callInfo = new String[5];
 		
 		try {
 			
@@ -82,6 +83,10 @@ public class CcCallController {
 			
 			if (callInfo[1] != null) {
 				logger.info("newCallProcessor() Processed Call Info completed");
+				return callInfo;
+			}
+			else if (callInfo[4].matches("TRUE")) {
+				logger.info("newCallProcessor() New Call(" + Id + ") is rejected by rules");
 				return callInfo;
 			}
 			else {

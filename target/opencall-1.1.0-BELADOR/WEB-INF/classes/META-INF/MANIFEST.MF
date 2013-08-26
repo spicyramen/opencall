@@ -18,7 +18,7 @@ Implementation-URL: http://www.mobicents.org
 Implementation-Vendor-Id: TeleStax, Inc.
 Build-Jdk: 1.6.0_51
 Bundle-Version: 1.1.0.BELADOR
-Bnd-LastModified: 1376878219324
+Bnd-LastModified: 1377497536919
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.gnu.org/licenses/lgpl.html
 Bundle-Description: Gonzalo Gasca MezaOxford UniversityDepartment of C
