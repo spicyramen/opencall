@@ -167,11 +167,11 @@ public class Opencall extends SipServlet {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void doInvite(final SipServletRequest request) throws ServletException,IOException {
 		
 	
-		
 		if (logger.isInfoEnabled()) {
 			
 				logger.info("Opencall() New SIP Call Detected: " + request.toString());
@@ -204,32 +204,56 @@ public class Opencall extends SipServlet {
 			
 				//String DisplayName = request.getFrom().getDisplayName();
 				String[] finalSipCallInfo  = opencallSipEngine.newCallProcessor(callID++,request.getFrom().getURI().toString(),request.getTo().getURI().toString(),"");
-				if (logger.isInfoEnabled()) {
-					logger.info("Opencall() newCallProcessor() Call info processed completed");
-				}
 				
-				if (finalSipCallInfo[4].matches("TRUE")) {
+				logger.info("Opencall() newCallProcessor() Call info processed completed");
+				
+				if (finalSipCallInfo==null) {
 					
 					try {
 						
-						logger.error("Unable to send SIP INVITE: " + finalSipCallInfo[1] + " Call is Rejected");			
+						logger.warn("Unable to send SIP INVITE");			
+						SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_NOT_ACCEPTABLE);
+						sipServletResponse.send();
+						return;
+					}		
+					
+					catch(Exception e) {					
+						logger.error("Error: " + e.getMessage());
+						e.printStackTrace();
+					}
+
+				}
+				
+				String finalCalling   = finalSipCallInfo[0];
+				String finalCalled    = finalSipCallInfo[1];
+				String finalRedirect  = finalSipCallInfo[2];
+				String finalTransport = finalSipCallInfo[3];
+				String finalReject    = finalSipCallInfo[4];
+				
+				/**
+				 * Reject call is enabled in Rules
+				 */
+				
+				if (finalReject.matches("TRUE")) {				
+					try {
+						
+						logger.warn("Unable to send SIP INVITE: " + finalCalled + " Call is Rejected by Transformation Rules");			
 						SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_FORBIDDEN);
 						sipServletResponse.send();
 						return;
-					}					
-					catch(Exception exc) {
-						
-						logger.error("Error: " + exc.getMessage());
-						exc.printStackTrace();
-						
+					}		
+					
+					catch(Exception e) {	
+						e.printStackTrace();
+						logger.error("Error: " + e.getMessage());
 						
 					}
 					
 				}
 				
-				String finalTransport = finalSipCallInfo[3];
 				
-				if (finalSipCallInfo != null && finalSipCallInfo[1].length() > 0) {
+				
+				if (finalSipCallInfo != null && finalCalled.length() > 0) {
 					
 					helper = request.getB2buaHelper();
 					request.getSession().setAttribute("INVITE", RECEIVED);
@@ -244,8 +268,8 @@ public class Opencall extends SipServlet {
 					List<String> UAHeaderSet = new ArrayList<String>();
 					List<String> OrgHeaderSet = new ArrayList<String>();
 									
-					toHeaderSet.add(finalSipCallInfo[1]);
-					fromHeaderSet.add(finalSipCallInfo[0]);
+					toHeaderSet.add(finalCalled);
+					fromHeaderSet.add(finalCalling);
 					UAHeaderSet.add(UA);
 					OrgHeaderSet.add("Ramen Networks");
 					
@@ -267,7 +291,7 @@ public class Opencall extends SipServlet {
 	                	
 	                }
 	                
-					SipURI sipUri = (SipURI) sipFactory.createURI(finalSipCallInfo[1]);
+					SipURI sipUri = (SipURI) sipFactory.createURI(finalCalled);
 					inviteRequest.setRequestURI(sipUri);
 			
 					
@@ -296,9 +320,9 @@ public class Opencall extends SipServlet {
 					}
 					catch (Exception exc) {
 						
-						logger.error("Unable to send SIP INVITE: " + finalSipCallInfo[1]);
-						logger.error("Error: " + exc.getMessage());
 						exc.printStackTrace();
+						logger.error("Unable to send SIP INVITE: " + finalCalled);
+						logger.error("Error: " + exc.getMessage());			
 						SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_SERVICE_UNAVAILABLE);
 						sipServletResponse.send();
 					
@@ -315,9 +339,9 @@ public class Opencall extends SipServlet {
 				}
 			} 
 			catch (Exception e) {
-				logger.error("Opencall() Unable to process call information");
-				logger.error("Error: " + e.getMessage());
 				e.printStackTrace();
+				logger.error("Opencall() Unable to process call information");
+				logger.error("Error: " + e.getMessage());			
 				SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_SERVICE_UNAVAILABLE);
 				sipServletResponse.send();
 

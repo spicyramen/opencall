@@ -67,13 +67,11 @@ public class CcCallController {
 		callInfo[1] = finalCalledSipURI;
 		callInfo[2] = finalRedirectSipURI;
 		callInfo[3] = finalTransport;
-		callInfo[4] = finalIsBlocked;
-		
-		
-		
+		callInfo[4] = finalIsBlocked;		
 		*/
 		
 		String[] callInfo = new String[5];
+		
 		
 		try {
 			
@@ -85,19 +83,15 @@ public class CcCallController {
 				logger.info("newCallProcessor() Processed Call Info completed");
 				return callInfo;
 			}
-			else if (callInfo[4].matches("TRUE")) {
-				logger.info("newCallProcessor() New Call(" + Id + ") is rejected by rules");
-				return callInfo;
-			}
 			else {
-				logger.fatal("newCallProcessor() Called Number is empty!");
+				logger.fatal("newCallProcessor() Exception found while processing call!");
 				return null;
 			}
 			// Return Called number
 			
 		} catch (Exception e) {
-			logger.error("newCallProcessor() Error processing new call (" + Id + ")");
 			e.printStackTrace();
+			logger.error("newCallProcessor() Error processing new call (" + Id + ")");	
 			return null;
 		}
 			

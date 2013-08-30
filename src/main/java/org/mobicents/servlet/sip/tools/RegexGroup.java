@@ -16,7 +16,7 @@ public class RegexGroup {
 	private int offset = 0;
 	private int elements = 0;
 	private int groupID = 0;
-	List<Integer> regexGroupElementsList = new ArrayList<Integer>();
+	private List<Integer> regexGroupElementsList = new ArrayList<Integer>();
 
 	
 	public int getIndexStart() {
@@ -79,7 +79,6 @@ public class RegexGroup {
 			return;
 		}
 
-		//System.out.println("processElements() groupId:" + groupId);
 		for (int i=0;i<regexGroupElements.size();i++) {		
 			if( i+1 < regexGroupElements.size()) {
 					if(regexGroupElements.get(i) == regexGroupElements.get(i+1) - digits.length()) {	
@@ -103,16 +102,10 @@ public class RegexGroup {
 			
 		}
 		
-		
 		setIndexStart(regexGroupElementsList.get(0));
 		setIndexEnd(regexGroupElementsList.get(regexGroupElementsList.size()-1));
-		setOffset((getIndexEnd() - getIndexStart())+digits.length());
+		setOffset((getIndexEnd() - getIndexStart()) + digits.length());
 		setElements(regexGroupElementsList.size());
-		
-}
-
-
-	
-	
+}	
 	
 }

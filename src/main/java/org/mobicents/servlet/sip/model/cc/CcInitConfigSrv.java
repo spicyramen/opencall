@@ -300,21 +300,45 @@ public class CcInitConfigSrv {
 				finalCallingSipURI = 	DigitAnalysisEngine.getTransformedCallingSipURI();
 				finalRedirectSipURI = 	DigitAnalysisEngine.getTransformedRedirectedSipURI();
 				finalTransport	= 		DigitAnalysisEngine.getTransportURI();
-				finalIsBlocked = 		DigitAnalysisEngine.isStringCallBlocked();
+				finalIsBlocked = 		DigitAnalysisEngine.getCallBlocked();
 				
-				
-				if(DigitAnalysisEngine.isCallBlocked()) {
-					logger.info("processNewCallInformationCc() New Call(" + Id + ") is rejected" );					
-				}
+				logger.info("processNewCallInformationCc() Processed Call Info completed");
 				
 				callInfo[0] = finalCallingSipURI;
 				callInfo[1] = finalCalledSipURI;
 				callInfo[2] = finalRedirectSipURI;
 				callInfo[3] = finalTransport;
-				callInfo[4] = finalIsBlocked;
-								
-				logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
-				return callInfo;
+				callInfo[4] = finalIsBlocked;						
+				
+				if (callInfo[4].matches("TRUE")) {
+					logger.warn("processNewCallInformationCc() New Call(" + Id + ") is rejected by rules");
+					logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
+					return callInfo;			
+				}
+				else if (callInfo[1] != null && callInfo[0] != null) {	
+					logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
+					return callInfo;
+				}
+				else if (callInfo[0] == null) {
+					logger.error("processNewCallInformationCc() Caller ID null");
+					callInfo[0] = "sip:unknown@localhost";
+					logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
+					return callInfo;
+				}
+				else if (callInfo[1] == null) {
+					logger.fatal("processNewCallInformationCc() Called number null");
+					return null;
+				}
+				else if (callInfo[2] == null) {
+					logger.info("processNewCallInformationCc() Redirect number null");
+					callInfo[2] = "sip:unknownredirect@localhost";
+					return callInfo;
+				}
+				else {
+					logger.fatal("processNewCallInformationCc() Exception found while processing call!");
+					return null;
+				}
+				
 				
 			} 
 			else {
@@ -323,8 +347,8 @@ public class CcInitConfigSrv {
 			}
 		}
 		catch (Exception e) {
-			logger.error("processNewCallInformationCc() Unable to process SIP Message: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport);
 			e.printStackTrace();
+			logger.error("processNewCallInformationCc() Unable to process SIP Message: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport);
 			return null;
 		}
 		

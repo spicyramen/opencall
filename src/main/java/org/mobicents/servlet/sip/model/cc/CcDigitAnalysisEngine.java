@@ -98,7 +98,7 @@ public class CcDigitAnalysisEngine {
 		//TODO return default Transport
 	}
 	
-	public String isStringCallBlocked() {
+	public String getCallBlocked() {
 		
 		if(isBlocked) {
 			return "TRUE";
@@ -472,12 +472,15 @@ public class CcDigitAnalysisEngine {
 			CcTransformInit(sipURI);
 
 		} else {
+			foundRuleMatch = false;
+			
 			if(type==1)
 				logger.warn("CcProcessTransformRules() No Transform patterns matches found for type: CALLING " + originalCallingSipURI);
 			if(type==2)
 				logger.warn("CcProcessTransformRules() No Transform patterns matches found for type: CALLED " + originalSipURI );
 			if(type==3)
 				logger.warn("CcProcessTransformRules() No Transform patterns matches found for type: REDIRECT " + originalRedirectSipURI);		
+			
 		}
 
 		//logger.info("CcProcessTransformRules() potentialMatchCallRules() cache cleaned");
@@ -602,7 +605,7 @@ public class CcDigitAnalysisEngine {
 		// Call is blocked
 		
 		if (isBlockedEnabled.matches("TRUE")) {
-			logger.info("CcDigitAnalysisTransformationRes() Call Rejected by Rule [" + ruleParams[1] + "]");
+			logger.warn("CcDigitAnalysisTransformationRes() Call Rejected by Rule [" + ruleParams[1] + "]");
 			isBlocked = true;
 		}
 		// No Replace String is configured
@@ -623,7 +626,10 @@ public class CcDigitAnalysisEngine {
 		}
 		
 		else {
-
+			
+		/**
+		 * Start String replacement
+		 */
 			 String srcString = ruleParams[4].toString();
 			 String dstString = ruleParams[5].toString();
 			 	 
@@ -635,9 +641,15 @@ public class CcDigitAnalysisEngine {
 					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
 						 logger.info("CcProcessTransformSipURI() (calling) Transformed SIP URI: " + transformedCallingSipURI);
 					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (calling) Unable to transform SIP URI: " + transformedCallingSipURI);
+						 transformedCallingSipURI = originalCallingSipURI;
+					 }
 					 
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
+					 
+					 
 					 
 				 }
 				 else if (ruleParams[3].toString().matches("REGEX")) {
@@ -654,6 +666,10 @@ public class CcDigitAnalysisEngine {
 					 transformedCalledSipURI = SIP_PROTOCOL + dstString + DELIMITER + domainURI;
 					 if(utilObj.isValidSipUri(transformedCalledSipURI)) {
 						 logger.info("CcProcessTransformSipURI() (called) Transformed SIP URI: " + transformedCalledSipURI);
+					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (called) Unable to transform SIP URI: " + transformedCalledSipURI);
+						 transformedCalledSipURI = originalSipURI;
 					 }
 					 
 				 } 
@@ -1322,7 +1338,6 @@ public class CcDigitAnalysisEngine {
 		
 	//	logger.info("Tokens[] Rule Number: " + ruleNumber + " Type:" + ruleType + " Rule Source: " + ruleSrcString + " Rule Destination: " + ruleDstString);
 		
-		
 		String resultURI[] = CcExtractURI("sip:" + sipURI);
 		String userURI = resultURI[0].toString();
 		if (userURI != null && !ruleSrcString.isEmpty()) {
@@ -1397,6 +1412,7 @@ public class CcDigitAnalysisEngine {
 				String newRuleString = utilObj.getWildCard(ruleString);
 				// logger.info("CcProcessRulesWildCardCdcc() WildCard Internal Value: "
 				// + newRuleString);
+				
 				PatternSyntaxException exc = null;
 				try {
 					Pattern.compile(newRuleString);

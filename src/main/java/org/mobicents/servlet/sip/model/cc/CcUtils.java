@@ -331,6 +331,7 @@ public class CcUtils {
 	 * @return
 	 */
 	public String getWildCard(String routeString) {
+		
 		// logger.info("getWildCard() Incoming rule: " + routeString);
 		routeString = routeString.replace("X", "\\d");
 		// logger.info("getWildCard() " + routeString);

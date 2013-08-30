@@ -20,7 +20,7 @@ public class RegexEngine {
 	private String PATTERN;
 	private int[] FAILURE;
 	private int MATCHPOINT;
-	
+	private static ArrayList<RegexRule> regexRules = new ArrayList<RegexRule>(); 
 	
 	//private static Logger logger = Logger.getLogger(CcUtils.class);
 	
@@ -99,9 +99,12 @@ public class RegexEngine {
 	 * @param prototype
 	 * @return
 	 */
-	public static Pattern generateRegex(String prototype) {
+	
+	public static Pattern generateRegexHelper(String prototype) {
+		
         return Pattern.compile(generateRegexpEngine(prototype));
-    }
+    
+	}
 	
 	/**
 	 * Create Regex expression based on input
@@ -155,12 +158,20 @@ public class RegexEngine {
 	public static boolean validateRule(String regexPrototype) {
 		
 		String plus = "\\+";
+		String all = "(.*)";
 		try {
 				
 			Pattern srcP = Pattern.compile(regexPrototype);
 			if(StringUtils.countMatches(regexPrototype, plus)>1) {
 				System.err.println("Invalid Regex: " + regexPrototype );
 				return false;
+			}
+			else if(StringUtils.countMatches(regexPrototype, all)>1) {
+				System.err.println("Invalid Regex: " + regexPrototype );
+				return false;
+			}
+			else {
+				return true;
 			}
 			
 		} catch (PatternSyntaxException ex) {
@@ -177,7 +188,6 @@ public class RegexEngine {
 			return false;
 		}
 				
-		return true;
 			
 	}
 	
@@ -190,6 +200,7 @@ public class RegexEngine {
 	private static String generateSimpleRegexGroup(String regexPrototype) {
 		
 		String digits = "\\d";
+		String all    = "(.*)";
 		StringBuilder simplifiedRegex = new StringBuilder();
 	    List<RegexGroup> regexGroupObjectList = new ArrayList<RegexGroup>();
 		List<Integer> regexGroupElementsList = new ArrayList<Integer>();
@@ -197,8 +208,11 @@ public class RegexEngine {
 		int lastIndex = 0;
     	int count = 0;
     	int groupId = 0;
-    	
-    	if(!validateRule(regexPrototype) || regexPrototype.length()<=0 || StringUtils.countMatches(regexPrototype, digits)==0) {
+    	boolean containsAll = false;
+    	RegexRule newRule = new RegexRule();
+		
+		
+    	if(!validateRule(regexPrototype) || regexPrototype.length() <= 0) {
     		return null;
     	}
     	
@@ -206,43 +220,55 @@ public class RegexEngine {
     	 * Call Knuth-Morris-Pratt algorithm
     	 */
     	
-    	RegexEngine matcher = new RegexEngine();
-    	matcher.KMPInit(regexPrototype,digits);
-    	
-    	if (matcher.KMPmatch()) {
-    		System.out.println("-----------------------------------------------------------------");
-    		System.out.println("Knuth-Morris-Pratt() String: " + regexPrototype + " Index match: " + matcher.KMPgetMatchPoint());
+    	if(StringUtils.countMatches(regexPrototype, all) > 0) {
+    		
+    		RegexEngine matcherAll = new RegexEngine();
+        	matcherAll.KMPInit(regexPrototype,all);
+        	
+        	if (matcherAll.KMPmatch()) {
+        		System.out.println("RegexEngine() Knuth-Morris-Pratt() Match! String: " + regexPrototype + " Index match(ALL): " + matcherAll.KMPgetMatchPoint());
+        	}
+        	
+        	containsAll = true;
+        	
+        	if(StringUtils.countMatches(regexPrototype, digits) == 0) {
+    			newRule.setRuleValue(regexPrototype);
+    			newRule.setSimplifiedRuleValue(regexPrototype);
+        		newRule.setNumberOfGroups(1);
+        		newRule.regexGroupsItems.add("(.*)");
+        		regexRules.add(newRule);
+        		
+    		}
+    		     	
     	}
     
-		
     	
     	if(StringUtils.countMatches(regexPrototype, digits)>0) {
+    		
+    		
     		
     		/**
     		 * Find index of match digits and stores in Main Array
     		 */
     		
-			while (lastIndex != -1) {			
-	    		lastIndex = regexPrototype.indexOf(digits, lastIndex);
-	    		if (lastIndex != -1) {
-	    			regexGroupElementsList.add(lastIndex);
-	    			lastIndex += digits.length();
-	    			count++;	
-	    		}
-	    	}
+				while (lastIndex != -1) {			
+					lastIndex = regexPrototype.indexOf(digits, lastIndex);
+					if (lastIndex != -1) {
+						regexGroupElementsList.add(lastIndex);
+						lastIndex += digits.length();
+						count++;	
+					}
+				}
 		
-		
-		/**
-		 * Find number of groups
-		 * Create Object
-		 * Process String
-		 * 	
-		 */
-			
-		for (int i=0;i<regexGroupElementsList.size();i++) {		
-			
-				if(i+1 < regexGroupElementsList.size()) {
+				/**
+				 * Find number of groups
+				 * Create Object
+				 * Process String
+				 * 	
+				 */
+				for (int i=0;i<regexGroupElementsList.size();i++) {		
 					
+					if(i+1 < regexGroupElementsList.size()) {
 						if(regexGroupElementsList.get(i) == regexGroupElementsList.get(i+1) - digits.length()) {	
 							if(groupId==0) {
 								//System.out.printf("New Regex Group found index: %d\n",regexGroupElementsList.get(i));
@@ -259,74 +285,96 @@ public class RegexEngine {
 							regexGroupObjectList.get(groupId).setIndexStart(regexGroupElementsList.get(i+1));
 							groupId++;
 						}
-				} 
-				else {
-					
-					// Only 1 element
-					if(regexGroupObjectList.size()==0) {
-						
-						regexGroupObjectList.add(new RegexGroup(1));
-						regexGroupObjectList.get(0).processElements(1, regexGroupElementsList);	
-						regexGroupObjectList.get(0).setIndexStart(regexGroupElementsList.get(i));
+					} 
+					else {			
+						// Only 1 element
+						if(regexGroupObjectList.size()==0) {
+							regexGroupObjectList.add(new RegexGroup(1));
+							regexGroupObjectList.get(0).processElements(1, regexGroupElementsList);	
+							regexGroupObjectList.get(0).setIndexStart(regexGroupElementsList.get(i));
+						}	
 					}
-					
-					
 				}
-				
-		}
 	
-		System.out.println("Pattern found: " + count + " time(s). Regex Groups: " + regexGroupObjectList.size() + " " + " All elements: " + regexGroupElementsList); 	
-		   
+						System.out.println("RegexEngine() Pattern found: " + count + " time(s). Regex Groups: " + regexGroupObjectList.size() + " " + " All elements: " + regexGroupElementsList); 	
+				   
+					
+						/**
+						 * Convert Original string to New String
+						 */
+						int obj = 0;
+						int ptr = 0;
+		
+						while(ptr < regexPrototype.length()) {
+						
+							if(ptr == regexGroupObjectList.get(obj).getIndexStart()) {
+								simplifiedRegex.append("((\\d){" + regexGroupObjectList.get(obj).getElements() + "})");
+								newRule.regexGroupsItems.add("((\\d){" + regexGroupObjectList.get(obj).getElements() + "})");
+								ptr += regexGroupObjectList.get(obj).getOffset();
+								
+								if(regexGroupObjectList.size()>1 && obj+1 < regexGroupObjectList.size())
+									obj++;
+								
+							}
+							else {
+								simplifiedRegex.append(regexPrototype.charAt(ptr));
+								ptr++;
+							}
+						}
 			
-		/**
-		 * Convert Original string to New String
-		 */
-		int obj = 0;
-		int ptr = 0;
-		
-		while(ptr < regexPrototype.length()) {
-			if(ptr == regexGroupObjectList.get(obj).getIndexStart()) {
-				simplifiedRegex.append("((\\d){" + regexGroupObjectList.get(obj).getElements() + "})");
-				ptr += regexGroupObjectList.get(obj).getOffset();
-				obj++;
-			}
-			else {
-				simplifiedRegex.append(regexPrototype.charAt(ptr));
-				ptr++;
-			}
-		}
-			
-		simplifiedRegex.insert(0,"^");
-		simplifiedRegex.insert(simplifiedRegex.length(),"$");
-		
-		
-		
+						simplifiedRegex.insert(0,"^");
+						simplifiedRegex.insert(simplifiedRegex.length(),"$");
+    	} 
+    	else 
+    	{
+    		return null;
     	}
     	
+    	
     	if(validateRule(simplifiedRegex.toString())) {
-    		System.out.println("Original Regex: " + regexPrototype + " New Regex: " + simplifiedRegex);	
+    		System.out.println("RegexEngine() Original Regex: " + regexPrototype + " New Simplified Regex: " + simplifiedRegex);
     		System.out.println("-----------------------------------------------------------------");
+    	
+    		if (containsAll) {		
+    			newRule.setRuleValue(regexPrototype);
+    			newRule.setSimplifiedRuleValue(simplifiedRegex.toString());
+        		newRule.setNumberOfGroups(regexGroupObjectList.size()+1);
+        		regexRules.add(newRule);
+    		}
+    		else {
+    			newRule.setRuleValue(regexPrototype);
+    			newRule.setSimplifiedRuleValue(simplifiedRegex.toString());
+        		newRule.setNumberOfGroups(regexGroupObjectList.size());
+        		regexRules.add(newRule);
+    		}
+    		
     		return simplifiedRegex.toString();
     	}	
     	else
     		return null;
 	
+	   	
 	}
 	
-
-
-
 	
 	
-	private static void test(String input) {
+	private static void testRegexRule(String input) {
 		
-        Pattern pattern = generateRegex(input);
-        System.out.println(String.format("Test() String: %s --> Regex value: %s", input, pattern));
-        generateSimpleRegexGroup(pattern.toString());
+		try {
+			Pattern pattern = generateRegexHelper(input);
+			System.out.println("-----------------------------------------------------------------");
+			System.out.println(String.format("testRegexRule() String: %s --> Regex value: %s", input, pattern));
+			generateSimpleRegexGroup(pattern.toString());
+		}
+		catch(Exception e) {	
+			e.printStackTrace();
+			System.out.println("testRegexRule() Invalid input for Wildcard: " + input);
+		}
         
     }
 	
 	 public static void main(String[] args) {
+		 
 	/**
 	 * Example: TRANSFORM=("2","TRUE","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED","FALSE")
 	 * 			22223333 Match RULE XXXXXXXX
@@ -341,24 +389,35 @@ public class RegexEngine {
 	        String[] prototypes = {
 	            "22223333",
 	            "18668643232**22223333",
+	            "+!",
 	            "9.14082186575",
+	            "+1408XXXXXXX",
+	            "+1!",
 	            "+5255579469",
 	            "+14082185475",
 	            "+52-5557969469",
-	            "!22223333!",
+	            "22223333!",
 	            "+19001236575",
 	            "XXXXXXXX",
-	            "18668643232**XXXXXXXX**XX",
+	            "18668643232**XXXXXXXX",
 	            "91XXXXXXXXXX",
 	            "+!",
 	            "011!",
-	            "XX**18668643232**XXXXXXXX**X**XX",
-	            "XX",
-	            "X"
+	            "18668643232**XXXXXXXX**XXXXXXXX**XX!",
+	            "X11",
+	            "9XX!",
+	            "11XX",
+	            "XXXXX.XX",
+	            "001408XXXXXXX"
 	        };
 
 	        for (String prototype : prototypes) {
-	            test(prototype);
+	        	testRegexRule(prototype);
+	        }
+	        
+	        System.out.println("");
+	        for (int i=0;i<regexRules.size();i++) {
+	        	System.out.println(regexRules.get(i).getRulesValues());
 	        }
 	    }
 	 
