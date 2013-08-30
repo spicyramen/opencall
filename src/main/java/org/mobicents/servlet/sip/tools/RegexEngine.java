@@ -339,6 +339,7 @@ public class RegexEngine {
     			newRule.setRuleValue(regexPrototype);
     			newRule.setSimplifiedRuleValue(simplifiedRegex.toString());
         		newRule.setNumberOfGroups(regexGroupObjectList.size()+1);
+        		newRule.regexGroupsItems.add("(.*)");
         		regexRules.add(newRule);
     		}
     		else {
@@ -418,6 +419,7 @@ public class RegexEngine {
 	        System.out.println("");
 	        for (int i=0;i<regexRules.size();i++) {
 	        	System.out.println(regexRules.get(i).getRulesValues());
+	        	regexRules.get(i).displayGroups();
 	        }
 	    }
 	 

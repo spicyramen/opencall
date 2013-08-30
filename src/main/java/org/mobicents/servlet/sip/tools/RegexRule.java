@@ -50,4 +50,10 @@ public class RegexRule {
 		return groupNumber;
 	}
 	
+	public void displayGroups() {
+		 for (int i=0;i<regexGroupsItems.size();i++) {
+	        	System.out.println(regexGroupsItems.get(i).toString());
+	        }
+	}
+	
 }
