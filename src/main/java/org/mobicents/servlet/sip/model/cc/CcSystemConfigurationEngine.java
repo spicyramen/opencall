@@ -1073,11 +1073,8 @@ public class CcSystemConfigurationEngine implements
 							logger.info("Token (" + tokenIndex + "): " + token);
 						}
 						if (tokenIndex == 5) { // TRUNK
-							if (CcUtils.isValidIP(token)
-									|| CcUtils.isValidHostName(token)
-									|| token.matches("_DNS_"))
-								logger.info("Token (" + tokenIndex + "): "
-										+ token);
+							if (CcUtils.isValidIP(token) || CcUtils.isValidHostName(token) || token.matches("_DNS_"))
+								logger.info("Token (" + tokenIndex + "): " + token);
 
 						}
 						if (tokenIndex == 6) { // PORT or TRANSPORT
@@ -1284,7 +1281,12 @@ public class CcSystemConfigurationEngine implements
 				if (ruleTrunk.equals("_DNS_")) {
 					// logger.info("CcVerifyCallRuleLogic() Token RULE TRUNK is DNS: "
 					// + ruleTrunk);
-				} else if (CcUtils.isValidIP(ruleTrunk)
+				} 
+				else if (ruleTrunk.equals("_TWILIO_")) {
+					// logger.info("CcVerifyCallRuleLogic() Token RULE TRUNK is DNS: "
+					// + ruleTrunk);
+				} 
+				else if (CcUtils.isValidIP(ruleTrunk)
 						|| CcUtils.isValidHostName(ruleTrunk)) {
 					// logger.info("CcVerifyCallRuleLogic() Token RULE TRUNK: " +
 					// ruleTrunk);
@@ -1296,7 +1298,7 @@ public class CcSystemConfigurationEngine implements
 			// PORT or TRANSPORT		
 			if (rulePort != null && !rulePort.isEmpty()) {			
 				
-				if (ruleTrunk.equals("_DNS_")) {
+				if (ruleTrunk.equals("_DNS_") || ruleTrunk.equals("_TWILIO_")  ) {
 						 logger.warn("CcVerifyCallRuleLogic() Token: " +
 						  rulePort + " is INVALID when using _DNS_ type");
 						return false;
@@ -1320,6 +1322,12 @@ public class CcSystemConfigurationEngine implements
 					 
 					 if (ruleTrunk.equals("_DNS_")) {
 						 logger.warn("CcVerifyCallRuleLogic() Can't use DNS with Token Rule TRANSPORT: " +
+								 ruleTransport);
+							return false;
+					 }
+					 
+					 if (ruleTrunk.equals("_TWILIO_")) {
+						 logger.warn("CcVerifyCallRuleLogic() Can't use Twilio with Token Rule TRANSPORT: " +
 								 ruleTransport);
 							return false;
 					 }

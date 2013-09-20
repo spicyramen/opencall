@@ -793,7 +793,20 @@ public class CcDigitAnalysisEngine {
 			
 		} 
 		
+		if (ruleParams[3].toString().matches("REGEX")
+				&& ruleParams[5].toString().matches("_TWILIO_")) {
+			// TODO: DE1 Call Routing Rules transport support DNS trunk type should allow Transport definition
+			this.finalCalledSipURI = origSipURI;
+			logger.info("CcProcessFinalSipURI() Final SIP URI: " + finalCalledSipURI);
+			return finalCalledSipURI;
+			
+		} 
+		
 		// TODO: DE3 Call Routing Rules using Domain name in SIP URI and type: REGEX should allow send call directly to IP
+		
+		// TODO: DE4 IF REGEX and Twilio we need to remove the Hostname and insert the TWILIO DOMAIN
+		// parsed form the CALL rules, otherwise we just thrown an error and drop the call
+		
 		
 		else {
 

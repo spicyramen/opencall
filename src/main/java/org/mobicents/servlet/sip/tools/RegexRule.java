@@ -38,7 +38,7 @@ public class RegexRule {
 		RuleValue = ruleValue;
 	}
 	
-	public String getRulesValues() {
+	public String getRuleInfo() {
 		return "Rule: [" + RuleValue + "] Simplified: [" + simplifiedRuleValue + "] " + "Groups: " + groupNumber + " ";
 	}
 
@@ -46,11 +46,12 @@ public class RegexRule {
 		groupNumber = groupsNum;
 	}
 	
-	public int getGroupNumber() {
+	public int getNumberOfGroups() {
 		return groupNumber;
 	}
 	
 	public void displayGroups() {
+		System.out.println("Rule: [" + RuleValue + "] Simplified: [" + simplifiedRuleValue + "] ");
 		 for (int i=0;i<regexGroupsItems.size();i++) {
 	        	System.out.println(regexGroupsItems.get(i).toString());
 	        }

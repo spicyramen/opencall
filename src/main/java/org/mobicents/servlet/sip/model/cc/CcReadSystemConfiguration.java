@@ -52,6 +52,11 @@ public class CcReadSystemConfiguration {
 		dbParams.add("DBNAME");
 		dbParams.add("DBUSERNAME");
 		dbParams.add("DBPASSWORD");
+		
+		// Twilio Support
+		dbParams.add("TWILIO_DOMAIN");
+		dbParams.add("TWILIO_ACCOUNT_SID");
+		dbParams.add("TWILIO_AUTH_TOKEN");
 	}
 
 	public boolean CcInitSystemConfiguration() {

@@ -358,6 +358,30 @@ public class RegexEngine {
 	}
 	
 	
+	private static boolean compareRegexRules(RegexRule src,RegexRule dst) {
+			
+ 		System.out.println("Comparing: " + src.getRuleInfo() + " and " + dst.getRuleInfo());       		  
+ 	   
+		if (src.getNumberOfGroups()==dst.getNumberOfGroups()) {
+			System.out.println("----------------------");	
+				if(src.regexGroupsItems.get(src.getNumberOfGroups()-1).contains(dst.regexGroupsItems.get(src.getNumberOfGroups()-1))) {
+					System.out.println("Same rule group:" + src.regexGroupsItems.get(src.getNumberOfGroups()-1) );
+					System.out.println(src.getRuleInfo());
+					System.out.println(dst.getRuleInfo());
+					
+				}
+				else {
+					return false;
+				}
+			
+			return true;
+		}
+		else {
+			return false;
+				
+		}
+		
+	}
 	
 	private static void testRegexRule(String input) {
 		
@@ -388,28 +412,9 @@ public class RegexEngine {
 	 */
 		
 	        String[] prototypes = {
-	            "22223333",
-	            "18668643232**22223333",
-	            "+!",
-	            "9.14082186575",
-	            "+1408XXXXXXX",
-	            "+1!",
-	            "+5255579469",
-	            "+14082185475",
-	            "+52-5557969469",
-	            "22223333!",
-	            "+19001236575",
-	            "XXXXXXXX",
-	            "18668643232**XXXXXXXX",
-	            "91XXXXXXXXXX",
-	            "+!",
-	            "011!",
-	            "18668643232**XXXXXXXX**XXXXXXXX**XX!",
-	            "X11",
-	            "9XX!",
-	            "11XX",
-	            "XXXXX.XX",
-	            "001408XXXXXXX"
+	        	//2222333	
+	             "XXXXXXXX",
+	            "18669886575**XXXXXXXX"
 	        };
 
 	        for (String prototype : prototypes) {
@@ -418,8 +423,12 @@ public class RegexEngine {
 	        
 	        System.out.println("");
 	        for (int i=0;i<regexRules.size();i++) {
-	        	System.out.println(regexRules.get(i).getRulesValues());
-	        	regexRules.get(i).displayGroups();
+	        	//System.out.println(regexRules.get(i).getRuleInfo());
+	        	//regexRules.get(i).displayGroups();
+	        	if(i+1<regexRules.size()) {
+	        		compareRegexRules(regexRules.get(i),regexRules.get(i+1));
+	
+	        	}
 	        }
 	    }
 	 

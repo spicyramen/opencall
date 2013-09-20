@@ -119,7 +119,7 @@ public class CcUtils {
 					if ((tokenIndex == 5 && tokenIndex == iToken)
 							|| (tokenIndex == 5 && iToken == 0)) { // TRUNK
 						if (isValidIP(token) || isValidHostName(token)
-								|| token.matches("_DNS_")) {
+								|| token.matches("_DNS_") || token.matches("_TWILIO_")) {
 							// logger.info("getRuleValue() Token [" + tokenIndex
 							// + "]: " + token);
 							Tokens[tokenIndex] = token;
@@ -387,6 +387,10 @@ public class CcUtils {
 	public static boolean isValidHostName(String hostName) {
 		
 		if(hostName.matches("_DNS_")) {
+			return true;
+		}
+		
+		if(hostName.matches("_TWILIO_")) {
 			return true;
 		}
 		
