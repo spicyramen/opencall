@@ -97,6 +97,29 @@ has-props
 .settings
 dir
 
+README
+file
+
+
+
+add
+
+
+
+
+
+has-props
+has-prop-mods
+
+
+
+
+
+
+copied
+https://ramenopencall.googlecode.com/svn/branches/belador/opencall/readme.txt
+30
+
 config
 dir
 
@@ -145,7 +168,7 @@ file
 
 
 
-
+delete
 2013-04-20T04:53:10.000000Z
 c459862d4645446c3b72c99e79f81853
 2013-04-20T05:22:14.119370Z

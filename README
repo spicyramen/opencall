@@ -1,34 +1,40 @@
-OpenCall Architecture
+OpenCall 
+--------
 
-When placing SIP Calls for multiple products you face the challenge to install a SIP server and configure Call routing
- Rules, Trunks, ACL, usernames, passwords. OpenCall? is an OpenSource? SIP B2BUA which uses Mobicents SIP stack which 
+When placing SIP Calls for multiple products you face the challenge to install a SIP server and configure Call routing rules, Trunks, ACL, usernames, passwords. OpenCall? is an OpenSource? SIP B2BUA which uses Mobicents SIP stack which 
  solves this problem. By just installing Mobicents and deploying this application you will be able to place calls in 
  minutes. With Opencall you will be able to integrate to existing Audio and Video systems 
  (Cisco Unified Communications Manager, VCS, CTX, CME, Asterisk, Polycom DMA, etc.)
 
 Features
+--------
+
 Allows Call Routing Rules configuration
 Local File configuration
 DB connection to MySQL DB where Rules can be stored
 SIP URI dialing
 SIP Regex support
 E164 dialing
-Transport support: TCP, UDP, WSS, TLS
-Next version 1.1 will support:
+Transport support: TCP, UDP, WSS, TLS, WS
+Allow WebRTC clients using WS to connect to SIP enviroments (sipml5)
+
+
+Version 1.1 will support:
 
 Allows Call Routing Rules transformations
 Route List support
+API
+Twilio
 Administration Web Page
 Call log analyzer
 CDR generation
 SIP Headers Modification
 SDP Body Modification via LUA script
 Implementation of SIP CLF (SIPCLF)
-API
-Twilio
 
 
 Installation
+------------
 
 Mobicents installation
 
@@ -80,6 +86,7 @@ Run the command:
 
 
 Opencall Installation
+----------------------
 
 ¥	Download Opencall  war file
 
@@ -101,7 +108,21 @@ Configure proper file location inside Opencall.ini define path for Opencall serv
 
 MODE=1
 RULE_LIMIT=100
-FILELOCATION=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/Opencall/Opencallrules.cfg
+CALLRULES=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
+CALLTRANSFORMS=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
+CALLROUTELIST=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg
+DBTYPE=1
+DBHOSTNAME=localhost
+DBPORT=3306
+DBNAME=opencall
+DBUSERNAME=root
+DBPASSWORD=
+
+# Twilio Support
+TWILIO_DOMAIN=opencall.sip.twilio.com
+TWILIO_ACCOUNT_SID=AC433e7b0bec93dc5996e4fb80b1e56eec
+TWILIO_AUTH_TOKEN=9cc9267fe09dab362d3be160f711a09d
+
 
 ¥	Download and configure Opencall server call routing rules
 
@@ -193,13 +214,21 @@ Example:
 
 MODE=1
 RULE_LIMIT=100
-FILELOCATION=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
+CALLRULES=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
+CALLTRANSFORMS=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
+CALLROUTELIST=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg
 DBTYPE=1
 DBHOSTNAME=localhost
 DBPORT=3306
 DBNAME=opencall
 DBUSERNAME=root
 DBPASSWORD=
+
+# Twilio Support
+TWILIO_DOMAIN=opencall.sip.twilio.com
+TWILIO_ACCOUNT_SID=AC433e7b0bec93dc5996e4fb80b1e56eec
+TWILIO_AUTH_TOKEN=9cc9267fe09dab362d3be160f711a09d
+
 
 Opencall Route Configuration
 
@@ -212,7 +241,7 @@ RULE     	= NUMERIC
 PRIORITY 	= NUMERIC
 TYPE     	= REGEX,  WILDCARD, NUMERIC
 STRING   	= VALUE
-TARGET   	= IP ADDRESS, HOSTNAME, _DNS_
+TARGET   	= IP ADDRESS, HOSTNAME, _DNS_, _TWILIO_
 
 Optional
 PORT     = NUMERIC VALUE (DEFAULT 5060)
@@ -235,6 +264,7 @@ ROUTE=("10","50","WILDCARD","0115233!","110.10.0.200","5060")
 ROUTE=("11","1","NUMERIC","+525557969469","110.10.0.200","5060")
 ROUTE=("12","1","WILDCARD","4XX","110.10.0.220","5060")
 ROUTE=("13","10","NUMERIC","+14089449402","110.10.0.200","5060")
+ROUTE=("14","10","NUMERIC","+14089449402","TWILIO")
 
 
 ¥	Verify Opencall war file is deployed successfully.
