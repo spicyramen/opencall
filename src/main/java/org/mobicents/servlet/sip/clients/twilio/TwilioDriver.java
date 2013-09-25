@@ -10,7 +10,7 @@ import java.util.Map;
 public class TwilioDriver {
 	
 		/**
-		 * Twilio interface will read Twilio accoun information.
+		 * Twilio interface will read Twilio account information.
 		 * and send request to Twilio via REST API, Twilio will create SIP messages and contact SIP device
 		 */
 	  // Find your Account Sid and Token at twilio.com/user/account

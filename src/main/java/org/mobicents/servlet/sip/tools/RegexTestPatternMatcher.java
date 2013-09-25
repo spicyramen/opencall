@@ -6,34 +6,46 @@ import java.util.regex.Pattern;
 public class RegexTestPatternMatcher {
 	
 	
-  public static String TEXT = "+14082186575";
-  public static String NEW_TEXT = "";
-  public static String REGEX_SRC = "^\\+1408((\\d){7})$";
-  public static String REGEX_DST = "^001408((\\d){7})$";
+  public static String targetText = "22224444@videolab.att.com";
+  public static String matchPattern = "(.*)@(.*)";
+  public static String replacePattern = "+$1@$2";
+  public static String resultText = "";
   
 
+  public RegexTestPatternMatcher() {
+	  
+  }
+  
+  
   public static void main(String[] args) {
 	 
-	Pattern original = Pattern.compile(REGEX_SRC);
-    Matcher matcher = original.matcher(TEXT);
+	Pattern original = Pattern.compile(matchPattern);
+    Matcher matcher = original.matcher(targetText);
     
+    RegexTestResult result = new RegexTestResult();
+    result.setText(targetText);
+    result.setMatches(matcher.matches());
+    matcher.reset();
+    result.setReplacedText(matcher.replaceAll(replacePattern));
     
-    // Check all occurrences
-    if (matcher.find()) {
-      System.out.println("Input: " + TEXT);	
-      System.out.println("Regex: " + REGEX_SRC);
-      System.out.print("Start index: " + matcher.start(1));
-      System.out.print(" End index: " + matcher.end(1) + " ");
-      System.out.println("String Match: " + matcher.group(1));
-      NEW_TEXT =  matcher.group(1).toString();
+    System.out.println("Original text: " + result.getText());
+    
+    /**
+     * while (matcher.find()) {  
+        String matchText = matcher.group();
+        int start = matcher.start();
+        int end = matcher.end();
+        result.addGroup(new Group(matchText, start, end));
     }
+     */
     
-    System.out.println("Matching src string: " + NEW_TEXT);
+    
+    System.out.println("Replaced text: " + result.getReplacedText());
+    
+   
     // Now create a new pattern and matcher to replace whitespace with tabs
     
-    REGEX_DST = REGEX_DST.replace("^", "");
-    REGEX_DST = REGEX_DST.replace("$", "");
-    System.out.println("Regex: " + REGEX_DST);
+ 
     
  
    

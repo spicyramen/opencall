@@ -401,10 +401,47 @@ public class RegexEngine {
 		}
 		catch(Exception e) {	
 			e.printStackTrace();
-			logger.info("testRegexRule() Invalid input for Wildcard: " + input);
+			logger.error("testRegexRule() Invalid input for Wildcard: " + input);
 		}
         
     }
+	
+	public String processRegexRules(String regexSrc,String regexDst,String callInformation) {
+		
+		try {
+			Pattern original = Pattern.compile(regexSrc);
+		    Matcher matcher = original.matcher(callInformation);
+		    
+		    RegexTestResult result = new RegexTestResult();
+		    result.setText(callInformation);
+		    result.setMatches(matcher.matches());
+		    matcher.reset();
+		    result.setReplacedText(matcher.replaceAll(regexDst));
+		    
+		    logger.info("processRegexRules() Original text: " + result.getText());
+		    
+		    /**
+		     * while (matcher.find()) {  
+		        String matchText = matcher.group();
+		        int start = matcher.start();
+		        int end = matcher.end();
+		        result.addGroup(new Group(matchText, start, end));
+		    }
+		     */
+		    System.out.println("processRegexRules() Replaced text: " + result.getReplacedText());
+		    return result.getReplacedText();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error("processRegexRules() Error: " + e.getMessage());
+			return null;
+		}
+		
+	    
+	   
+	    
+	}
+	
 	
 	public String processWildCardRules(String regexSrc,String regexDst,String callInformation) {
 		/**

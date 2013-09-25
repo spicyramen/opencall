@@ -31,6 +31,7 @@ public class CcDigitAnalysisEngine {
 	private String transformedCalledSipURI = null;
 	private String transformedRedirectedSipURI = null;
 	
+	private String initialSipURI = null;
 	private String originalSipURI = null;
 	private String originalCallingSipURI = null;
 	private String originalRedirectSipURI = null;
@@ -144,7 +145,7 @@ public class CcDigitAnalysisEngine {
 		 *  3: Redirect
 		 */
 		
-	
+		
 		transformedCalledSipURI = incomingSipCall.getCalledNumber();
 		originalSipURI = incomingSipCall.getCalledNumber();
 		originalCallingSipURI = incomingSipCall.getCallingNumber();
@@ -197,7 +198,10 @@ public class CcDigitAnalysisEngine {
 			return false;
 		}
 
+		initialSipURI = Uri;
+		
 		String[] resultURI = CcExtractURI(Uri);	
+		
 		
 		if (resultURI == null || resultURI[0] == null || resultURI[1] == null) {
 			logger.error("CcTransformationReq() Invalid SIP URI: " + Uri);
@@ -609,6 +613,7 @@ public class CcDigitAnalysisEngine {
 			logger.warn("CcDigitAnalysisTransformationRes() Call Rejected by Rule [" + ruleParams[1] + "]");
 			isBlocked = true;
 		}
+		
 		// No Replace String is configured
 		else if(ruleParams[5].toString().length()==0 || ruleParams[5].toString()==null) {
 			
@@ -650,13 +655,15 @@ public class CcDigitAnalysisEngine {
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
 					 
-					 String resultURI[] = CcExtractURI(originalCallingSipURI);
+					 String resultURI[] = CcExtractURI(initialSipURI);
 					 String userURI = resultURI[0].toString();
 						
 					 RegexEngine transformationEngine = new RegexEngine();
 					 String finalCallingNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
 					 
-					 transformedCallingSipURI = SIP_PROTOCOL + finalCallingNumber + DELIMITER + domainURI;
+					 if(finalCallingNumber!=null)
+						 transformedCallingSipURI = SIP_PROTOCOL + finalCallingNumber + DELIMITER + domainURI;
+					 
 					 
 					 
 					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
@@ -670,9 +677,31 @@ public class CcDigitAnalysisEngine {
 				 }
 				 else if (ruleParams[3].toString().matches("REGEX")) {
 					 
+					 String[] resultURI = CcExtractURI(initialSipURI);
+					 String sipURI = resultURI[0].toString() + "@" + resultURI[1].toString();
+						logger.info("CcProcessTransformSipURI() URI:\t" + SIP_PROTOCOL
+								+ resultURI[0].toString() + "@" + resultURI[1].toString());
+						
+						 
+					 RegexEngine transformationEngine = new RegexEngine();
+					 String finalCallingNumber = transformationEngine.processRegexRules(srcString, dstString, sipURI);
+					 if(finalCallingNumber!=null)
+								 transformedCallingSipURI = SIP_PROTOCOL + finalCallingNumber;
+					 
+					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
+						 logger.info("CcProcessTransformSipURI() (calling) Transformed SIP URI: " + transformedCallingSipURI);
+					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (calling) Unable to transform SIP URI: " + transformedCallingSipURI);
+						 transformedCallingSipURI = originalCallingSipURI;
+					 }	 
+					 
 				 }
+				 
 				 else {
-					   
+					 logger.error("CcProcessTransformSipURI() Invalid state");
+					 return null;
+					 
 				 }
 			 }
 			
@@ -692,16 +721,17 @@ public class CcDigitAnalysisEngine {
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
 					 
-					 String resultURI[] = CcExtractURI(originalSipURI);
+					 String resultURI[] = CcExtractURI(initialSipURI);
 					 String userURI = resultURI[0].toString();
 						
 					 RegexEngine transformationEngine = new RegexEngine();
 					 String finalCalledNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
 					 
-					 transformedCalledSipURI = SIP_PROTOCOL + finalCalledNumber + DELIMITER + domainURI;
+					 if(finalCalledNumber!=null)
+						 transformedCalledSipURI = SIP_PROTOCOL + finalCalledNumber + DELIMITER + domainURI;
 					 
 					 
-					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
+					 if(utilObj.isValidSipUri(transformedCalledSipURI)) {
 						 logger.info("CcProcessTransformSipURI() (called) Transformed SIP URI: " + transformedCalledSipURI);
 					 }
 					 else {
@@ -712,9 +742,29 @@ public class CcDigitAnalysisEngine {
 				 }
 				 else if (ruleParams[3].toString().matches("REGEX")) {
 					 
+					 String[] resultURI = CcExtractURI(initialSipURI);
+					 String sipURI = resultURI[0].toString() + "@" + resultURI[1].toString();
+						logger.info("CcProcessTransformSipURI() URI:\t" + SIP_PROTOCOL
+								+ resultURI[0].toString() + "@" + resultURI[1].toString());
+						
+						 
+					 RegexEngine transformationEngine = new RegexEngine();
+					 String finalCalledNumber = transformationEngine.processRegexRules(srcString, dstString, sipURI);
+					 if(finalCalledNumber!=null)
+						 transformedCalledSipURI = SIP_PROTOCOL + finalCalledNumber;
+					 
+					 if(utilObj.isValidSipUri(transformedCalledSipURI)) {
+						 logger.info("CcProcessTransformSipURI() (called) Transformed SIP URI: " + transformedCalledSipURI);
+					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (called) Unable to transform SIP URI: " + transformedCalledSipURI);
+						 transformedCalledSipURI = originalSipURI;
+					 }	 
+					 
 				 }
 				 else {
-					   
+					 logger.error("CcProcessTransformSipURI() Invalid state");
+					 return null;
 				 }
 				 
 			 }
@@ -731,7 +781,7 @@ public class CcDigitAnalysisEngine {
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
 					 
-					 String resultURI[] = CcExtractURI(originalRedirectSipURI);
+					 String resultURI[] = CcExtractURI(initialSipURI);
 					 String userURI = resultURI[0].toString();
 						
 					 RegexEngine transformationEngine = new RegexEngine();
@@ -740,7 +790,7 @@ public class CcDigitAnalysisEngine {
 					 transformedRedirectedSipURI = SIP_PROTOCOL + finalRedirectNumber + DELIMITER + domainURI;
 					 
 					 
-					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
+					 if(utilObj.isValidSipUri(transformedRedirectedSipURI)) {
 						 logger.info("CcProcessTransformSipURI() (redirect) Transformed SIP URI: " + transformedRedirectedSipURI);
 					 }
 					 else {
@@ -751,9 +801,29 @@ public class CcDigitAnalysisEngine {
 				 }
 				 else if (ruleParams[3].toString().matches("REGEX")) {
 					 
+					 String[] resultURI = CcExtractURI(initialSipURI);
+					 String sipURI = resultURI[0].toString() + "@" + resultURI[1].toString();
+						logger.info("CcProcessTransformSipURI() URI:\t" + SIP_PROTOCOL
+								+ resultURI[0].toString() + "@" + resultURI[1].toString());
+						
+						 
+					 RegexEngine transformationEngine = new RegexEngine();
+					 String finalRedirectNumber = transformationEngine.processRegexRules(srcString, dstString, sipURI);
+					 if(finalRedirectNumber!=null)
+						 transformedRedirectedSipURI = SIP_PROTOCOL + finalRedirectNumber;
+					 
+					 if(utilObj.isValidSipUri(transformedRedirectedSipURI)) {
+						 logger.info("CcProcessTransformSipURI() (redirect) Transformed SIP URI: " + originalRedirectSipURI);
+					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (redirect) Unable to transform SIP URI: " + originalRedirectSipURI);
+						 transformedRedirectedSipURI = originalRedirectSipURI;
+					 }	 
+					 
 				 }
 				 else {
-					   
+					 logger.error("CcProcessTransformSipURI() Invalid state");
+					 return null;
 				 } 
 			 }
 			
