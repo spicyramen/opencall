@@ -1,4 +1,4 @@
-package org.mobicents.servlet.sip.model.cc;
+package org.mobicents.servlet.sip.tools;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.apache.log4j.Logger;
+import org.mobicents.servlet.sip.tools.CcUtils;
+import org.mobicents.servlet.sip.tools.RegexEngine;
 
 public class CcDigitAnalysisEngine {
 
@@ -574,7 +576,6 @@ public class CcDigitAnalysisEngine {
 	 * @param ruleParams
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	
 	private String CcDigitAnalysisTransformationRes(String[] ruleParams) {
 
@@ -649,7 +650,19 @@ public class CcDigitAnalysisEngine {
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
 					 
+					 RegexEngine transformationEngine = new RegexEngine();
+					 String finalCallingNumber = transformationEngine.processWildCardRules(srcString, dstString,originalCallingSipURI);
 					 
+					 transformedCallingSipURI = SIP_PROTOCOL + finalCallingNumber + DELIMITER + domainURI;
+					 
+					 
+					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
+						 logger.info("CcProcessTransformSipURI() (calling) Transformed SIP URI: " + transformedCallingSipURI);
+					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (calling) Unable to transform SIP URI: " + transformedCallingSipURI);
+						 transformedCallingSipURI = originalCallingSipURI;
+					 }
 					 
 				 }
 				 else if (ruleParams[3].toString().matches("REGEX")) {
@@ -796,6 +809,8 @@ public class CcDigitAnalysisEngine {
 		if (ruleParams[3].toString().matches("REGEX")
 				&& ruleParams[5].toString().matches("_TWILIO_")) {
 			// TODO: DE1 Call Routing Rules transport support DNS trunk type should allow Transport definition
+			// TODO: DE4 IF REGEX and Twilio we need to remove the Hostname and insert the TWILIO DOMAIN
+			// parsed form the CALL rules, otherwise we just thrown an error and drop the call
 			
 			
 			this.finalCalledSipURI = origSipURI;
@@ -806,8 +821,6 @@ public class CcDigitAnalysisEngine {
 		
 		// TODO: DE3 Call Routing Rules using Domain name in SIP URI and type: REGEX should allow send call directly to IP
 		
-		// TODO: DE4 IF REGEX and Twilio we need to remove the Hostname and insert the TWILIO DOMAIN
-		// parsed form the CALL rules, otherwise we just thrown an error and drop the call
 		
 		
 		else {
@@ -1200,11 +1213,11 @@ public class CcDigitAnalysisEngine {
 
 		if (ruleType.equals("NUMERIC")) {
 			if (ruleSrcString != null && !ruleSrcString.isEmpty()) {
-				if (ruleSrcString.matches("(^(\\+)?[0-9]+([0-9]+)?)+")) {
-					// logger.info("Is a valid CcProcessRulesNumericCdcc rule");
-				} else {
+				if (!ruleSrcString.matches("(^(\\+)?[0-9]+([0-9]+)?)+")) {		
 					logger.error("Is an invalid CcProcessRulesNumericCdcc rule");
 					return false;
+				} else {
+					// logger.info("Is a valid CcProcessRulesNumericCdcc rule");
 				}
 
 				

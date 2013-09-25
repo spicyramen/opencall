@@ -2,6 +2,7 @@ package org.mobicents.servlet.sip.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.apache.commons.lang.StringUtils;
@@ -366,15 +367,14 @@ public class RegexEngine {
 			System.out.println("----------------------");	
 				if(src.regexGroupsItems.get(src.getNumberOfGroups()-1).contains(dst.regexGroupsItems.get(src.getNumberOfGroups()-1))) {
 					System.out.println("Same rule group:" + src.regexGroupsItems.get(src.getNumberOfGroups()-1) );
-					System.out.println(src.getRuleInfo());
-					System.out.println(dst.getRuleInfo());
-					
+					System.out.println("Regex Src: " + src.getRuleInfo());
+					System.out.println("Regex Dst: " + dst.getRuleInfo());
+					return true;
 				}
 				else {
 					return false;
 				}
-			
-			return true;
+
 		}
 		else {
 			return false;
@@ -383,6 +383,11 @@ public class RegexEngine {
 		
 	}
 	
+	
+	/**
+	 * 
+	 * @param input
+	 */
 	private static void testRegexRule(String input) {
 		
 		try {
@@ -398,38 +403,96 @@ public class RegexEngine {
         
     }
 	
-	 public static void main(String[] args) {
-		 
-	/**
-	 * Example: TRANSFORM=("2","TRUE","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED","FALSE")
-	 * 			22223333 Match RULE XXXXXXXX
-	 * 			XXXXXXXX is converted to \d\d\d\d\d\d\d\d
-	 * 			\d\d\d\d\d\d\d\d is simplified to ((\d){8})
-	 * 			(\d){8} is matched against WILDCARD RULE:
-	 * 			18668643232**XXXXXXXX
-	 * 			18668643232**XXXXXXXX is converted to 18668643232\*\*\d\d\d\d\d\d\d\d
-	 * 			
-	 */
+	public String processWildCardRules(String regexSrc,String regexDst,String callInformation) {
+		/**
+		 * Example: TRANSFORM=("2","TRUE","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED","FALSE")
+		 * 			22223333 Match RULE XXXXXXXX
+		 * 			XXXXXXXX is converted to \d\d\d\d\d\d\d\d
+		 * 			\d\d\d\d\d\d\d\d is simplified to ((\d){8})
+		 * 			(\d){8} is matched against WILDCARD RULE:
+		 * 			18668643232**XXXXXXXX
+		 * 			18668643232**XXXXXXXX is converted to 18668643232\*\*\d\d\d\d\d\d\d\d
+		 * 			
+		 */
 		
-	        String[] prototypes = {
-	        	//2222333	
-	             "XXXXXXXX",
-	            "18669886575**XXXXXXXX"
-	        };
+		 String[] prototypes = {
+		 		  regexSrc,
+				  regexDst
+	     };
 
-	        for (String prototype : prototypes) {
+		  for (String prototype : prototypes) {
 	        	testRegexRule(prototype);
-	        }
-	        
-	        System.out.println("");
-	        for (int i=0;i<regexRules.size();i++) {
+	      }
+		  
+		  for (int i=0;i<regexRules.size();i++) {
 	        	//System.out.println(regexRules.get(i).getRuleInfo());
 	        	//regexRules.get(i).displayGroups();
-	        	if(i+1<regexRules.size()) {
-	        		compareRegexRules(regexRules.get(i),regexRules.get(i+1));
-	
+	        	if(i+1 < regexRules.size()) {
+	        		
+	        		if(compareRegexRules(regexRules.get(i),regexRules.get(i+1))) {
+	        			System.out.println("----------------------");
+	        			System.out.println("Rules: " + regexRules.get(i).getRuleValue() + " " + regexRules.get(i+1).getRuleValue());
+	        			try {
+	        				
+	        				if (callInformation.matches(regexRules.get(i).getRuleValue()) ) {
+								System.out.println("Input: " + callInformation + " Match rule:" + regexRules.get(i).getRuleValue());
+								System.out.println("Rule: " + regexRules.get(i).getSimplifiedRuleValue());
+								//System.out.println(regexRules.get(i).getGroup(0));
+								
+								Pattern original = Pattern.compile(regexRules.get(i).getSimplifiedRuleValue());
+							    Matcher matcher = original.matcher(callInformation);
+							    String firstConversion = "";
+							    
+							    // Check all occurrences
+							    if (matcher.find()) {
+							    
+							      System.out.println("Input: " + callInformation);	
+							      System.out.println("Regex Src: " + regexRules.get(i).getSimplifiedRuleValue());
+							      System.out.print("Start index: " + matcher.start(1));
+							      System.out.print(" End index: " + matcher.end(1) + " ");
+							      System.out.println("String Match: " + matcher.group(1));
+							      firstConversion =  matcher.group(1).toString();
+							    }
+							    else {
+							    	return null;
+							    }
+							    
+							    System.out.println("Extracted value: " + firstConversion);
+								System.out.println("Regex Dst " + regexRules.get(i+1).getSimplifiedRuleValue());
+								
+							    int substringIndex = regexRules.get(i+1).getSimplifiedRuleValue().indexOf(regexRules.get(i).getGroup(0));
+							    
+							    if (substringIndex >=0 ) {
+							    	 String finalMatch = regexRules.get(i+1).getSimplifiedRuleValue().substring(0,substringIndex);
+									 finalMatch = finalMatch.replaceAll("\\^", "");
+									 finalMatch = finalMatch + firstConversion;
+									 System.out.println(finalMatch);
+									 return finalMatch;
+							    }
+							    else {
+							    	return null;
+							    }
+							   
+	        				}
+						}
+						catch(Exception e) {
+							return null;
+						}
+	        		
+	        		}
+	        		
 	        	}
 	        }
-	    }
+		  
+		return null;  
+		
+	}
+	
+	
+		 
+	        
+	//System.out.println("Processed string: " + processWildCardRules("XXXXXXXX","18668643232**XXXXXXXX","22223333"));
+	        
+	
 	 
 }

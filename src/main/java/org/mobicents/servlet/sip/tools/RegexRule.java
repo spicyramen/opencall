@@ -7,7 +7,7 @@ public class RegexRule {
 
 	private String simplifiedRuleValue = "";
 	private String RuleValue = "";
-	private int groupNumber = 0;
+	private int groupsNumber = 0;
 	public List<String> regexGroupsItems = new ArrayList<String>();
 	
 	public RegexRule(String rule, String ruleSimplified) {
@@ -17,6 +17,14 @@ public class RegexRule {
 			
 	}
 	
+	public String getGroup(int index) {
+		if(index > regexGroupsItems.size()) {
+			return "";
+		}
+		else {
+			return regexGroupsItems.get(index);
+		}
+	}
 	public RegexRule() {
 		System.out.println("RegexRule() New Regex rule object created");
 			
@@ -39,15 +47,15 @@ public class RegexRule {
 	}
 	
 	public String getRuleInfo() {
-		return "Rule: [" + RuleValue + "] Simplified: [" + simplifiedRuleValue + "] " + "Groups: " + groupNumber + " ";
+		return "Rule: [" + RuleValue + "] Simplified: [" + simplifiedRuleValue + "] " + "Groups: " + groupsNumber + " ";
 	}
 
 	public void setNumberOfGroups(int groupsNum) {
-		groupNumber = groupsNum;
+		groupsNumber = groupsNum;
 	}
 	
 	public int getNumberOfGroups() {
-		return groupNumber;
+		return groupsNumber;
 	}
 	
 	public void displayGroups() {

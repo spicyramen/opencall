@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.apache.log4j.Logger;
+import org.mobicents.servlet.sip.tools.CcUtils;
 
 public class CcSystemConfigurationEngine implements
 		CcSystemConfigurationFileInterface {
@@ -52,6 +53,7 @@ public class CcSystemConfigurationEngine implements
 	private static int RULE_LIMIT = 100;
 	private static int PRIORITY_LOWER = 1;
 	private static int PRIORITY_UPPER = 100;
+	
 	private CcUtils utilObj = new CcUtils();
 	
 	private ArrayList<String> configParams = new ArrayList<String>(); // Clean
