@@ -2,6 +2,7 @@ package org.mobicents.servlet.sip.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class RegexRule {
 
@@ -9,9 +10,11 @@ public class RegexRule {
 	private String RuleValue = "";
 	private int groupsNumber = 0;
 	public List<String> regexGroupsItems = new ArrayList<String>();
+	private static Logger logger = Logger.getLogger(RegexRule.class);
+	
 	
 	public RegexRule(String rule, String ruleSimplified) {
-		System.out.println("RegexRule() New Regex rule object: " + rule + " created");
+		logger.info("RegexRule() New Regex rule object: " + rule + " created");
 		setRuleValue(rule);
 		setSimplifiedRuleValue(ruleSimplified);
 			
@@ -26,7 +29,7 @@ public class RegexRule {
 		}
 	}
 	public RegexRule() {
-		System.out.println("RegexRule() New Regex rule object created");
+		logger.info("RegexRule() New Regex rule object created");
 			
 	}
 
@@ -59,9 +62,9 @@ public class RegexRule {
 	}
 	
 	public void displayGroups() {
-		System.out.println("Rule: [" + RuleValue + "] Simplified: [" + simplifiedRuleValue + "] ");
+		logger.info("Rule: [" + RuleValue + "] Simplified: [" + simplifiedRuleValue + "] ");
 		 for (int i=0;i<regexGroupsItems.size();i++) {
-	        	System.out.println(regexGroupsItems.get(i).toString());
+	        	logger.info(regexGroupsItems.get(i).toString());
 	        }
 	}
 	

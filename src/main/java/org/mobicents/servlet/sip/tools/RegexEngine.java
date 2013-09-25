@@ -24,7 +24,7 @@ public class RegexEngine {
 	private int MATCHPOINT;
 	private static ArrayList<RegexRule> regexRules = new ArrayList<RegexRule>(); 
 	
-	private static Logger logger = Logger.getLogger(CcUtils.class);
+	private static Logger logger = Logger.getLogger(RegexEngine.class);
 	
 	public RegexEngine() {
 		
@@ -170,11 +170,11 @@ public class RegexEngine {
 	            count++;
 			
 			if(StringUtils.countMatches(regexPrototype, plus) > 1) {
-				logger.error("RegexEngine() Invalid Regex: " + regexPrototype );
+				logger.error("validateRule() Invalid Regex: " + regexPrototype );
 				return false;
 			}
 			else if(StringUtils.countMatches(regexPrototype, all)>1) {
-				logger.error("RegexEngine() Invalid Regex: " + regexPrototype );
+				logger.error("validateRule() Invalid Regex: " + regexPrototype );
 				return false;
 			}
 			else {
@@ -183,15 +183,15 @@ public class RegexEngine {
 			
 		} catch (PatternSyntaxException ex) {
 	    	ex.printStackTrace();
-	    	logger.info("RegexEngine() Syntax error in the regular expression");
+	    	logger.error("validateRule() Syntax error in the regular expression");
 	    	return false;
 		} catch (IllegalArgumentException ex) {
 			ex.printStackTrace();
-			logger.info("RegexEngine() Syntax error in the replacement text (unescaped $ signs?)");
+			logger.error("validateRule() Syntax error in the replacement text (unescaped $ signs?)");
 			return false;
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
-			logger.info("RegexEngine() Non-existent backreference used the replacement text");
+			logger.error("validateRule() Non-existent backreference used the replacement text");
 			return false;
 		}
 				
@@ -233,7 +233,7 @@ public class RegexEngine {
         	matcherAll.KMPInit(regexPrototype,all);
         	
         	if (matcherAll.KMPmatch()) {
-        		logger.info("RegexEngine() Knuth-Morris-Pratt() Match! String: " + regexPrototype + " Index match(ALL): " + matcherAll.KMPgetMatchPoint());
+        		logger.info("generateSimpleRegexGroup() Knuth-Morris-Pratt() Match! String: " + regexPrototype + " Index match(ALL): " + matcherAll.KMPgetMatchPoint());
         	}
         	
         	containsAll = true;
@@ -303,7 +303,7 @@ public class RegexEngine {
 					}
 				}
 	
-						logger.info("RegexEngine() Pattern found: " + count + " time(s). Regex Groups: " + regexGroupObjectList.size() + " " + " All elements: " + regexGroupElementsList); 	
+						logger.info("generateSimpleRegexGroup() Pattern found: " + count + " time(s). Regex Groups: " + regexGroupObjectList.size() + " " + " All elements: " + regexGroupElementsList); 	
 				   
 					
 						/**
@@ -339,8 +339,7 @@ public class RegexEngine {
     	
     	
     	if(validateRule(simplifiedRegex.toString())) {
-    		logger.info("RegexEngine() Original Regex: " + regexPrototype + " New Simplified Regex: " + simplifiedRegex);
-    		logger.info("-----------------------------------------------------------------");
+    		logger.info("generateSimpleRegexGroup() Original Regex: " + regexPrototype + " New Simplified Regex: " + simplifiedRegex);
     	
     		if (containsAll) {		
     			newRule.setRuleValue(regexPrototype);
@@ -370,11 +369,10 @@ public class RegexEngine {
  		logger.info("Comparing: " + src.getRuleInfo() + " and " + dst.getRuleInfo());       		  
  	   
 		if (src.getNumberOfGroups()==dst.getNumberOfGroups()) {
-			logger.info("----------------------");	
 				if(src.regexGroupsItems.get(src.getNumberOfGroups()-1).contains(dst.regexGroupsItems.get(src.getNumberOfGroups()-1))) {
-					logger.info("RegexEngine() Same rule group:" + src.regexGroupsItems.get(src.getNumberOfGroups()-1) );
-					logger.info("RegexEngine() Regex Src: " + src.getRuleInfo());
-					logger.info("RegexEngine() Regex Dst: " + dst.getRuleInfo());
+					logger.info("compareRegexRules() Same rule group:" + src.regexGroupsItems.get(src.getNumberOfGroups()-1) );
+					logger.info("compareRegexRules() Regex Src: " + src.getRuleInfo());
+					logger.info("compareRegexRules() Regex Dst: " + dst.getRuleInfo());
 					return true;
 				}
 				else {
@@ -398,13 +396,12 @@ public class RegexEngine {
 		
 		try {
 			Pattern pattern = generateRegexHelper(input);
-			logger.info("-----------------------------------------------------------------");
-			logger.info(String.format("RegexEngine() String: %s --> Regex value: %s", input, pattern));
+			logger.info(String.format("testRegexRule() String: %s --> Regex value: %s", input, pattern));
 			generateSimpleRegexGroup(pattern.toString());
 		}
 		catch(Exception e) {	
 			e.printStackTrace();
-			logger.info("RegexEngine() Invalid input for Wildcard: " + input);
+			logger.info("testRegexRule() Invalid input for Wildcard: " + input);
 		}
         
     }
@@ -436,15 +433,14 @@ public class RegexEngine {
 	        	if(i+1 < regexRules.size()) {
 	        		
 	        		if(compareRegexRules(regexRules.get(i),regexRules.get(i+1))) {
-	        			logger.info("----------------------");
-	        			logger.info("RegexEngine() Rules: " + regexRules.get(i).getRuleValue() + " " + regexRules.get(i+1).getRuleValue());
+	        			logger.info("processWildCardRules() Rules: " + regexRules.get(i).getRuleValue() + " " + regexRules.get(i+1).getRuleValue());
 	        		
 	        			try {
-	        				logger.info("Call info: " + callInformation);
+	        				logger.info("processWildCardRules() Call info: " + callInformation);
 	        				
 	        				if (callInformation.matches(regexRules.get(i).getRuleValue())) {
-								logger.info("RegexEngine() Input: " + callInformation + " Match rule:" + regexRules.get(i).getRuleValue());
-								logger.info("RegexEngine() Rule: " + regexRules.get(i).getSimplifiedRuleValue());
+								logger.info("processWildCardRules() Input: " + callInformation + " Match rule:" + regexRules.get(i).getRuleValue());
+								logger.info("processWildCardRules() Rule: " + regexRules.get(i).getSimplifiedRuleValue());
 								//logger.info(regexRules.get(i).getGroup(0));
 								
 								Pattern original = Pattern.compile(regexRules.get(i).getSimplifiedRuleValue());
@@ -454,19 +450,19 @@ public class RegexEngine {
 							    // Check all occurrences
 							    if (matcher.find()) {
 							    
-							      logger.info("RegexEngine() Input: " + callInformation);	
-							      logger.info("RegexEngine() Regex Src: " + regexRules.get(i).getSimplifiedRuleValue());
-							      logger.info("RegexEngine() Start index: " + matcher.start(1));
+							      logger.info("processWildCardRules() Input: " + callInformation);	
+							      logger.info("processWildCardRules() Regex Src: " + regexRules.get(i).getSimplifiedRuleValue());
+							      logger.info("processWildCardRules() Start index: " + matcher.start(1));
 							      logger.info("RegexEngine() End index: " + matcher.end(1) + " ");
-							      logger.info("RegexEngine() String Match: " + matcher.group(1));
+							      logger.info("processWildCardRules() String Match: " + matcher.group(1));
 							      firstConversion =  matcher.group(1).toString();
 							    }
 							    else {
 							    	return null;
 							    }
 							    
-							    logger.info("RegexEngine() Extracted value: " + firstConversion);
-								logger.info("RegexEngine() Regex Dst " + regexRules.get(i+1).getSimplifiedRuleValue());
+							    logger.info("processWildCardRules() Extracted value: " + firstConversion);
+								logger.info("processWildCardRules() Regex Dst " + regexRules.get(i+1).getSimplifiedRuleValue());
 								
 							    int substringIndex = regexRules.get(i+1).getSimplifiedRuleValue().indexOf(regexRules.get(i).getGroup(0));
 							    
@@ -474,7 +470,7 @@ public class RegexEngine {
 							    	 String finalMatch = regexRules.get(i+1).getSimplifiedRuleValue().substring(0,substringIndex);
 									 finalMatch = finalMatch.replaceAll("\\^", "");
 									 finalMatch = finalMatch + firstConversion;
-									 logger.info("RegexEngine(): " + finalMatch);
+									 logger.info("processWildCardRules(): " + finalMatch);
 									 return finalMatch;
 							    }
 							    else {
