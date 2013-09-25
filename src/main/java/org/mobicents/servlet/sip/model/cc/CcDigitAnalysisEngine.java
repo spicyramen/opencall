@@ -677,6 +677,7 @@ public class CcDigitAnalysisEngine {
 			 }
 			
 			 if(ruleParams[6].toString().matches("CALLED")) {
+				 
 				 if (ruleParams[3].toString().matches("NUMERIC")) {
 					 
 					 transformedCalledSipURI = SIP_PROTOCOL + dstString + DELIMITER + domainURI;
@@ -691,6 +692,23 @@ public class CcDigitAnalysisEngine {
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
 					 
+					 String resultURI[] = CcExtractURI(originalSipURI);
+					 String userURI = resultURI[0].toString();
+						
+					 RegexEngine transformationEngine = new RegexEngine();
+					 String finalCalledNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
+					 
+					 transformedCalledSipURI = SIP_PROTOCOL + finalCalledNumber + DELIMITER + domainURI;
+					 
+					 
+					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
+						 logger.info("CcProcessTransformSipURI() (called) Transformed SIP URI: " + transformedCalledSipURI);
+					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (called) Unable to transform SIP URI: " + transformedCalledSipURI);
+						 transformedCalledSipURI = originalSipURI;
+					 }
+					 
 				 }
 				 else if (ruleParams[3].toString().matches("REGEX")) {
 					 
@@ -702,6 +720,7 @@ public class CcDigitAnalysisEngine {
 			 }
 			
 			 if(ruleParams[6].toString().matches("REDIRECT")) {
+				 
 				 if (ruleParams[3].toString().matches("NUMERIC")) {
 					 
 					 transformedRedirectedSipURI = SIP_PROTOCOL + dstString + DELIMITER + domainURI;
@@ -711,6 +730,23 @@ public class CcDigitAnalysisEngine {
 					 
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
+					 
+					 String resultURI[] = CcExtractURI(originalRedirectSipURI);
+					 String userURI = resultURI[0].toString();
+						
+					 RegexEngine transformationEngine = new RegexEngine();
+					 String finalRedirectNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
+					 
+					 transformedRedirectedSipURI = SIP_PROTOCOL + finalRedirectNumber + DELIMITER + domainURI;
+					 
+					 
+					 if(utilObj.isValidSipUri(transformedCallingSipURI)) {
+						 logger.info("CcProcessTransformSipURI() (redirect) Transformed SIP URI: " + transformedRedirectedSipURI);
+					 }
+					 else {
+						 logger.error("CcProcessTransformSipURI() (redirect) Unable to transform SIP URI: " + transformedRedirectedSipURI);
+						 transformedRedirectedSipURI = originalRedirectSipURI;
+					 }
 					 
 				 }
 				 else if (ruleParams[3].toString().matches("REGEX")) {
