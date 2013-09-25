@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 
 public class RegexEngine {
@@ -23,7 +24,7 @@ public class RegexEngine {
 	private int MATCHPOINT;
 	private static ArrayList<RegexRule> regexRules = new ArrayList<RegexRule>(); 
 	
-	//private static Logger logger = Logger.getLogger(CcUtils.class);
+	private static Logger logger = Logger.getLogger(CcUtils.class);
 	
 	public RegexEngine() {
 		
@@ -137,7 +138,7 @@ public class RegexEngine {
             } else if (c=='X' || c=='x') {
             	regexPrototype.append("\\d"); 
             } else { 
-            	 System.err.println("Unknown character: " +  c);
+            	 logger.error("Unknown character: " +  c);
             	 return null;
                  
             }
@@ -163,12 +164,17 @@ public class RegexEngine {
 		try {
 				
 			Pattern srcP = Pattern.compile(regexPrototype);
-			if(StringUtils.countMatches(regexPrototype, plus)>1) {
-				System.err.println("Invalid Regex: " + regexPrototype );
+			Matcher  matcher = srcP.matcher(plus);
+			int count = 0;
+	        while (matcher.find())
+	            count++;
+			
+			if(StringUtils.countMatches(regexPrototype, plus) > 1) {
+				logger.error("RegexEngine() Invalid Regex: " + regexPrototype );
 				return false;
 			}
 			else if(StringUtils.countMatches(regexPrototype, all)>1) {
-				System.err.println("Invalid Regex: " + regexPrototype );
+				logger.error("RegexEngine() Invalid Regex: " + regexPrototype );
 				return false;
 			}
 			else {
@@ -177,15 +183,15 @@ public class RegexEngine {
 			
 		} catch (PatternSyntaxException ex) {
 	    	ex.printStackTrace();
-	    	System.out.println("Syntax error in the regular expression");
+	    	logger.info("RegexEngine() Syntax error in the regular expression");
 	    	return false;
 		} catch (IllegalArgumentException ex) {
 			ex.printStackTrace();
-			System.out.println("Syntax error in the replacement text (unescaped $ signs?)");
+			logger.info("RegexEngine() Syntax error in the replacement text (unescaped $ signs?)");
 			return false;
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
-			System.out.println("Non-existent backreference used the replacement text");
+			logger.info("RegexEngine() Non-existent backreference used the replacement text");
 			return false;
 		}
 				
@@ -227,7 +233,7 @@ public class RegexEngine {
         	matcherAll.KMPInit(regexPrototype,all);
         	
         	if (matcherAll.KMPmatch()) {
-        		System.out.println("RegexEngine() Knuth-Morris-Pratt() Match! String: " + regexPrototype + " Index match(ALL): " + matcherAll.KMPgetMatchPoint());
+        		logger.info("RegexEngine() Knuth-Morris-Pratt() Match! String: " + regexPrototype + " Index match(ALL): " + matcherAll.KMPgetMatchPoint());
         	}
         	
         	containsAll = true;
@@ -272,7 +278,7 @@ public class RegexEngine {
 					if(i+1 < regexGroupElementsList.size()) {
 						if(regexGroupElementsList.get(i) == regexGroupElementsList.get(i+1) - digits.length()) {	
 							if(groupId==0) {
-								//System.out.printf("New Regex Group found index: %d\n",regexGroupElementsList.get(i));
+								//logger.infof("New Regex Group found index: %d\n",regexGroupElementsList.get(i));
 								regexGroupObjectList.add(new RegexGroup(1));
 								regexGroupObjectList.get(0).processElements(1, regexGroupElementsList);	
 								regexGroupObjectList.get(0).setIndexStart(regexGroupElementsList.get(i));
@@ -280,7 +286,7 @@ public class RegexEngine {
 							}
 						}
 						else {
-							//System.out.printf("New Regex Group found index: %d\n",regexGroupElementsList.get(i+1));
+							//logger.infof("New Regex Group found index: %d\n",regexGroupElementsList.get(i+1));
 							regexGroupObjectList.add(new RegexGroup(groupId+1));
 							regexGroupObjectList.get(groupId).processElements(groupId+1, regexGroupElementsList);
 							regexGroupObjectList.get(groupId).setIndexStart(regexGroupElementsList.get(i+1));
@@ -297,7 +303,7 @@ public class RegexEngine {
 					}
 				}
 	
-						System.out.println("RegexEngine() Pattern found: " + count + " time(s). Regex Groups: " + regexGroupObjectList.size() + " " + " All elements: " + regexGroupElementsList); 	
+						logger.info("RegexEngine() Pattern found: " + count + " time(s). Regex Groups: " + regexGroupObjectList.size() + " " + " All elements: " + regexGroupElementsList); 	
 				   
 					
 						/**
@@ -333,8 +339,8 @@ public class RegexEngine {
     	
     	
     	if(validateRule(simplifiedRegex.toString())) {
-    		System.out.println("RegexEngine() Original Regex: " + regexPrototype + " New Simplified Regex: " + simplifiedRegex);
-    		System.out.println("-----------------------------------------------------------------");
+    		logger.info("RegexEngine() Original Regex: " + regexPrototype + " New Simplified Regex: " + simplifiedRegex);
+    		logger.info("-----------------------------------------------------------------");
     	
     		if (containsAll) {		
     			newRule.setRuleValue(regexPrototype);
@@ -361,14 +367,14 @@ public class RegexEngine {
 	
 	private static boolean compareRegexRules(RegexRule src,RegexRule dst) {
 			
- 		System.out.println("Comparing: " + src.getRuleInfo() + " and " + dst.getRuleInfo());       		  
+ 		logger.info("Comparing: " + src.getRuleInfo() + " and " + dst.getRuleInfo());       		  
  	   
 		if (src.getNumberOfGroups()==dst.getNumberOfGroups()) {
-			System.out.println("----------------------");	
+			logger.info("----------------------");	
 				if(src.regexGroupsItems.get(src.getNumberOfGroups()-1).contains(dst.regexGroupsItems.get(src.getNumberOfGroups()-1))) {
-					System.out.println("Same rule group:" + src.regexGroupsItems.get(src.getNumberOfGroups()-1) );
-					System.out.println("Regex Src: " + src.getRuleInfo());
-					System.out.println("Regex Dst: " + dst.getRuleInfo());
+					logger.info("RegexEngine() Same rule group:" + src.regexGroupsItems.get(src.getNumberOfGroups()-1) );
+					logger.info("RegexEngine() Regex Src: " + src.getRuleInfo());
+					logger.info("RegexEngine() Regex Dst: " + dst.getRuleInfo());
 					return true;
 				}
 				else {
@@ -392,13 +398,13 @@ public class RegexEngine {
 		
 		try {
 			Pattern pattern = generateRegexHelper(input);
-			System.out.println("-----------------------------------------------------------------");
-			System.out.println(String.format("testRegexRule() String: %s --> Regex value: %s", input, pattern));
+			logger.info("-----------------------------------------------------------------");
+			logger.info(String.format("RegexEngine() String: %s --> Regex value: %s", input, pattern));
 			generateSimpleRegexGroup(pattern.toString());
 		}
 		catch(Exception e) {	
 			e.printStackTrace();
-			System.out.println("testRegexRule() Invalid input for Wildcard: " + input);
+			logger.info("RegexEngine() Invalid input for Wildcard: " + input);
 		}
         
     }
@@ -425,19 +431,21 @@ public class RegexEngine {
 	      }
 		  
 		  for (int i=0;i<regexRules.size();i++) {
-	        	//System.out.println(regexRules.get(i).getRuleInfo());
+	        	//logger.info(regexRules.get(i).getRuleInfo());
 	        	//regexRules.get(i).displayGroups();
 	        	if(i+1 < regexRules.size()) {
 	        		
 	        		if(compareRegexRules(regexRules.get(i),regexRules.get(i+1))) {
-	        			System.out.println("----------------------");
-	        			System.out.println("Rules: " + regexRules.get(i).getRuleValue() + " " + regexRules.get(i+1).getRuleValue());
+	        			logger.info("----------------------");
+	        			logger.info("RegexEngine() Rules: " + regexRules.get(i).getRuleValue() + " " + regexRules.get(i+1).getRuleValue());
+	        		
 	        			try {
+	        				logger.info("Call info: " + callInformation);
 	        				
-	        				if (callInformation.matches(regexRules.get(i).getRuleValue()) ) {
-								System.out.println("Input: " + callInformation + " Match rule:" + regexRules.get(i).getRuleValue());
-								System.out.println("Rule: " + regexRules.get(i).getSimplifiedRuleValue());
-								//System.out.println(regexRules.get(i).getGroup(0));
+	        				if (callInformation.matches(regexRules.get(i).getRuleValue())) {
+								logger.info("RegexEngine() Input: " + callInformation + " Match rule:" + regexRules.get(i).getRuleValue());
+								logger.info("RegexEngine() Rule: " + regexRules.get(i).getSimplifiedRuleValue());
+								//logger.info(regexRules.get(i).getGroup(0));
 								
 								Pattern original = Pattern.compile(regexRules.get(i).getSimplifiedRuleValue());
 							    Matcher matcher = original.matcher(callInformation);
@@ -446,19 +454,19 @@ public class RegexEngine {
 							    // Check all occurrences
 							    if (matcher.find()) {
 							    
-							      System.out.println("Input: " + callInformation);	
-							      System.out.println("Regex Src: " + regexRules.get(i).getSimplifiedRuleValue());
-							      System.out.print("Start index: " + matcher.start(1));
-							      System.out.print(" End index: " + matcher.end(1) + " ");
-							      System.out.println("String Match: " + matcher.group(1));
+							      logger.info("RegexEngine() Input: " + callInformation);	
+							      logger.info("RegexEngine() Regex Src: " + regexRules.get(i).getSimplifiedRuleValue());
+							      logger.info("RegexEngine() Start index: " + matcher.start(1));
+							      logger.info("RegexEngine() End index: " + matcher.end(1) + " ");
+							      logger.info("RegexEngine() String Match: " + matcher.group(1));
 							      firstConversion =  matcher.group(1).toString();
 							    }
 							    else {
 							    	return null;
 							    }
 							    
-							    System.out.println("Extracted value: " + firstConversion);
-								System.out.println("Regex Dst " + regexRules.get(i+1).getSimplifiedRuleValue());
+							    logger.info("RegexEngine() Extracted value: " + firstConversion);
+								logger.info("RegexEngine() Regex Dst " + regexRules.get(i+1).getSimplifiedRuleValue());
 								
 							    int substringIndex = regexRules.get(i+1).getSimplifiedRuleValue().indexOf(regexRules.get(i).getGroup(0));
 							    
@@ -466,7 +474,7 @@ public class RegexEngine {
 							    	 String finalMatch = regexRules.get(i+1).getSimplifiedRuleValue().substring(0,substringIndex);
 									 finalMatch = finalMatch.replaceAll("\\^", "");
 									 finalMatch = finalMatch + firstConversion;
-									 System.out.println(finalMatch);
+									 logger.info("RegexEngine(): " + finalMatch);
 									 return finalMatch;
 							    }
 							    else {
@@ -491,7 +499,7 @@ public class RegexEngine {
 	
 		 
 	        
-	//System.out.println("Processed string: " + processWildCardRules("XXXXXXXX","18668643232**XXXXXXXX","22223333"));
+	//logger.info("Processed string: " + processWildCardRules("XXXXXXXX","18668643232**XXXXXXXX","22223333"));
 	        
 	
 	 

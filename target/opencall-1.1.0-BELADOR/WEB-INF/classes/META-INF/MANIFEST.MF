@@ -19,7 +19,7 @@ Implementation-URL: http://www.mobicents.org
 Implementation-Vendor-Id: TeleStax, Inc.
 Build-Jdk: 1.6.0_51
 Bundle-Version: 1.1.0.BELADOR
-Bnd-LastModified: 1380087948546
+Bnd-LastModified: 1380092983611
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.gnu.org/licenses/lgpl.html
 Bundle-Description: Gonzalo Gasca MezaOxford UniversityDepartment of C
@@ -27,6 +27,6 @@ Bundle-Description: Gonzalo Gasca MezaOxford UniversityDepartment of C
  dom+44 1865 273838
 Import-Package: com.twilio.sdk,com.twilio.sdk.resource.factory,com.twi
  lio.sdk.resource.instance,javax.servlet,javax.servlet.sip,org.apache.
- commons.lang,org.apache.log4j;version="[1.2,2)"
+ commons.lang;version="[2.6,3)",org.apache.log4j;version="[1.2,2)"
 Bundle-SymbolicName: org.mobicents.servlet.sip.examples.opencall
 

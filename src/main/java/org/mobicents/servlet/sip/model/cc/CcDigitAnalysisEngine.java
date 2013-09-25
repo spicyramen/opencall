@@ -650,8 +650,11 @@ public class CcDigitAnalysisEngine {
 				 } 
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
 					 
+					 String resultURI[] = CcExtractURI(originalCallingSipURI);
+					 String userURI = resultURI[0].toString();
+						
 					 RegexEngine transformationEngine = new RegexEngine();
-					 String finalCallingNumber = transformationEngine.processWildCardRules(srcString, dstString,originalCallingSipURI);
+					 String finalCallingNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
 					 
 					 transformedCallingSipURI = SIP_PROTOCOL + finalCallingNumber + DELIMITER + domainURI;
 					 
