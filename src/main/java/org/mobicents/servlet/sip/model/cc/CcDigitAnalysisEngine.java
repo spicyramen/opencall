@@ -656,8 +656,10 @@ public class CcDigitAnalysisEngine {
 				 else if (ruleParams[3].toString().matches("WILDCARD")) {
 					 
 					 String resultURI[] = CcExtractURI(initialSipURI);
-					 String userURI = resultURI[0].toString();
-						
+					 String userURI = resultURI[0].toString();	
+					 logger.info("CcProcessTransformSipURI() WILDCARD URI:\t" + SIP_PROTOCOL
+								+ resultURI[0].toString() + "@" + resultURI[1].toString());
+					 
 					 RegexEngine transformationEngine = new RegexEngine();
 					 String finalCallingNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
 					 
@@ -679,7 +681,7 @@ public class CcDigitAnalysisEngine {
 					 
 					 String[] resultURI = CcExtractURI(initialSipURI);
 					 String sipURI = resultURI[0].toString() + "@" + resultURI[1].toString();
-						logger.info("CcProcessTransformSipURI() URI:\t" + SIP_PROTOCOL
+					 logger.info("CcProcessTransformSipURI() REGEX URI:\t" + SIP_PROTOCOL
 								+ resultURI[0].toString() + "@" + resultURI[1].toString());
 						
 						 
@@ -727,6 +729,9 @@ public class CcDigitAnalysisEngine {
 					 RegexEngine transformationEngine = new RegexEngine();
 					 String finalCalledNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
 					 
+					 logger.info("CcProcessTransformSipURI() WILDCARD URI:\t" + SIP_PROTOCOL
+								+ resultURI[0].toString() + "@" + resultURI[1].toString());
+						
 					 if(finalCalledNumber!=null)
 						 transformedCalledSipURI = SIP_PROTOCOL + finalCalledNumber + DELIMITER + domainURI;
 					 
@@ -744,7 +749,7 @@ public class CcDigitAnalysisEngine {
 					 
 					 String[] resultURI = CcExtractURI(initialSipURI);
 					 String sipURI = resultURI[0].toString() + "@" + resultURI[1].toString();
-						logger.info("CcProcessTransformSipURI() URI:\t" + SIP_PROTOCOL
+						logger.info("CcProcessTransformSipURI() REGEX URI:\t" + SIP_PROTOCOL
 								+ resultURI[0].toString() + "@" + resultURI[1].toString());
 						
 						 
@@ -786,6 +791,9 @@ public class CcDigitAnalysisEngine {
 						
 					 RegexEngine transformationEngine = new RegexEngine();
 					 String finalRedirectNumber = transformationEngine.processWildCardRules(srcString, dstString,userURI);
+					 logger.info("CcProcessTransformSipURI() WILDCARD URI:\t" + SIP_PROTOCOL
+								+ resultURI[0].toString() + "@" + resultURI[1].toString());
+					
 					 
 					 transformedRedirectedSipURI = SIP_PROTOCOL + finalRedirectNumber + DELIMITER + domainURI;
 					 
@@ -803,7 +811,7 @@ public class CcDigitAnalysisEngine {
 					 
 					 String[] resultURI = CcExtractURI(initialSipURI);
 					 String sipURI = resultURI[0].toString() + "@" + resultURI[1].toString();
-						logger.info("CcProcessTransformSipURI() URI:\t" + SIP_PROTOCOL
+					 logger.info("CcProcessTransformSipURI() REGEX URI:\t" + SIP_PROTOCOL
 								+ resultURI[0].toString() + "@" + resultURI[1].toString());
 						
 						 

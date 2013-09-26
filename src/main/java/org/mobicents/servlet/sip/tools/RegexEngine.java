@@ -487,11 +487,11 @@ public class RegexEngine {
 							    // Check all occurrences
 							    if (matcher.find()) {
 							    
-							      logger.info("processWildCardRules() Input: " + callInformation);	
-							      logger.info("processWildCardRules() Regex Src: " + regexRules.get(i).getSimplifiedRuleValue());
-							      logger.info("processWildCardRules() Start index: " + matcher.start(1));
-							      logger.info("RegexEngine() End index: " + matcher.end(1) + " ");
-							      logger.info("processWildCardRules() String Match: " + matcher.group(1));
+						//	      logger.info("processWildCardRules() Input: " + callInformation);	
+						//	      logger.info("processWildCardRules() Regex Src: " + regexRules.get(i).getSimplifiedRuleValue());
+						//	      logger.info("processWildCardRules() Start index: " + matcher.start(1));
+						//	      logger.info("RegexEngine() End index: " + matcher.end(1) + " ");
+						//	      logger.info("processWildCardRules() String Match: " + matcher.group(1));
 							      firstConversion =  matcher.group(1).toString();
 							    }
 							    else {
@@ -507,7 +507,7 @@ public class RegexEngine {
 							    	 String finalMatch = regexRules.get(i+1).getSimplifiedRuleValue().substring(0,substringIndex);
 									 finalMatch = finalMatch.replaceAll("\\^", "");
 									 finalMatch = finalMatch + firstConversion;
-									 logger.info("processWildCardRules(): " + finalMatch);
+									 logger.info("processWildCardRules() Final transform number: " + finalMatch);
 									 return finalMatch;
 							    }
 							    else {
