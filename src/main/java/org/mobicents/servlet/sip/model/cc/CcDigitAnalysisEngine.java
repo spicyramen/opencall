@@ -460,6 +460,8 @@ public class CcDigitAnalysisEngine {
 		Set<?> systemTransformRulesSet = systemTransformRules.entrySet();
 		Iterator<?> systemTransformRulesIt = systemTransformRulesSet.iterator();
 		
+		logger.info("CcProcessTransformRules() Searching Transform Rules (CcProcessTransformRulesCdcc()) for SIP URI: " +  "sip:" + sipURI);
+		
 		while (systemTransformRulesIt.hasNext()) 
 		{
 			Map.Entry mapa = (Map.Entry) systemTransformRulesIt.next(); 	// key=value														
@@ -1135,7 +1137,7 @@ public class CcDigitAnalysisEngine {
 	 */
 	private boolean CcProcessTransformRulesCdcc(String[] ruleValue, String sipURI,String value,int type) {
 
-		logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
+		//logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
 		boolean foundRuleMatch = false;
 		String ruleDirection = ruleValue[6].toUpperCase();
 		
