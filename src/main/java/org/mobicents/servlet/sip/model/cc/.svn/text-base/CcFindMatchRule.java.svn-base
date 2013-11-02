@@ -10,26 +10,31 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
+import org.mobicents.servlet.sip.tools.CcUtils;
 
 /**
- * Return sipURI after parsing rule priority Algorithm: Find userURI, domainURI
- * and portURI Count Rules Match priority Order by priority If REGEX and _DNS_
- * select rule and return unmodified sipURI else if REGEX and not _DNS_ select
- * rule: parse rule Domain and Port parse SIP URI Domain and Port replace URI
- * Domain with rule Domain if URI Port if rule Port not empty replace URI port
- * with rule Port else (rule Port empty) attach original port to SIP URI port
+ * Return sipURI after parsing rule priority Algorithm: 
+ * Find userURI, domainURI and portURI
+ * Count Rules Match priority Order by priority 
+ * If REGEX and _DNS_ select rule and return unmodified sipURI 
+ * else if REGEX and not _DNS_ select rule: 
+ * 
+ * Parse rule Domain and Port parse SIP URI Domain and Port replace URI Domain with rule Domain 
+ * if URI Port and if rule Port not empty replace URI port with rule Port 
+ * else (rule Port empty) attach original port to SIP URI port
  * 
  */
 
 @SuppressWarnings("unused")
 public class CcFindMatchRule {
 
+	private static Logger logger = Logger.getLogger(CcFindMatchRule.class);
 	private Map<Object, String> rulesMatched = new HashMap<Object, String>();
 	private CcRule[] ruleArray = null;
 	private String originalURI[];
 	private String resultSipURI;
 	private CcUtils utilObj = new CcUtils();
-	private static Logger logger = Logger.getLogger(CcFindMatchRule.class);
+
 
 	/**
 	 * Constructor
@@ -46,6 +51,7 @@ public class CcFindMatchRule {
 				originalURI = sipURI;
 				ruleArray = new CcRule[rulesMatched.size()];
 			} catch (Exception e) {
+				e.printStackTrace();
 				rulesMatched = null;
 				originalURI = null;
 			}
@@ -118,12 +124,5 @@ public class CcFindMatchRule {
 	public int getTotalRules() {
 		return rulesMatched.size();
 	}
-
-	/**
-	 * 
-	 * @param iToken
-	 * @param routeValue
-	 * @return
-	 */
 
 }

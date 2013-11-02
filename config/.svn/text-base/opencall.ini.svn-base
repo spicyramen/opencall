@@ -1,32 +1,38 @@
 # System Configuration File
 #
-# Purpose: B2BUA 1.1 Belador, provide Connection control for Mobicents (OpenCall System)
+# Purpose: Opencall 1.1 Belador, provide Connection control for Mobicents (OpenCall System)
+#
 # Author: Gonzalo Gasca Meza
-# Oxford University
+# University of Oxford
 # Department of Computer Science, Wolfson Building,  
 # Parks Rd, Oxford OX1, United Kingdom
 # +44 1865 273838
-# Version 1.000(01) Comendador
+# Opencall Version 1.1(000) Comendador
 #
 #
 #	MODE 
-#	1 - LOCAL FILE
-#	2 - DB (MYSQL DB)
-#	3 - LOCAL RULES (BUILT-IN)
+#		1 - LOCAL FILE
+#		2 - DB (MYSQL DB)
+#		3 - LOCAL RULES (BUILT-IN)
 #
 #   DB TYPE 
 #   	1 - MYSQL
-#	2 - ORACLE DB	TODO
-#	3 - MICROSOFT SQL SERVER	TODO
+#		2 - ORACLE DB	TODO
+#		3 - MICROSOFT SQL SERVER	TODO
 #
 # MODE 1 must have CALLRULES
 # MODE 2 must have DBTYPE,DBHOSTNAME,DBPORT,DBNAME,DBUSERNAME and DBPASSWORD
-# MODE 3 does not need any params
+# MODE 3 does not need any params (Use built-in files)
+#
+# When a call is received CALLTRANSFORMS are applied first, then call is passed to CALLRULES
+# TRANSPORT=TCP
+#
+#
 #
 MODE=1
 RULE_LIMIT=100
-CALLTRANSFORMS=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
 CALLRULES=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
+CALLTRANSFORMS=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
 CALLROUTELIST=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg
 DBTYPE=1
 DBHOSTNAME=localhost
@@ -34,5 +40,10 @@ DBPORT=3306
 DBNAME=opencall
 DBUSERNAME=root
 DBPASSWORD=
+
+# Twilio Support
+TWILIO_DOMAIN=opencall.sip.twilio.com
+TWILIO_ACCOUNT_SID=AC433e7b0bec93dc5996e4fb80b1e56eec
+TWILIO_AUTH_TOKEN=9cc9267fe09dab362d3be160f711a09d
 
 

@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools
+END
+Group.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools/Group.java
+END
+RegexTestPatternMatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools/RegexTestPatternMatcher.java
+END
+RegexEngine.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools/RegexEngine.java
+END
+RegexGroup.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools/RegexGroup.java
+END
+RegexTestResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools/RegexTestResult.java
+END
+RegexRule.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools/RegexRule.java
+END
+CcUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/46/branches/belador/opencall/src/main/java/org/mobicents/servlet/sip/tools/CcUtils.java
+END

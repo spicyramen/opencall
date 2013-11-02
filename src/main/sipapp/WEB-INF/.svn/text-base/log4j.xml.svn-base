@@ -4,8 +4,8 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 	<appender name="R" class="org.apache.log4j.RollingFileAppender">
 		<param name="file" value="../standalone/log/opencall-engine.log" />
-		<param name="MaxFileSize" value="100KB" />
-		<param name="MaxBackupIndex" value="10" />
+		<param name="MaxFileSize" value="500KB" />
+		<param name="MaxBackupIndex" value="100" />
 		 <layout class="org.apache.log4j.PatternLayout">
               <param name="ConversionPattern" value="%d{HH:mm:ss.SSS} %-5p [%c{1}] [%t] | %m%n"/>
         </layout>
@@ -15,7 +15,7 @@
 		<appender-ref ref="R" />
 	</category>
 	<root>
-		<priority value="INFO" />
+		<priority value="INFO" ></priority>
 		<appender-ref ref="R" />
 	</root>
 </log4j:configuration>

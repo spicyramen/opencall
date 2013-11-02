@@ -47,7 +47,7 @@ import org.apache.log4j.Logger;
  * it forwards the INVITE to the corresponding hard coded location.
  * 
  * @author Gonzalo Gasca Meza
- * Oxford University
+ * University of Oxford
  * Department of Computer Science, Wolfson Building,  
  * Parks Rd, Oxford OX1, United Kingdom
  * +44 1865 273838

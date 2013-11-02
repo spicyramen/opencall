@@ -3,3 +3,21 @@ svn:wc:ra_dav:version-url
 V 50
 /svn/!svn/ver/30/branches/belador/opencall/install
 END
+opencallinstall.sh
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/46/branches/belador/opencall/install/opencallinstall.sh
+END
+twilio-java-sdk-3.3.14-jar-with-dependencies.jar
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/46/branches/belador/opencall/install/twilio-java-sdk-3.3.14-jar-with-dependencies.jar
+END
+mobicentstlsconfig.sh
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/46/branches/belador/opencall/install/mobicentstlsconfig.sh
+END

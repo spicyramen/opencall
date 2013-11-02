@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools
+END
+RegexTestResult.class
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools/RegexTestResult.class
+END
+RegexGroup.class
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools/RegexGroup.class
+END
+RegexEngine.class
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools/RegexEngine.class
+END
+RegexTestPatternMatcher.class
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools/RegexTestPatternMatcher.class
+END
+Group.class
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools/Group.class
+END
+CcUtils.class
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools/CcUtils.class
+END
+RegexRule.class
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/classes/org/mobicents/servlet/sip/tools/RegexRule.class
+END

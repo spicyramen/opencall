@@ -1,0 +1,48 @@
+OpenCall Architecture
+
+
+Main application
+ 	  -B2BUA SIP Proxy
+ 	  	Implement SIP Proxy messages
+ 	  -SIP Registrar Server
+ 	  	Implement SIP Registration module
+ 	  -SIP Media Server
+ 	  -SDP module
+ 	  -RTP generator module
+ 	  -RTCP generator module
+ 	  -Call Routing module
+ 	  -Test Module Layer module
+ 	  -TCP TestModule
+ 	  -UDP TestModule
+ 	  -TLS TestModule
+ 	  -Call Control module
+ 	  -TestManager 
+ 	  -SoaP API module
+ 	  -Performance module
+ 	  -Web Application module
+ 	  -RealTime reporting module
+ 	 
+ 	   
+
+OpenCall 1.1
+
+Opencall.java Initializes and reads opencall.ini:
+	CcProcessor
+	CcProcessor.startService
+		CcReadSystemConfiguration
+		CcReadSystemConfiguration.CcInitSystemConfiguration
+			CcInitConfigSrv
+			CcInitConfigSrv.initializeConfiguration			
+			CcSystemConfigurationEngine
+				CcSystemConfigurationEngine.CcStartCallRulesEngine
+				CcSystemConfigurationEngine.CcReadConfigurationFile
+					CcSystemConfigurationEngine.CcInitConfigurationValues
+					CcSystemConfigurationEngine.CcInitConfigurationFile
+					
+	New SIP Call:
+	
+	CcCallProcessSipMessage
+		CcExtractURI
+			CcDA
+				CcProcessRules
+					

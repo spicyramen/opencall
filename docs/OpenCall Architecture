@@ -46,3 +46,40 @@ Opencall.java Initializes and reads opencall.ini:
 			CcDA
 				CcProcessRules
 					
+
+2)  McuWeb
+
+ssh -i spicyramen.pem ubuntu@54.218.65.160
+svn checkout svn://svn.code.sf.net/p/mcumediaserver/code/trunk mcumediaserver-code
+
+172.31.43.74
+
+ scp -i cs184-john-stanford-edu.pem ubuntu@ec2-54-234-41-176.compute-1.amazonaws.com:~/hw1/hello.txt .
+ scp -i spicyramen.pem ubuntu@ec2-54-218-65-160.us-west-2.compute.amazonaws.com:/usr/local/src/call.pcap .
+ 
+ scp -i spicyramen.pem ubuntu@ec2-54-218-84-250.us-west-2.compute.amazonaws.com:/etc/asterisk/srtp.pcap .
+ 
+./standalone.sh -b 172.31.43.74 -c standalone-sip.xml & ec2-54-218-65-160.us-west-2.compute.amazonaws.com
+
+3) Mobicents
+
+ssh -i spicyramen.pem ubuntu@54.218.68.71
+
+ec2-54-218-68-71.us-west-2.compute.amazonaws.com
+
+172.31.46.56
+
+4) Asterisk ec2-54-218-60-123.us-west-2.compute.amazonaws.com
+
+ssh -i spicyramen.pem ubuntu@ec2-54-218-84-250.us-west-2.compute.amazonaws.com
+
+172.31.3.163
+
+5) TURN Server
+
+Public DNS: 
+ssh -i spicyramen.pem ubuntu@ec2-54-213-14-168.us-west-2.compute.amazonaws.com
+
+
+crypto:1 AES_CM_128_HMAC_SHA1_80 inline:nG67hcpKwAkiY6/KGi1yuV5MfGH+WD/oZpD0oGjV
+crypto:1 AES_CM_128_HMAC_SHA1_80 inline:K1G1gi8QorTZ5Nia+F9aT26sAtiIWB37nHyfW8dk

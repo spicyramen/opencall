@@ -15,17 +15,29 @@ public class CcInitConfigSrv {
 	private static Logger logger = Logger.getLogger(CcInitConfigSrv.class);
 	private boolean isStarted = false;
 	private static String DELIMITER = "=";
-	private CcDigitAnalysisEngine initDigitAnalysisModule = null;
-	private String finalURI = null;
+	private CcDigitAnalysisEngine DigitAnalysisEngine = null;
+	private String finalCallingSipURI = null;
+	private String finalCalledSipURI = null;
+	private String finalRedirectSipURI = null;
+	private String finalTransport = null;
+	private String finalIsBlocked = null;
+	
 
-	/**
-	 * Constructor Type 0 = Undefined 1 = Local File 2 = DB 3 = Local String 4 =
-	 * Other
-	 */
 
 	public CcInitConfigSrv() {
 
 	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+
+	public boolean isStarted() {
+		return isStarted;
+	}
+
 
 	/**
 	 * Initialize configuration based on type, read routing rules.
@@ -36,18 +48,68 @@ public class CcInitConfigSrv {
 	 * @throws Exception
 	 */
 
+	
 	public void initializeConfiguration(int Type, ArrayList<String> connectionInfo) throws Exception {
 
-		// We create a new Object to Read information.
-		// CcSystemConfigurationEngine will parse the Rules
-		CcSystemConfigurationEngine initConfigModule = new CcSystemConfigurationEngine(Type, connectionInfo);
+		/**
+		 * Type 1 = Local File 2 = DB 3 = Built-in		 
+		 * 
+		 */
+		
+		CcSystemConfigurationEngine validateRulesConfiguration = new CcSystemConfigurationEngine(Type, connectionInfo);
 
+		/**
+		 * Call Processing Algorithm:
+		 * 
+		 * Process files in the following order: CALLTRANSFORMS ROUTELIST CALLRULES 
+		 * 
+		 * Initialize CcStartCallTransformEngine
+		 * Validate CALLTRANSFORMS files
+		 * Insert valid CALLTRANSFORMS in Engine. Object CcCallTransforms Array []
+		 * 
+		 * Initialize CcStartRouteListEngine
+		 * Validate ROUTELIST rules in file
+		 * Insert valid ROUTELIST rules in Engine. Object CCRouteList Array [IPADDRESS:PORT:TRANSPORT]
+		 * Store ROUTELIST rules in Array, obtain info from Engine.
+		 * 
+		 * Initialize CcStartCallRulesEngine
+		 * Validate CALLRULES files
+		 * Import ROUTELISTS rules
+		 * If CALLRULES contains a ROUTELIST (Not valid IP, not valid HOSTNAME), create LinkedList from CALLRULE to ROUTELIST reference
+		 * Insert valid CALLRULES in Engine.
+		 * 
+		 * For Incoming SIP request:
+		 * 		Obtain CALLING, CALLED and REDIRECT number in Main Application for each SIP Request
+		 * 		Pass call Information to DA Engine digitDialed function (will become ProcessCallInfo), 3 parameters (CALLING,CALLED,REDIRECT).
+		 * 		Match CALLTRANSFORMS rules
+		 * 			If Block and rule enabled, REJECT CALL, return. (BlackList feature)
+		 * 
+		 * 			Find Rule definition.
+		 * 			Enter CallTransformation module:
+		 * 
+		 * 				If Match is CALLEDNUMBER, change SIP URI.  Process CallRules based on CALLED Number
+		 * 				If Match is CALLINGNUMBER, enable CALLINGNUMBER number flag. Process CallRules based on CALLED Number
+		 * 				If Match is REDIRECT, enable REDIRECT number flag. Process CallRules based on CALLED Number
+		 * 				
+		 * 			Process CALLRULES, match RULE, if ROUTELIST, process URI for each ROUTELIST member
+		 * 					populate ROUTELIST Array with candidate URIs		
+		 * 			Initialize SIP and Transport TIMERS
+		 * 			Process SIP URI for each ROUTELIST candidate URI
+		 * 			Send SIP Request	
+		 * 
+		 * 
+		 * 
+		 */
+		
+		
 		if (Type == 1) {
+			
 			String CALLRULES = "";
 			String CALLTRANSFORMS = "";
 			String ROUTELIST = "";
 			
 			String[] paramType;
+			
 			for (String fileParam : connectionInfo) {
 				paramType = fileParam.split(DELIMITER);
 				if (paramType[0].toString().equals("CALLRULES")) {
@@ -60,22 +122,60 @@ public class CcInitConfigSrv {
 				}
 				else if (paramType[0].toString().equals("ROUTELIST")) {
 					ROUTELIST = paramType[1].toString();
-					logger.info("MODE " + Type + " ROUTE LIST FILE  FOUND: " + ROUTELIST);
+					logger.info("MODE " + Type + " ROUTELIST FILE  FOUND: " + ROUTELIST);
 				}
 			}
 
-			if (initConfigModule.CcStartCallRulesEngine(CALLRULES)) {
-				initDigitAnalysisModule = new CcDigitAnalysisEngine(initConfigModule.CcGetRules());
-				if (initDigitAnalysisModule.isStarted()) {
-					isStarted = true;
-				} else {
-					isStarted = false;
-					logger.error("Error InitializeConfiguration.CcStartFileEngine() failed to start.");
-				}
+			
+			/**
+			 * Start Call Transforms file validation
+			 */
+			if (validateRulesConfiguration.CcStartCallTransformsEngine(CALLTRANSFORMS)) {
+				logger.info("Starting CcStartCallTransformsEngine...");
+				
 			} else {
-				logger.error("Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
+				logger.error("CcStartCallTransformsEngine() Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
 				isStarted = false;
 			}
+			
+			/**
+			 * Start RouteList file validation
+			 */
+			if (validateRulesConfiguration.CcStartRouteListEngine(ROUTELIST)) {
+				logger.info("Starting CcStartRouteListEngine...");
+				
+			} else {
+				logger.error("CcStartRouteListEngine() Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
+				isStarted = false;
+			}
+			
+			
+			/**
+			 * Start Call Rules file validation
+			 */
+			if (validateRulesConfiguration.CcStartCallRulesEngine(CALLRULES)) {
+				logger.info("Starting CcStartCallRulesEngine...");
+				
+			} else {
+				logger.error("CcStartCallRulesEngine() Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
+				isStarted = false;
+			}
+			
+			
+			/**
+			 * Obtain Valid Call Rules from File or DB and Initialize Digit Analisys Engine
+			 */
+			
+			DigitAnalysisEngine = new CcDigitAnalysisEngine(validateRulesConfiguration.CcGetTransformRules(),validateRulesConfiguration.CcGetRouteListsRules(),validateRulesConfiguration.CcGetCallRules());
+			
+			if (DigitAnalysisEngine.isStarted()) {
+				isStarted = true;
+			} 
+			else {
+				isStarted = false;
+				logger.fatal("Error InitializeConfiguration.CcStartFileEngine() failed to start.");
+			}
+			
 		}
 
 		else if (Type == 2) {
@@ -136,11 +236,12 @@ public class CcInitConfigSrv {
 
 			}
 
-			if (initConfigModule.CcStartDbEngine(DBTYPE, DBHOSTNAME, DBPORT,
+			if (validateRulesConfiguration.CcStartDbEngine(DBTYPE, DBHOSTNAME, DBPORT,
 					DBNAME, DBUSERNAME, DBPASSWORD)) {
-				initDigitAnalysisModule = new CcDigitAnalysisEngine(
-						initConfigModule.CcGetDbRules());
-				if (initDigitAnalysisModule.isStarted()) {
+				
+				DigitAnalysisEngine = new CcDigitAnalysisEngine(validateRulesConfiguration.CcGetTransformRules(),validateRulesConfiguration.CcGetRouteListsRules(),validateRulesConfiguration.CcGetCallRules());
+				
+				if (DigitAnalysisEngine.isStarted()) {
 					isStarted = true;
 				} else {
 					isStarted = false;
@@ -152,6 +253,10 @@ public class CcInitConfigSrv {
 			}
 
 		} else if (Type == 3) {
+			/**
+			 * Built-in rules
+			 * 1. DNS
+			 */
 			// TODO in a future
 		} else {
 			logger.error("Error InitializeConfiguration.CcStartFileEngine() failed to initialize");
@@ -163,25 +268,91 @@ public class CcInitConfigSrv {
 	/**
 	 * 
 	 * @param sipURI
+	 * Process incoming SIP Message and return converted string.
 	 * @return
 	 */
 
-	public String digitsDialed(String sipURI) {
-		if (initDigitAnalysisModule.CcCallProcessSipMessage(sipURI)) {
-			finalURI = initDigitAnalysisModule.getFinalURI();
-			return finalURI;
-		} else {
+	public String[] processNewCallInformationCc(int Id,String callingNumber,String calledNumber,String redirectNumber) {
+		
+
+		logger.info("processNewCallInformationCc() New Call(" + Id + ")" );
+		CcSipCall newSipCallObject = new CcSipCall(Id,callingNumber,calledNumber,redirectNumber);
+		Thread newSipCall = new Thread(newSipCallObject);
+		newSipCall.start();
+		
+		
+		try {
+			
+			/**
+			 *  Process Initial SIP Message and verify if it matches Transformed rules
+			 */
+			newSipCall.join();			
+			DigitAnalysisEngine.CcDigitAnalysisReq(newSipCallObject);
+				
+			/**
+			 * After processing Transformation rules, proceed to match Call Routing rules
+			 */
+			String[] callInfo = new String[5];
+			
+			if (DigitAnalysisEngine.CcCallProcessSipMessage(DigitAnalysisEngine.getTransformedCalledSipURI())) {
+				
+				finalCalledSipURI = 	DigitAnalysisEngine.CcDigitAnalysisRes();
+				finalCallingSipURI = 	DigitAnalysisEngine.getTransformedCallingSipURI();
+				finalRedirectSipURI = 	DigitAnalysisEngine.getTransformedRedirectedSipURI();
+				finalTransport	= 		DigitAnalysisEngine.getTransportURI();
+				finalIsBlocked = 		DigitAnalysisEngine.getCallBlocked();
+				
+				logger.info("processNewCallInformationCc() Processed Call Info completed");
+				
+				callInfo[0] = finalCallingSipURI;
+				callInfo[1] = finalCalledSipURI;
+				callInfo[2] = finalRedirectSipURI;
+				callInfo[3] = finalTransport;
+				callInfo[4] = finalIsBlocked;						
+				
+				if (callInfo[4].matches("TRUE")) {
+					logger.warn("processNewCallInformationCc() New Call(" + Id + ") is rejected by rules");
+					logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
+					return callInfo;			
+				}
+				else if (callInfo[1] != null && callInfo[0] != null) {	
+					logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
+					return callInfo;
+				}
+				else if (callInfo[0] == null) {
+					logger.error("processNewCallInformationCc() Caller ID null");
+					callInfo[0] = "sip:unknown@localhost";
+					logger.info("processNewCallInformationCc() Res_: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport );
+					return callInfo;
+				}
+				else if (callInfo[1] == null) {
+					logger.fatal("processNewCallInformationCc() Called number null");
+					return null;
+				}
+				else if (callInfo[2] == null) {
+					logger.info("processNewCallInformationCc() Redirect number null");
+					callInfo[2] = "sip:unknownredirect@localhost";
+					return callInfo;
+				}
+				else {
+					logger.fatal("processNewCallInformationCc() Exception found while processing call!");
+					return null;
+				}
+				
+				
+			} 
+			else {
+				logger.error("processNewCallInformationCc() Unable to process SIP Message CcCallProcessSipMessage_Res Error!");
+				return null;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error("processNewCallInformationCc() Unable to process SIP Message: " + finalCallingSipURI + " " + finalCalledSipURI + " " + finalRedirectSipURI + " " + finalTransport);
 			return null;
 		}
+		
 	}
-
-	/**
-	 * 
-	 * @return
-	 */
-
-	public boolean isStarted() {
-		return isStarted;
-	}
+	
 
 }

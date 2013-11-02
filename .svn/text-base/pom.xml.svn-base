@@ -9,7 +9,7 @@
 	<artifactId>opencall</artifactId>
 	<packaging>war</packaging>
 	<name>Opencall</name>
-	<url>https://code.google.com/p/ramenopencall/</url>
+	<url>https://github.com/spicyramen/opencall/</url>
 	
 	<build>
 		<plugins>
@@ -31,6 +31,17 @@
 			</plugin>
 		</plugins>		
 	</build>
+	
+	<dependencies>
+		
+		<!-- Utils dependency -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+  
+	</dependencies>	
 
 	<!-- repositories -->
 	<repositories>

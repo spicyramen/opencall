@@ -7,23 +7,29 @@ opencallroutelist.cfg
 K 25
 svn:wc:ra_dav:version-url
 V 71
-/svn/!svn/ver/30/branches/belador/opencall/config/opencallroutelist.cfg
+/svn/!svn/ver/46/branches/belador/opencall/config/opencallroutelist.cfg
 END
 opencallrules.cfg
 K 25
 svn:wc:ra_dav:version-url
 V 67
-/svn/!svn/ver/30/branches/belador/opencall/config/opencallrules.cfg
+/svn/!svn/ver/46/branches/belador/opencall/config/opencallrules.cfg
 END
 opencalltransforms.cfg
 K 25
 svn:wc:ra_dav:version-url
 V 72
-/svn/!svn/ver/30/branches/belador/opencall/config/opencalltransforms.cfg
+/svn/!svn/ver/46/branches/belador/opencall/config/opencalltransforms.cfg
+END
+standalone-sip.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/46/branches/belador/opencall/config/standalone-sip.xml
 END
 opencall.ini
 K 25
 svn:wc:ra_dav:version-url
 V 62
-/svn/!svn/ver/30/branches/belador/opencall/config/opencall.ini
+/svn/!svn/ver/46/branches/belador/opencall/config/opencall.ini
 END

@@ -38,7 +38,7 @@ import javax.servlet.sip.SipServletResponse;
 import javax.servlet.sip.SipSession;
 import javax.servlet.sip.SipURI;
 import javax.servlet.sip.UAMode;
-import org.mobicents.servlet.sip.controller.CcProcessor;
+import org.mobicents.servlet.sip.controller.CcCallController;
 import org.apache.log4j.Logger;
 
 /**
@@ -55,12 +55,20 @@ import org.apache.log4j.Logger;
  * 
  * 
  * 
- * Version 1.1  Belador
- *    Route Control
- *    DB, 
- *    File connection, 
- *    API,
+ * Version 1.1  Belador:
+ * 
+ * 	  Transport support (TCP, UDP, TLS, WS, WSS, Twilio/JSON)
+ * 	  Transformations   (Calling,Called, Redirect)
+ *    Route Control via Route List (Route List implementation, send call up to 5 devices)
+ *    File connection enhancements 
+ *    Twilio module (SIP to Twilio. SIP Device <-sip-> OpenCall <-twilio api-> Twilio)
+ *    CDR	(Push new call info to CDR file)
+ *    CLF	(Push new call info to CLF file)
+ *	  DB enhancements   (Update DB schema for previous enhancements)
+ *	  Optimization and Multithreading
+ *    API
  *    Security module
+ *   
  */
  
 
@@ -70,12 +78,15 @@ public class Opencall extends SipServlet {
 	private String INIT_FILE = "../standalone/configuration/opencall/opencall.ini";
 	private static final long serialVersionUID = 1L;
 	private static final String RECEIVED = "Received";
-	private static final String VERSION = "1.1 Belador";
 	private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
+	private static final String VERSION = "1.1 Belador";
+	private static final String UA = "OpenCall " + VERSION;
+	private CcCallController opencallSipEngine =  null;
+	private int callID = 1;
 	B2buaHelper helper = null;
-	private CcProcessor openCallEngine =  null;
+	
 
-	/** Creates a new instance of CallForwardingB2BUASipServlet */
+	/** Creates a new instance of opencall */
 	public Opencall() {
 
 	}
@@ -89,34 +100,43 @@ public class Opencall extends SipServlet {
 		logger.info("System Folder: " + CURRENT_DIRECTORY);
 		
 		super.init(servletConfig);
-		Thread initOpenCallService = new Thread(new Runnable() {
-			
+		
+		Thread initializeMainServices = new Thread(new Runnable() {
 			public void run() {
-				logger.info("OpenCall sip servlet reading init parameters: " + INIT_FILE);
+				logger.info("OpenCall() sip servlet reading init parameters: " + INIT_FILE);
 				
 				try {
-					openCallEngine = new CcProcessor(INIT_FILE);
-					openCallEngine.startService();
-					if (openCallEngine.isStarted()) {
-						logger.info("OpenCall engine started succesfully.");
-					} else {
-						logger.fatal("OpenCall engine unable to start.");
+					/**
+					 * Read Rules
+					 */
+					
+					opencallSipEngine = new CcCallController(INIT_FILE);
+					opencallSipEngine.startService();
+					
+					if (opencallSipEngine.isStarted()) {
+						
+						logger.info("OpenCall() Engine started succesfully...");
+					} 
+					else {
+					
+						logger.fatal("OpenCall() Engine unable to start...");
 					}
 					
-				} catch (Exception e) {
+				} catch (Exception e) {	
 					
-					logger.error("OpenCall Exception during system initialization");
+					logger.fatal("OpenCall() Exception during system initialization...");
 					e.printStackTrace();
 				}
 			}
 		});
 		
-		initOpenCallService.start();
+		initializeMainServices.start();
         
         try {
-        	initOpenCallService.join();
+        	initializeMainServices.join();
 		} catch (InterruptedException e) {
-			logger.error("OpenCall Exception occured during system initialization" + e.getMessage());
+			logger.fatal("OpenCall() Exception occured during system initialization" + e.getMessage());
+			e.printStackTrace();
 			
 		}
 		
@@ -125,9 +145,9 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doAck(SipServletRequest request) throws ServletException,
 			IOException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Got : " + request.toString());
-		}
+		
+		logger.info("Got : " + request.toString());
+		
 		if (request.getTo().getURI().toString().contains("fwd-ack")) {
 			B2buaHelper helper = request.getB2buaHelper();
 			SipSession peerSession = helper.getLinkedSession(request
@@ -147,72 +167,193 @@ public class Opencall extends SipServlet {
 		}
 	}
 
+	
+	@SuppressWarnings("unused")
 	@Override
 	protected void doInvite(final SipServletRequest request) throws ServletException,IOException {
 		
+	
 		if (logger.isInfoEnabled()) {
-			if (logger.isDebugEnabled())
-				logger.info("New SIP Call Detected: " + request.toString());
-			if (logger.isDebugEnabled())
-				logger.debug(request.getFrom().getURI().toString());
-			if (logger.isDebugEnabled())
-				logger.debug("OUTBOUND INTERFACES  "
+			
+				logger.info("Opencall() New SIP Call Detected: " + request.toString());
+				logger.info("Opencall() Display Name: " + request.getFrom().getDisplayName().toString());
+				logger.info("Opencall() From: " + request.getFrom().getURI().toString());		
+				logger.info("Opencall() To: " + request.getTo().getURI().toString());
+				logger.info("Opencall() Supported transports:  "
 						+ getServletContext().getAttribute(
 								"javax.servlet.sip.outboundInterfaces"));
+				
+				
 		}
 
 		if (request.isInitial()) {
 			
-			String finalSipUri = openCallEngine.digitsDialed(request.getTo().getURI().toString());
+			/**
+			 * 	Obtain SIP info:
+			 *  Obtain 3 parameters: CALLING, CALLED, REDIRECT NUMBER
+			 *  RFC 3261 	8.1.1.3 From field
+			 *  			8.1.1.1 Request-URI
+			 *  Process ROUTELIST 
+			 */
+	
+			/**
+			 *  String[] newCallProcessor(int Id, String callingNumber, String calledNumber, String redirectNumber)
+			 */
 
-			if (finalSipUri != null && finalSipUri.length() > 0) {
-				helper = request.getB2buaHelper();
-				request.getSession().setAttribute("INVITE", RECEIVED);
-				request.getApplicationSession().setAttribute("INVITE", RECEIVED);
-
-				SipFactory sipFactory = (SipFactory) getServletContext().getAttribute(SIP_FACTORY);
-
-				Map<String, List<String>> headers = new HashMap<String, List<String>>();
-				List<String> toHeaderSet = new ArrayList<String>();
-				toHeaderSet.add(finalSipUri);
-				headers.put("To", toHeaderSet);
-
-				SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
-				SipURI sipUri = (SipURI) sipFactory.createURI(finalSipUri);			
-				inviteRequest.setRequestURI(sipUri);
 			
-				if (logger.isInfoEnabled()) {
-					if (logger.isDebugEnabled())
-						logger.debug("inviteRequest = " + inviteRequest);
-				}
+			try {
+			
+				//String DisplayName = request.getFrom().getDisplayName();
+				String[] finalSipCallInfo  = opencallSipEngine.newCallProcessor(callID++,request.getFrom().getURI().toString(),request.getTo().getURI().toString(),"");
 				
-				inviteRequest.getSession().setAttribute("originalRequest",request);
-				inviteRequest.getSession().setAttribute("INVITE", RECEIVED);
+				logger.info("Opencall() newCallProcessor() Call info processed completed");
 				
-				try {
-					inviteRequest.send();
-				}
-				catch (Exception e) {
-					logger.error("Unable to send SIP INVITE: " + finalSipUri);
-					e.printStackTrace();
-				
-				}
-				
-			} 
-			else {
+				if (finalSipCallInfo==null) {
+					
+					try {
+						
+						logger.warn("Unable to send SIP INVITE");			
+						SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_NOT_ACCEPTABLE);
+						sipServletResponse.send();
+						return;
+					}		
+					
+					catch(Exception e) {					
+						logger.error("Error: " + e.getMessage());
+						e.printStackTrace();
+					}
 
-				if (logger.isInfoEnabled()) {
-					logger.error("INVITE has not been forwarded. Not found in rules");
+				}
+				
+				String finalCalling   = finalSipCallInfo[0];
+				String finalCalled    = finalSipCallInfo[1];
+				String finalRedirect  = finalSipCallInfo[2];
+				String finalTransport = finalSipCallInfo[3];
+				String finalReject    = finalSipCallInfo[4];
+				
+				/**
+				 * Reject call is enabled in Rules
+				 */
+				
+				if (finalReject.matches("TRUE")) {				
+					try {
+						
+						logger.warn("Unable to send SIP INVITE: " + finalCalled + " Call is Rejected by Transformation Rules");			
+						SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_FORBIDDEN);
+						sipServletResponse.send();
+						return;
+					}		
+					
+					catch(Exception e) {	
+						e.printStackTrace();
+						logger.error("Error: " + e.getMessage());
+						
+					}
+					
+				}
+				
+				
+				
+				if (finalSipCallInfo != null && finalCalled.length() > 0) {
+					
+					helper = request.getB2buaHelper();
+					request.getSession().setAttribute("INVITE", RECEIVED);
+					request.getApplicationSession().setAttribute("INVITE", RECEIVED);
+
+					SipFactory sipFactory = (SipFactory) getServletContext().getAttribute(SIP_FACTORY);
+
+					Map<String, List<String>> headers = new HashMap<String, List<String>>();
+					
+					List<String> toHeaderSet = new ArrayList<String>();
+					List<String> fromHeaderSet = new ArrayList<String>();
+					List<String> UAHeaderSet = new ArrayList<String>();
+					List<String> OrgHeaderSet = new ArrayList<String>();
+									
+					toHeaderSet.add(finalCalled);
+					fromHeaderSet.add(finalCalling);
+					UAHeaderSet.add(UA);
+					OrgHeaderSet.add("Ramen Networks");
+					
+					headers.put("From", fromHeaderSet);
+					headers.put("To", toHeaderSet);
+					headers.put("Organization", OrgHeaderSet);
+					headers.put("User-Agent", UAHeaderSet);
+				
+					SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
+					
+					/**
+					 * Process Transport
+					 */
+					
+					String transport = inviteRequest.getTransport();
+	                
+	                if(logger.isInfoEnabled()) {
+	                	logger.info("OpenCall() Original transport for sending request is: '" + transport + "'");
+	                	
+	                }
+	                
+					SipURI sipUri = (SipURI) sipFactory.createURI(finalCalled);
+					inviteRequest.setRequestURI(sipUri);
+			
+					
+					if (finalTransport!=null) {			
+						sipUri.setTransportParam(finalTransport);
+						logger.info("OpenCall() Final transport for sending request is: '" + finalTransport + "'");
+	            	}
+					
+					
+					if (logger.isInfoEnabled()) {
+							logger.info("OpenCall() InviteRequest = " + inviteRequest);
+					}
+					
+					inviteRequest.getSession().setAttribute("originalRequest",request);
+					inviteRequest.getSession().setAttribute("INVITE", RECEIVED);
+							
+	            
+					/**
+					 * Route List implementation
+					 */
+					
+					try {
+					
+						inviteRequest.send();
+					
+					}
+					catch (Exception exc) {
+						
+						exc.printStackTrace();
+						logger.error("Unable to send SIP INVITE: " + finalCalled);
+						logger.error("Error: " + exc.getMessage());			
+						SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_SERVICE_UNAVAILABLE);
+						sipServletResponse.send();
+					
+					}
+					
+				} 
+				else {
+
+					logger.error("INVITE. Not found in rules");
 					SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_NOT_FOUND);
 					sipServletResponse.send();
+			
+				
 				}
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Opencall() Unable to process call information");
+				logger.error("Error: " + e.getMessage());			
+				SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_SERVICE_UNAVAILABLE);
+				sipServletResponse.send();
+
 			}
+						
+			
 		} else {
 			
-			// Deals with Re-Invite request
-			
+			// Deals with Re-Invite request		
 			if (logger.isInfoEnabled()) {
-				logger.info("SIP Re-INVITE");
+				logger.info("SIP RE-INVITE");
 			}
 			
 			B2buaHelper b2buaHelper = request.getB2buaHelper();
@@ -226,11 +367,8 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doBye(SipServletRequest request) throws ServletException,IOException {
 		
-		
-		if (logger.isInfoEnabled()) {
-			logger.info("Got BYE: " + request.toString());
-		}
-		
+		logger.info("Got BYE: " + request.toString());
+	
 		// We forward the BYE
 		B2buaHelper byeHelper = request.getB2buaHelper();
 		SipSession linkedSipSession = byeHelper.getLinkedSession(request.getSession());
@@ -240,11 +378,11 @@ public class Opencall extends SipServlet {
 		
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("Distributable Simple Servlet: attributes previously set in linked sip session INVITE : "
+			logger.info("Opencall Servlet: attributes previously set in linked sip session INVITE : "
 					+ linkedSipSessionInviteAttribute);
-			logger.info("Distributable Simple Servlet: attributes previously set in sip session INVITE : "
+			logger.info("Opencall Servlet: attributes previously set in sip session INVITE : "
 					+ sipSessionInviteAttribute);
-			logger.info("Distributable Simple Servlet: attributes previously set in sip application session INVITE : "
+			logger.info("Opencall Servlet: attributes previously set in sip application session INVITE : "
 					+ sipApplicationSessionInviteAttribute);
 		}
 
@@ -279,9 +417,9 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doUpdate(SipServletRequest request) throws ServletException,
 			IOException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Got : " + request.toString());
-		}
+		
+		logger.info("Got : " + request.toString());
+		
 		B2buaHelper helper = request.getB2buaHelper();
 		SipSession peerSession = helper.getLinkedSession(request.getSession());
 		SipServletRequest update = helper.createRequest(peerSession, request,
@@ -292,9 +430,9 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doInfo(SipServletRequest request) throws ServletException,
 			IOException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Got : " + request.toString());
-		}
+		
+		logger.info("Got : " + request.toString());
+		
 		B2buaHelper helper = request.getB2buaHelper();
 		SipSession peerSession = helper.getLinkedSession(request.getSession());
 		SipServletRequest info = helper.createRequest(peerSession, request,
@@ -313,10 +451,9 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doSuccessResponse(SipServletResponse sipServletResponse)
 			throws ServletException, IOException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Got : " + sipServletResponse.toString());
-		}
-
+		
+		logger.info("Got : " + sipServletResponse.toString());
+		
 		// SipSession originalSession =
 		// helper.getLinkedSession(sipServletResponse.getSession());
 		// if this is a response to an INVITE we ack it and forward the OK
@@ -378,10 +515,10 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doErrorResponse(SipServletResponse sipServletResponse) throws ServletException, IOException {
 		
-		if (logger.isInfoEnabled()) {
-			logger.info("Got : " + sipServletResponse.getStatus() + " "
+	
+		logger.warn("Error response received got : " + sipServletResponse.getStatus() + " "
 					+ sipServletResponse.getReasonPhrase());
-		}
+	
 
 		// create and sends the error response for the first call leg
 		SipServletRequest originalRequest = (SipServletRequest) sipServletResponse.getSession().getAttribute("originalRequest");
@@ -395,7 +532,10 @@ public class Opencall extends SipServlet {
 
 	@Override
 	protected void doProvisionalResponse(SipServletResponse sipServletResponse) throws ServletException, IOException {
+		
+		logger.info("Got : " + sipServletResponse.toString());
 		SipServletResponse responseToOriginalRequest = null;
+		
 		if (sipServletResponse.getTo().getURI().toString().contains("linked")) {
 			B2buaHelper b2buaHelper = sipServletResponse.getRequest()
 					.getB2buaHelper();

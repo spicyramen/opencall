@@ -9,3 +9,9 @@ svn:wc:ra_dav:version-url
 V 116
 /svn/!svn/ver/29/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/lib/mysql-connector-java-5.1.23.jar
 END
+commons-lang-2.6.jar
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/!svn/ver/46/branches/belador/opencall/target/opencall-1.1.0-BELADOR/WEB-INF/lib/commons-lang-2.6.jar
+END

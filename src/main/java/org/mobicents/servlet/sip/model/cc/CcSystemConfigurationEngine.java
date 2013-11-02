@@ -42,8 +42,7 @@ public class CcSystemConfigurationEngine implements
 	 * ROUTE=("8","50","NUMERIC","210","110.10.0.210","5070")
 	 */
 
-	private static Logger logger = Logger
-			.getLogger(CcSystemConfigurationEngine.class);
+	private static Logger logger = Logger.getLogger(CcSystemConfigurationEngine.class);
 	private static String DELIMITER = "=";
 	private static int RULE_TOKEN_COUNT = 5;
 	private static int RULE_TOKEN_MAX   = 7;
@@ -53,9 +52,7 @@ public class CcSystemConfigurationEngine implements
 	private static int RULE_LIMIT = 100;
 	private static int PRIORITY_LOWER = 1;
 	private static int PRIORITY_UPPER = 100;
-	
 	private CcUtils utilObj = new CcUtils();
-	
 	private ArrayList<String> configParams = new ArrayList<String>(); // Clean
 	private ArrayList<String> mandatoryConfigParamsRules = new ArrayList<String>();
 	private ArrayList<String> mandatoryConfigParamsTransforms = new ArrayList<String>();
@@ -66,11 +63,9 @@ public class CcSystemConfigurationEngine implements
 	private ArrayList<String> transformPatterns = new ArrayList<String>();
 	private ArrayList<String> candidateRouteLists = new ArrayList<String>();
 	private ArrayList<String> routeLists = new ArrayList<String>();
-	
 	private Map<Object, String> callTransformRules = new HashMap<Object, String>();
 	private Map<Object, String> routeListRules = new HashMap<Object, String>();
 	private Map<Object, String> callRoutingRules = new HashMap<Object, String>();
-
 	private String CONFIGURATION_FILE = "../standalone/configuration/opencall/opencallrules.cfg";
 	private int ACCESS_MODE = 3;
 

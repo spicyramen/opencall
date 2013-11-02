@@ -1,6 +1,6 @@
 # Configuration File
 #
-# Purpose: Call Control Routing rules for OpenCall
+# Purpose: Call Control Transform rules for OpenCall
 # Author: Gonzalo Gasca Meza
 # Oxford University
 # Department of Computer Science, Wolfson Building,  
@@ -12,17 +12,27 @@
 #
 # 		TRANSFORM=
 #       Mandatory parameters:
+
 #       RULE     = NUMERIC
-#       TYPE     = REGEX,  WILDCARD, NUMERIC
-#       ORIGINAL STRING   = VALUE
-#       FINAL    STRING   = VALUE
-#		APPLYTO  = CALLED, CALLING, REDIRECT
+#				  Rules apply to all incoming calls, in order of rule order
+#
+#       TYPE     			= REGEX, WILDCARD, NUMERIC
+#		ENABLED  			= TRUE, FALSE
+#       ORIGINAL STRING   	= VALUE
+#       FINAL    STRING   	= VALUE
+#		APPLYTO  			= CALLING, CALLED, REDIRECT
+#		BLOCK CALLS 		= TRUE, FALSE
+#
+#		Optional:
+#		No Optional parameters
+#
+#		TRANSFORMATIONS TO NUMBERS ARE APPLIED FIRST, THEN ROUTE PATTERNS
 #
 #
-#		TRANSFORM CALLED NUMBER ARE APPLIED FIRST, THEN ROUTE PATTERNS
-#
-#
-TRANSFORM=("1","WILDCARD","+5255!","01152!","CALLED")
-TRANSFORM=("2","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED")
-TRANSFORM=("3","NUMERIC","201","9201","CALLING")
-TRANSFORM=("4","REGEX","(.*)@.*","$1","REDIRECT")
+TRANSFORM=("1","TRUE","WILDCARD","+!","011!","CALLED","FALSE")
+TRANSFORM=("2","FALSE","WILDCARD","XXXXXXXX","18668643232**XXXXXXXX","CALLED","FALSE")
+TRANSFORM=("3","FALSE","NUMERIC","201","9201","CALLING","TRUE")
+TRANSFORM=("4","FALSE","REGEX","(.*)@.*","$1","REDIRECT","FALSE")
+TRANSFORM=("5","TRUE","WILDCARD","+!","011!","CALLED","FALSE")
+TRANSFORM=("6","TRUE","REGEX","(408(\d+){7})","1(\1)","CALLING","FALSE")
+TRANSFORM=("7","TRUE","REGEX","(.*)@.attlabs.com","(.*)@videolab.att.com","CALLED","FALSE")

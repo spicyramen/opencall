@@ -1,16 +1,19 @@
 package org.mobicents.servlet.sip.controller;
 
+import java.util.Arrays;
+
 import org.apache.log4j.Logger;
 import org.mobicents.servlet.sip.model.cc.CcInitConfigSrv;
 import org.mobicents.servlet.sip.model.cc.CcReadSystemConfiguration;
 
 
 
-public class CcProcessor {
+public class CcCallController {
 
 	private String INIT_FILE = "";
-	private CcInitConfigSrv readConfigRules = new CcInitConfigSrv();
+	private CcInitConfigSrv processConfigurationRules = new CcInitConfigSrv();
 	private boolean isStarted;
+	private String[] callInformation;
 		
 	
 	public boolean isStarted() {
@@ -20,10 +23,10 @@ public class CcProcessor {
 	
 
 	private static Logger logger = Logger
-			.getLogger(CcProcessor.class);
+			.getLogger(CcCallController.class);
 	
 	
-	public CcProcessor( String initFile) {
+	public CcCallController(String initFile) {
 		logger.info("SipEngine() initializing...");
 		INIT_FILE = initFile;
 	}
@@ -31,13 +34,17 @@ public class CcProcessor {
 	public boolean startService() {
 		
 		logger.info("SipEngine() starting...");
-			 // Initialize object to read for rules from: File, DB,Internal, or other.
+		
+		// Initialize object to read for rules from: File, DB,Internal, or other.
 		CcReadSystemConfiguration readInitParameters = new CcReadSystemConfiguration(INIT_FILE);
-		readInitParameters.CcInitSystemConfiguration(); 				// Reads opencall.ini and determined Connection Mode
+		
+		// Reads opencall.ini and determined Connection Mode
+		readInitParameters.CcInitSystemConfiguration(); 				
 		
 		try {
-			readConfigRules.initializeConfiguration(readInitParameters.getSystemMode(),readInitParameters.getConnection());
-			if (readConfigRules.isStarted()) {
+			processConfigurationRules.initializeConfiguration(readInitParameters.getSystemMode(),readInitParameters.getConnection());
+			if (processConfigurationRules.isStarted()) {
+				logger.info("SipEngine() started...");
 				isStarted=true;
 			} else {
 				isStarted=false;
@@ -45,7 +52,7 @@ public class CcProcessor {
 			
 		} catch (Exception e) {
 		
-			logger.error("SipEngine() Exception during system initialization");
+			logger.error("SipEngine() Exception during system initialization.");
 			e.printStackTrace();
 		}
 		
@@ -53,10 +60,54 @@ public class CcProcessor {
 		
 	}
 	
-	public String digitsDialed (String sipUri) {
-			return readConfigRules.digitsDialed(sipUri);
+	public String[] newCallProcessor(int Id, String callingNumber, String calledNumber, String redirectNumber) {
+					
+		/**
+	 	callInfo[0] = finalCallingSipURI;
+		callInfo[1] = finalCalledSipURI;
+		callInfo[2] = finalRedirectSipURI;
+		callInfo[3] = finalTransport;
+		callInfo[4] = finalIsBlocked;		
+		*/
+		
+		String[] callInfo = new String[5];
+		
+		
+		try {
+			
+			logger.info("newCallProcessor() Processing Call Info: (" + Id + ") " + callingNumber + " " + calledNumber + " " + redirectNumber);
+			callInfo = processConfigurationRules.processNewCallInformationCc(Id,callingNumber,calledNumber,redirectNumber);
+			callInformation = callInfo;
+			
+			if (callInfo[1] != null) {
+				logger.info("newCallProcessor() Processed Call Info completed");
+				return callInfo;
+			}
+			else {
+				logger.fatal("newCallProcessor() Exception found while processing call!");
+				return null;
+			}
+			// Return Called number
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("newCallProcessor() Error processing new call (" + Id + ")");	
+			return null;
+		}
+			
 	
 	}
+
+	public String[] getCallInformation() {
+		return callInformation;
+	}
+
+	@Override
+	public String toString() {
+		return "CcCallController [callInformation="
+				+ Arrays.toString(callInformation) + "]";
+	}
+	
 
 }
 
