@@ -1,5 +1,14 @@
 OpenCall Architecture
 
+CALLTRANSFORMS=/usr/local/src/mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
+CALLRULES=/usr/local/src/mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
+CALLROUTELIST=/usr/local/src/mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg
+
+/usr/local/src/mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/
+
+172.31.46.56
+
+./standalone.sh -b 172.31.46.56 -c standalone-sip.xml & 
 
 Main application
  	  -B2BUA SIP Proxy
@@ -46,6 +55,28 @@ Opencall.java Initializes and reads opencall.ini:
 			CcDA
 				CcProcessRules
 					
+
+CcTransformationReq
+CcDigitAnalysisTransformationReq
+CcProcessTransformRules
+CcProcessTransformRulesCdcc
+	CcProcessTransformRulesNumericCdcc
+	CcProcessTransformRulesRegexCdcc
+	CcProcessTransformRulesWildCardCdcc
+	
+	Populate:	potentialMatchTransformRules()
+
+	CcTransformInit
+	CcFindTransformMatch
+		CcFindMatchTransformationRule
+			CcTransformationRule
+
+
+
+
+
+
+
 
 2)  McuWeb
 

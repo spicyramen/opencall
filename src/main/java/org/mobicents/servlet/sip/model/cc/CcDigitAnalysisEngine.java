@@ -393,13 +393,13 @@ public class CcDigitAnalysisEngine {
 		// No Port defined in SIP URI
 		if (portURI.equals("")) 
 		{
-			logger.info("CcTransformationDigitAnalysis() URI:\t" + SIP_PROTOCOL + userURI + "@"
+			logger.info("CcDigitAnalysisTransformationReq() URI:\t" + SIP_PROTOCOL + userURI + "@"
 					+ domainURI);
 			CcProcessTransformRules(userURI + DELIMITER + domainURI,type);
 		} 
 		else 
 		{
-			logger.info("CcTransformationDigitAnalysis() URI:\t" + SIP_PROTOCOL + userURI + "@"
+			logger.info("CcDigitAnalysisTransformationReq() URI:\t" + SIP_PROTOCOL + userURI + "@"
 					+ domainURI + ":" + portURI);
 			CcProcessTransformRules(userURI + DELIMITER + domainURI + ":" + portURI,type);
 		}
@@ -479,7 +479,6 @@ public class CcDigitAnalysisEngine {
 
 		} else {
 			foundRuleMatch = false;
-			
 			if(type==1)
 				logger.warn("CcProcessTransformRules() No Transform patterns matches found for type: CALLING " + originalCallingSipURI);
 			if(type==2)
@@ -489,8 +488,8 @@ public class CcDigitAnalysisEngine {
 			
 		}
 
-		//logger.info("CcProcessTransformRules() potentialMatchCallRules() cache cleaned");
-		//potentialMatchTransformRules.clear();
+		logger.info("CcProcessTransformRules() potentialMatchCallRules() cache cleaned");
+		potentialMatchTransformRules.clear();
 	}
 	
 	/**
@@ -526,7 +525,7 @@ public class CcDigitAnalysisEngine {
 		 *		originalRedirectSipURI = redirectNumber;
 		 */
 		CcDigitAnalysisTransformationRes(utilObj.getTransformValue(0, CcExtractTransformRuleParams(ruleNumber)));
-		logger.info("Transform Rule selected: " + ruleNumber);
+		logger.info("CcFindTransformMatch() Transform Rule selected: " + ruleNumber);
 		
 	}
 
@@ -1136,11 +1135,12 @@ public class CcDigitAnalysisEngine {
 	 */
 	private boolean CcProcessTransformRulesCdcc(String[] ruleValue, String sipURI,String value,int type) {
 
-		//logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
+		logger.info("CcProcessTransformRulesCdcc()  Searching Transform Rules for SIP URI: " +  "sip:" + sipURI);
 		boolean foundRuleMatch = false;
 		String ruleDirection = ruleValue[6].toUpperCase();
 		
 		if(type==1) {
+			
 			if(ruleDirection.equals("CALLING")) {
 				if (ruleValue[3].equals("REGEX")) {
 					if (CcProcessTransformRulesRegexCdcc(ruleValue, sipURI, value)) {
@@ -1160,6 +1160,7 @@ public class CcDigitAnalysisEngine {
 			}
 		}
 		else if(type==2) {
+			
 			if(ruleDirection.equals("CALLED")) {
 				if (ruleValue[3].equals("REGEX")) {
 					if (CcProcessTransformRulesRegexCdcc(ruleValue, sipURI, value)) {
@@ -1180,6 +1181,7 @@ public class CcDigitAnalysisEngine {
 			}
 		}
 		else if(type==3) {
+			
 			if(ruleDirection.equals("REDIRECT")) {
 				if (ruleValue[3].equals("REGEX")) {
 					if (CcProcessTransformRulesRegexCdcc(ruleValue, sipURI, value)) {
