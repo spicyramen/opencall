@@ -90,13 +90,17 @@ svn checkout svn://svn.code.sf.net/p/mcumediaserver/code/trunk mcumediaserver-co
  
  scp -i spicyramen.pem ubuntu@ec2-54-218-84-250.us-west-2.compute.amazonaws.com:/etc/asterisk/srtp.pcap .
  
-./standalone.sh -b 172.31.43.74 -c standalone-sip.xml & ec2-54-218-65-160.us-west-2.compute.amazonaws.com
+./standalone.sh -b 172.31.43.74 -c standalone-sip.xml &
+./jboss-cli.sh --connect command=:shutdown
+
 
 3) Mobicents
 
 ssh -i spicyramen.pem ubuntu@54.218.68.71
 
-ec2-54-218-68-71.us-west-2.compute.amazonaws.com
+
+./jboss-cli.sh --connect command=:shutdown
+
 
 172.31.46.56
 

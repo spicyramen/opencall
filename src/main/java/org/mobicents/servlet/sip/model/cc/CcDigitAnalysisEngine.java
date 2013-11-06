@@ -490,6 +490,7 @@ public class CcDigitAnalysisEngine {
 			
 		}
 
+		//Delete array for next call
 		logger.info("CcProcessTransformRules() potentialMatchCallRules() cache cleaned");
 		potentialMatchTransformRules.clear();
 	}

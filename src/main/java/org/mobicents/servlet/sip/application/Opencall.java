@@ -172,19 +172,26 @@ public class Opencall extends SipServlet {
 	@Override
 	protected void doInvite(final SipServletRequest request) throws ServletException,IOException {
 		
-	
-		if (logger.isInfoEnabled()) {
+		try {
 			
+			if (logger.isInfoEnabled()) {
 				logger.info("Opencall() New SIP Call Detected: " + request.toString());
-				logger.info("Opencall() Display Name: " + request.getFrom().getDisplayName().toString());
+			
+				if(!request.getFrom().getDisplayName().isEmpty()) {
+					logger.info("Opencall() Display Name: " + request.getFrom().getDisplayName().toString());
+				}
 				logger.info("Opencall() From: " + request.getFrom().getURI().toString());		
 				logger.info("Opencall() To: " + request.getTo().getURI().toString());
 				logger.info("Opencall() Supported transports:  "
 						+ getServletContext().getAttribute(
 								"javax.servlet.sip.outboundInterfaces"));
-				
-				
+			}	
 		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Error during Initial Process of Call: " + e.getMessage());
+		}
+		
 
 		if (request.isInitial()) {
 			
