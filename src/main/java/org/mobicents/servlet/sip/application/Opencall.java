@@ -177,7 +177,7 @@ public class Opencall extends SipServlet {
 			if (logger.isInfoEnabled()) {
 				logger.info("Opencall() New SIP Call Detected: " + request.toString());
 			
-				if(!request.getFrom().getDisplayName().isEmpty()) {
+				if(!request.getFrom().getDisplayName().isEmpty() || request.getFrom().getDisplayName()!=null) {
 					logger.info("Opencall() Display Name: " + request.getFrom().getDisplayName().toString());
 				}
 				logger.info("Opencall() From: " + request.getFrom().getURI().toString());		
@@ -188,8 +188,7 @@ public class Opencall extends SipServlet {
 			}	
 		}
 		catch(Exception e) {
-			e.printStackTrace();
-			logger.error("Error during Initial Process of Call: " + e.getMessage());
+			logger.error("Display name not present: " + e.getMessage());
 		}
 		
 
@@ -287,7 +286,6 @@ public class Opencall extends SipServlet {
 					headers.put("User-Agent", UAHeaderSet);
 				
 					SipServletRequest inviteRequest = helper.createRequest(request,true, headers);
-					
 					/**
 					 * Process Transport
 					 */
