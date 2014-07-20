@@ -428,7 +428,7 @@ public class RegexEngine {
 		        result.addGroup(new Group(matchText, start, end));
 		    }
 		     */
-		    System.out.println("processRegexRules() Replaced text: " + result.getReplacedText());
+		    //logger.info("processRegexRules() Replaced text: " + result.getReplacedText());
 		    return result.getReplacedText();
 		}
 		catch(Exception e) {

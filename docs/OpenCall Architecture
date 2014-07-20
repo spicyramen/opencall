@@ -8,7 +8,363 @@ CALLROUTELIST=/usr/local/src/mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/stan
 
 172.31.46.56
 
+INVITE=("org.mobicents.servlet.sip.application.Opencall","DAR\:From","ORIGINATING","","NO_ROUTE","1","REGEX=From:.*sip:.*@ramennetworks\.com")
+
+INVITE - ("org.mobicents.servlet.sip.testsuite.SimpleApplication", "DAR:From", "ORIGINATING", "", "NO_ROUTE", "0", "REGEX=From:.*sip:.*@ramennetworks\.com")
+
+INVITE=("WebsocketSample","DAR\:From","ORIGINATING","","NO_ROUTE","0","REGEX=From:.*sip:.*@ramennetworks\.com"),("org.mobicents.servlet.sip.application.Opencall","DAR\:From","ORIGINATING","","NO_ROUTE","1")
+
 ./standalone.sh -b 172.31.46.56 -c standalone-sip.xml & 
+
+<![CDATA[REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKRkreuGp4vmlcKOrldTpGvv5UqbuNv1E8;rport=49696;received=172.31.32.194
+Via: SIP/2.0/TCP 50.156.118.130:63367;rport;branch=z9hG4bKRkreuGp4vmlcKOrldTpGvv5UqbuNv1E8;ws-hacked=WS
+From: "Chrome" <sip:+14082186575@ramennetworks.com>;tag=SWpNZaTOFRPfVgzE1feS
+To: "Chrome" <sip:+14082186575@ramennetworks.com>
+Contact: "Chrome" <sip:+14082186575@172.31.32.194:5060;rtcweb-breaker=yes;transport=tcp;ws-src-ip=50.156.118.130;ws-src-port=63367;ws-src-proto=ws>;expires=200;click2call=no;+g.oma.sip-im;+audio;language="en,fr"
+Call-ID: 01a0100d-d724-7091-a9d8-5941454dd0f6
+CSeq: 6265 REGISTER
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.10B
+Organization: Doubango Telecom
+Content-Length: 0
+
+]]>
+</message>
+
+
+INVITE sip:22223333@videolab.att.com SIP/2.0
+11/11/2013 07:10:48.896 INFO Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK-965025439;rport
+11/11/2013 07:10:48.896 INFO From: <sip:+14082186575@ramennetworks.com>;tag=1881712521
+11/11/2013 07:10:48.896 INFO To: <sip:22223333@videolab.att.com>
+11/11/2013 07:10:48.896 INFO Contact: <sip:+14082186575@172.31.32.194:5060;ws-src-ip=50.156.118.130;ws-src-port=57840;ws-src-proto=ws;transport=tcp>
+11/11/2013 07:10:48.896 INFO Call-ID: 0306afba-9fc8-fdad-eaba-fe4f685272d3
+11/11/2013 07:10:48.896 INFO CSeq: 1225058836 INVITE
+11/11/2013 07:10:48.896 INFO Content-Type: application/sdp
+11/11/2013 07:10:48.896 INFO Content-Length: 2566
+11/11/2013 07:10:48.896 INFO Max-Forwards: 70
+11/11/2013 07:10:48.897 INFO User-Agent: webrtc2sip Media Server 2.6.0
+11/11/2013 07:10:48.897 INFO Supported: 100rel
+11/11/2013 07:10:48.897 INFO v=0
+11/11/2013 07:10:48.897 INFO o=doubango 1983 678901 IN IP4 (null)
+11/11/2013 07:10:48.897 INFO s=-
+11/11/2013 07:10:48.897 INFO c=IN IP4 (null)
+11/11/2013 07:10:48.897 INFO t=0 0
+11/11/2013 07:10:48.897 INFO a=tcap:1 RTP/SAVPF RTP/SAVP RTP/AVPF
+11/11/2013 07:10:48.897 INFO m=audio 54406 RTP/AVP 8 0 3
+11/11/2013 07:10:48.897 INFO c=IN IP4 172.31.32.194
+11/11/2013 07:10:48.898 INFO a=ptime:20
+11/11/2013 07:10:48.898 INFO a=minptime:1
+11/11/2013 07:10:48.898 INFO a=maxptime:255
+11/11/2013 07:10:48.898 INFO a=silenceSupp:off - - - -
+11/11/2013 07:10:48.898 INFO a=rtpmap:8 PCMA/8000/1
+11/11/2013 07:10:48.898 INFO a=rtpmap:0 PCMU/8000/1
+11/11/2013 07:10:48.898 INFO a=rtpmap:3 GSM/8000/1
+11/11/2013 07:10:48.898 INFO a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:MGSt5e+2UfuOZG90hTlz5NOH27XZdyfM0bd90FCW
+11/11/2013 07:10:48.899 INFO a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:zBkJvrhuE4RgMxhAPaRHNrKK0eUGL3zeeeFVwsQP
+11/11/2013 07:10:48.899 INFO a=pcfg:1 t=1 a=1,2
+11/11/2013 07:10:48.899 INFO a=pcfg:2 t=2 a=1,2
+11/11/2013 07:10:48.899 INFO a=pcfg:3 t=3
+11/11/2013 07:10:48.899 INFO a=sendrecv
+11/11/2013 07:10:48.899 INFO a=rtcp-mux
+11/11/2013 07:10:48.899 INFO a=ssrc:1457764747 cname:56203d7d75f009f95be00baae66156c9
+11/11/2013 07:10:48.899 INFO a=ssrc:1457764747 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+11/11/2013 07:10:48.899 INFO a=ssrc:1457764747 label:doubango@audio
+11/11/2013 07:10:48.900 INFO a=ice-ufrag:hEaJ6FRCu7rk4mE
+11/11/2013 07:10:48.900 INFO a=ice-pwd:gz7Tjk2A9n0xS89Pb93nH
+11/11/2013 07:10:48.900 INFO a=candidate:XrsFBftNC 1 udp 2130706431 172.31.32.194 54406 typ host
+11/11/2013 07:10:48.900 INFO a=candidate:XrsFBftNC 2 udp 2130706430 172.31.32.194 5
+11/11/2013 07:10:48.900 INFO a=candidate:srflxXrsF 1 udp 1694498815 54.200.206.176 54406 typ srflx raddr 172.31.32.194 rport 54406
+11/11/2013 07:10:48.900 INFO a=candidate:srflxXrsF 2 udp 1694498814 54.200.206.176 54407 typ srflx raddr 172.31.32.194 rport 54407
+11/11/2013 07:10:48.900 INFO m=video 44224 RTP/AVP 100 104 105
+11/11/2013 07:10:48.900 INFO c=IN IP4 172.31.32.194
+11/11/2013 07:10:48.900 INFO a=rtcp-fb:* ccm fir
+11/11/2013 07:10:48.901 INFO a=rtcp-fb:* nack
+11/11/2013 07:10:48.901 INFO a=rtcp-fb:* goog-remb
+11/11/2013 07:10:48.901 INFO a=rtpmap:100 VP8/90000
+11/11/2013 07:10:48.901 INFO a=imageattr:100 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+11/11/2013 07:10:48.901 INFO a=rtpmap:104 H264/90000
+11/11/2013 07:10:48.901 INFO a=imageattr:104 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+11/11/2013 07:10:48.901 INFO a=fmtp:104 profile-level-id=42001f; packetization-mode=1; impl=FFMPEG
+11/11/2013 07:10:48.901 INFO a=rtpmap:105 H264/90000
+11/11/2013 07:10:48.901 INFO a=imageattr:105 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+11/11/2013 07:10:48.902 INFO a=fmtp:105 profile-level-id=4d001f; packetization-mode=1; impl=FFMPEG
+11/11/2013 07:10:48.902 INFO a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:nbWAESYL1GT08ZkCg5S8GUmrk8MeDvlXY2QGRJcX
+11/11/2013 07:10:48.902 INFO a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:beJmEQJQEZbFYkapo6cpZTt1Goc23P97Kw/5n18l
+11/11/2013 07:10:48.902 INFO a=pcfg:1 t=1 a=1,2
+11/11/2013 07:10:48.902 INFO a=pcfg:2 t=2 a=1,2
+11/11/2013 07:10:48.910 INFO a=pcfg:3 t=3
+11/11/2013 07:10:48.910 INFO a=sendrecv
+11/11/2013 07:10:48.910 INFO a=rtcp-mux
+11/11/2013 07:10:48.910 INFO a=ssrc:113123528 cname:cf3b481cb186e74ac2897ad62e963baf
+11/11/2013 07:10:48.911 INFO a=ssrc:113123528 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+11/11/2013 07:10:48.911 INFO a=ssrc:113123528 label:doubango@video
+11/11/2013 07:10:48.911 INFO a=ice-ufrag:HcAOTPCG3A4gX11
+11/11/2013 07:10:48.911 INFO a=ice-pwd:3fsHD2vKAMRRbZrVy528v
+11/11/2013 07:10:48.911 INFO a=candidate:l0zHhRdt9 1 udp 2130706431 172.31.32.194 44224 typ host
+11/11/2013 07:10:48.911 INFO a=candidate:l0zHhRdt9 2 udp 2130706430 172.31.32.194 44225 typ host
+
+
+
+		packet = packet[0] 
+        #parse ethernet header
+        eth_length = 14
+        eth_header = packet[:eth_length]
+        eth = unpack('!6s6sH' , eth_header)
+        eth_protocol = socket.ntohs(eth[2])
+        
+        
+        ip_header = packet[eth_length:20+eth_length]          
+        #now unpack them :)
+        iph = unpack('!BBHHHBBH4s4s' , ip_header)
+     
+        version_ihl = iph[0]
+        version = version_ihl >> 4
+        ihl = version_ihl & 0xF
+        iph_length = ihl * 4
+        ttl = iph[5]
+        protocol = iph[6]
+        
+        t = iph_length + eth_length
+        tcp_header = packet[t:t+20]
+        
+        tcph = unpack('!HHLLBBHHH' , tcp_header)
+        doff_reserved = tcph[4]
+        tcph_length = doff_reserved >> 4
+        
+        h_size = eth_length + iph_length + tcph_length * 4
+        
+        data = packet[h_size:]
+        
+07:10:33,507 INFO  [org.mobicents.servlet.sip.core.dispatchers.InitialRequestDispatcher] (SIP-TCP-Core-PipelineThreadpool-9) Request event dispatched to WebsocketSample
+07:10:48,904 INFO  [gov.nist.javax.sip.stack.SIPTransactionStack] (SIP-TCP-Core-PipelineThreadpool-11) <message
+from="172.31.32.194:54804" 
+to="172.31.46.56:5060" 
+time="1384153848903"
+isSender="false" 
+transactionId="z9hg4bk-965025439" 
+callId="0306afba-9fc8-fdad-eaba-fe4f685272d3" 
+firstLine="INVITE sip:22223333@videolab.att.com SIP/2.0" 
+>
+<![CDATA[INVITE sip:22223333@videolab.att.com SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bK-965025439;rport=54804;received=172.31.32.194
+From: <sip:+14082186575@ramennetworks.com>;tag=1881712521
+To: <sip:22223333@videolab.att.com>
+Contact: <sip:+14082186575@172.31.32.194:5060;ws-src-ip=50.156.118.130;ws-src-port=57840;ws-src-proto=ws;transport=tcp>
+Call-ID: 0306afba-9fc8-fdad-eaba-fe4f685272d3
+CSeq: 1225058836 INVITE
+Content-Type: application/sdp
+Max-Forwards: 70
+User-Agent: webrtc2sip Media Server 2.6.0
+Supported: 100rel
+Content-Length: 2566
+
+v=0
+o=doubango 1983 678901 IN IP4 (null)
+s=-
+c=IN IP4 (null)
+t=0 0
+a=tcap:1 RTP/SAVPF RTP/SAVP RTP/AVPF
+m=audio 54406 RTP/AVP 8 0 3
+c=IN IP4 172.31.32.194
+a=ptime:20
+a=minptime:1
+a=maxptime:255
+a=silenceSupp:off - - - -
+a=rtpmap:8 PCMA/8000/1
+a=rtpmap:0 PCMU/8000/1
+a=rtpmap:3 GSM/8000/1
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:MGSt5e+2UfuOZG90hTlz5NOH27XZdyfM0bd90FCW
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:zBkJvrhuE4RgMxhAPaRHNrKK0eUGL3zeeeFVwsQP
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:1457764747 cname:56203d7d75f009f95be00baae66156c9
+a=ssrc:1457764747 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:1457764747 label:doubango@audio
+a=ice-ufrag:hEaJ6FRCu7rk4mE
+a=ice-pwd:gz7Tjk2A9n0xS89Pb93nH
+a=candidate:XrsFBftNC 1 udp 2130706431 172.31.32.194 54406 typ host
+a=candidate:XrsFBftNC 2 udp 2130706430 172.31.32.194 54407 typ host
+a=candidate:srflxXrsF 1 udp 1694498815 54.200.206.176 54406 typ srflx raddr 172.31.32.194 rport 54406
+a=candidate:srflxXrsF 2 udp 1694498814 54.200.206.176 54407 typ srflx raddr 172.31.32.194 rport 54407
+m=video 44224 RTP/AVP 100 104 105
+c=IN IP4 172.31.32.194
+a=rtcp-fb:* ccm fir
+a=rtcp-fb:* nack
+a=rtcp-fb:* goog-remb
+a=rtpmap:100 VP8/90000
+a=imageattr:100 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=rtpmap:104 H264/90000
+a=imageattr:104 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:104 profile-level-id=42001f; packetization-mode=1; impl=FFMPEG
+a=rtpmap:105 H264/90000
+a=imageattr:105 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:105 profile-level-id=4d001f; packetization-mode=1; impl=FFMPEG
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:nbWAESYL1GT08ZkCg5S8GUmrk8MeDvlXY2QGRJcX
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:beJmEQJQEZbFYkapo6cpZTt1Goc23P97Kw/5n18l
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:113123528 cname:cf3b481cb186e74ac2897ad62e963baf
+a=ssrc:113123528 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:113123528 label:doubango@video
+a=ice-ufrag:HcAOTPCG3A4gX11
+a=ice-pwd:3fsHD2vKAMRRbZrVy528v
+a=candidate:l0zHhRdt9 1 udp 2130706431 172.31.32.194 44224 typ host
+a=candidate:l0zHhRdt9 2 udp 2130706430 172.31.32.194 44225 typ host
+a=candidate:srflxl0zH 1 udp 1694498815 54.200.206.176 44224 typ srflx raddr 172.31.32.194 rport 44224
+a=candidate:srflxl0zH 2 udp 1694498814 54.200.206.176 44225 typ srflx raddr 172.31.32.194 rport 44225
+]]>
+</message>
+
+
+07:10:49,172 INFO  [gov.nist.javax.sip.stack.SIPTransactionStack] (SIP-TCP-Core-PipelineThreadpool-11) <message
+from="172.31.46.56:5060" 
+to="12.71.143.132:5060" 
+time="1384153849171"
+isSender="true" 
+transactionId="z9hg4bkee0e4d6e-2a24-45b2-b330-319d34760c2b_700d280e_488453133589336" 
+callId="4110791b6718129b4225167cc7753f65@172.31.46.56" 
+firstLine="INVITE sip:22223333@videolab.att.com SIP/2.0" 
+>
+<![CDATA[INVITE sip:22223333@videolab.att.com SIP/2.0
+CSeq: 1225058836 INVITE
+Content-Type: application/sdp
+Max-Forwards: 69
+Supported: 100rel
+Call-ID: 4110791b6718129b4225167cc7753f65@172.31.46.56
+To: <sip:22223333@videolab.att.com>
+Organization: Ramen Networks
+User-Agent: OpenCall 1.1 Belador
+From: <sip:14082186575@ramennetworks.com>;tag=34486870_700d280e_ee0e4d6e-2a24-45b2-b330-319d34760c2b
+Via: SIP/2.0/TCP ip-172-31-46-56.us-west-2.compute.internal:5060;branch=z9hG4bKee0e4d6e-2a24-45b2-b330-319d34760c2b_700d280e_488453133589336
+Contact: <sip:14082186575@172.31.46.56:5060;transport=tcp>
+Content-Length: 2566
+
+v=0
+o=doubango 1983 678901 IN IP4 (null)
+s=-
+c=IN IP4 (null)
+t=0 0
+a=tcap:1 RTP/SAVPF RTP/SAVP RTP/AVPF
+m=audio 54406 RTP/AVP 8 0 3
+c=IN IP4 172.31.32.194
+a=ptime:20
+a=minptime:1
+a=maxptime:255
+a=silenceSupp:off - - - -
+a=rtpmap:8 PCMA/8000/1
+a=rtpmap:0 PCMU/8000/1
+a=rtpmap:3 GSM/8000/1
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:MGSt5e+2UfuOZG90hTlz5NOH27XZdyfM0bd90FCW
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:zBkJvrhuE4RgMxhAPaRHNrKK0eUGL3zeeeFVwsQP
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:1457764747 cname:56203d7d75f009f95be00baae66156c9
+a=ssrc:1457764747 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:1457764747 label:doubango@audio
+a=ice-ufrag:hEaJ6FRCu7rk4mE
+a=ice-pwd:gz7Tjk2A9n0xS89Pb93nH
+a=candidate:XrsFBftNC 1 udp 2130706431 172.31.32.194 54406 typ host
+a=candidate:XrsFBftNC 2 udp 2130706430 172.31.32.194 54407 typ host
+a=candidate:srflxXrsF 1 udp 1694498815 54.200.206.176 54406 typ srflx raddr 172.31.32.194 rport 54406
+a=candidate:srflxXrsF 2 udp 1694498814 54.200.206.176 54407 typ srflx raddr 172.31.32.194 rport 54407
+m=video 44224 RTP/AVP 100 104 105
+c=IN IP4 172.31.32.194
+a=rtcp-fb:* ccm fir
+a=rtcp-fb:* nack
+a=rtcp-fb:* goog-remb
+a=rtpmap:100 VP8/90000
+a=imageattr:100 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=rtpmap:104 H264/90000
+a=imageattr:104 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:104 profile-level-id=42001f; packetization-mode=1; impl=FFMPEG
+a=rtpmap:105 H264/90000
+a=imageattr:105 recv [x=[128:16:1280],y=[96:16:720]] send [x=[128:16:1280],y=[96:16:720]]
+a=fmtp:105 profile-level-id=4d001f; packetization-mode=1; impl=FFMPEG
+a=acap:1 crypto:1 AES_CM_128_HMAC_SHA1_80 inline:nbWAESYL1GT08ZkCg5S8GUmrk8MeDvlXY2QGRJcX
+a=acap:2 crypto:2 AES_CM_128_HMAC_SHA1_32 inline:beJmEQJQEZbFYkapo6cpZTt1Goc23P97Kw/5n18l
+a=pcfg:1 t=1 a=1,2
+a=pcfg:2 t=2 a=1,2
+a=pcfg:3 t=3
+a=sendrecv
+a=rtcp-mux
+a=ssrc:113123528 cname:cf3b481cb186e74ac2897ad62e963baf
+a=ssrc:113123528 mslabel:6994f7d1-6ce9-4fbd-acfd-84e5131ca2e2
+a=ssrc:113123528 label:doubango@video
+a=ice-ufrag:HcAOTPCG3A4gX11
+a=ice-pwd:3fsHD2vKAMRRbZrVy528v
+a=candidate:l0zHhRdt9 1 udp 2130706431 172.31.32.194 44224 typ host
+a=candidate:l0zHhRdt9 2 udp 2130706430 172.31.32.194 44225 typ host
+a=candidate:srflxl0zH 1 udp 1694498815 54.200.206.176 44224 typ srflx raddr 172.31.32.194 rport 44224
+a=candidate:srflxl0zH 2 udp 1694498814 54.200.206.176 44225 typ srflx raddr 172.31.32.194 rport 44225
+]]>
+</message>
+
+
+
+"REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKFJE5Kx7w3BxuH8O7Ng0ZdU4T2hpAfJUq;rport
+From: "Chrome"<sip:+14082186575@ramennetworks.com>;tag=SWpNZaTOFRPfVgzE1feS
+To: "Chrome"<sip:+14082186575@ramennetworks.com>
+Contact: "Chrome"<sip:+14082186575@172.31.32.194:5060;rtcweb-breaker=yes;transport=tcp;ws-src-ip=50.156.118.130;ws-src-port=63367;ws-src-proto=ws>;expires=0;click2call=no;+g.oma.sip-im;+audio;language="
+en,fr"
+Call-ID: 01a0100d-d724-7091-a9d8-5941454dd0f6
+CSeq: 6267 REGISTER
+Content-Length: 0
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.10B
+Organization: Doubango Telecom
+Via: SIP/2.0/TCP 50.156.118.130:63367;rport;branch=z9hG4bKFJE5Kx7w3BxuH8O7Ng0ZdU4T2hpAfJUq;ws-hacked=WS"
+
+
+REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKFJE5Kx7w3BxuH8O7Ng0ZdU4T2hpAfJUq;rport
+Via: SIP/2.0/TCP 50.156.118.130:63367;rport;branch=z9hG4bKFJE5Kx7w3BxuH8O7Ng0ZdU4T2hpAfJUq;ws-hacked=WS
+From: "Chrome"<sip:+14082186575@ramennetworks.com>;tag=SWpNZaTOFRPfVgzE1feS
+To: "Chrome"<sip:+14082186575@ramennetworks.com>
+Contact: "Chrome"<sip:+14082186575@172.31.32.194:5060;rtcweb-breaker=yes;transport=tcp;ws-src-ip=50.156.118.130;ws-src-port=63367;ws-src-proto=ws>;expires=0;click2call=no;+g.oma.sip-im;+audio;language="
+en,fr"
+Call-ID: 01a0100d-d724-7091-a9d8-5941454dd0f6
+CSeq: 6267 REGISTER
+Content-Length: 0
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.10B
+Organization: Doubango Telecom
+
+
+
+REGISTER sip:172.31.46.56 SIP/2.0
+Via: SIP/2.0/TCP 172.31.32.194:5060;branch=z9hG4bKFJE5Kx7w3BxuH8O7Ng0ZdU4T2hpAfJUq;rport
+Via: SIP/2.0/TCP 50.156.118.130:63367;rport;branch=z9hG4bKFJE5Kx7w3BxuH8O7Ng0ZdU4T2hpAfJUq;ws-hacked=WS
+From: "Chrome"<sip:+14082186575@ramennetworks.com>;tag=SWpNZaTOFRPfVgzE1feS
+To: "Chrome"<sip:+14082186575@ramennetworks.com>
+Contact: "Chrome"<sip:+14082186575@172.31.32.194:5060;rtcweb-breaker=yes;transport=tcp;ws-src-ip=50.156.118.130;ws-src-port=63367;ws-src-proto=ws>;expires=0;click2call=no;+g.oma.sip-im;+audio;language="
+en,fr"
+Call-ID: 01a0100d-d724-7091-a9d8-5941454dd0f6
+CSeq: 6267 REGISTER
+Max-Forwards: 70
+User-Agent: IM-client/OMA1.0 sipML5-v1.2013.08.10B
+Organization: Doubango Telecom
+Content-Length: 0
+
+
+
+IP Phone 2120
+XML Applications
+Idle Screen XML Download, Yes use TFTP
+TFTP Server <User your PC IP address>
+Save and apply
+Reboot IP Phone
+
 
 Main application
  	  -B2BUA SIP Proxy
@@ -75,7 +431,27 @@ CcProcessTransformRulesCdcc
 
 
 
-
+        <subsystem xmlns="urn:jboss:domain:datasources:1.1">
+             <datasources>
+                <datasource jndi-name="java:jboss/datasources/opencall" pool-name="opencall" enabled="true" jta="true" use-java-context="true">
+                                 <connection-url>jdbc:mysql://localhost:3306/opencall</connection-url>
+                                 <driver>mysql</driver>
+                                 <driver-class>com.mysql.jdbc.Driver</driver-class>
+                         <security>
+                         <user-name>root</user-name>
+                         <password></password>
+                         </security>
+                        <statement>
+                        <prepared-statement-cache-size>100</prepared-statement-cache-size>
+                        <share-prepared-statements/>
+                        </statement>
+                                </datasource>
+                <drivers>
+                    <driver name="mysql" module="com.mysql"/>
+                </drivers>
+            </datasources>
+        </subsystem>
+        
 
 
 2)  McuWeb
@@ -91,8 +467,33 @@ svn checkout svn://svn.code.sf.net/p/mcumediaserver/code/trunk mcumediaserver-co
  scp -i spicyramen.pem ubuntu@ec2-54-218-84-250.us-west-2.compute.amazonaws.com:/etc/asterisk/srtp.pcap .
  
 ./standalone.sh -b 172.31.43.74 -c standalone-sip.xml &
+
+./standalone.sh -b 172.31.46.56 -c standalone-sip.xml &
+
 ./jboss-cli.sh --connect command=:shutdown
 
+ <datasources>
+                <datasource jndi-name="java:jboss/datasources/opencall" pool-name="opencall" enabled="true" jta="true" use-java-context="true">
+   				 <connection-url>jdbc:mysql://localhost:3306/opencall</connection-url>
+   				 <driver>mysql</driver>
+   				 <driver-class>com.mysql.jdbc.Driver</driver-class>
+    			 <security>
+        		 <user-name>root</user-name>
+        		 <password></password>
+    			 </security>
+    			<statement>
+        		<prepared-statement-cache-size>100</prepared-statement-cache-size>
+        		<share-prepared-statements/>
+    			</statement>
+				</datasource>
+                <drivers>
+                    <driver name="mysql" module="com.mysql"/>
+                </drivers>
+            </datasources>
+
+
+
+https://www.youtube.com/watch?v=7h2ryr_uUEs
 
 3) Mobicents
 

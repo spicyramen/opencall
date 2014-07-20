@@ -102,6 +102,7 @@ public class Opencall extends SipServlet {
 		super.init(servletConfig);
 		
 		Thread initializeMainServices = new Thread(new Runnable() {
+			
 			public void run() {
 				logger.info("OpenCall() sip servlet reading init parameters: " + INIT_FILE);
 				
@@ -141,32 +142,6 @@ public class Opencall extends SipServlet {
 		}
 		
 	}
-
-	@Override
-	protected void doAck(SipServletRequest request) throws ServletException,
-			IOException {
-		
-		logger.info("Got : " + request.toString());
-		
-		if (request.getTo().getURI().toString().contains("fwd-ack")) {
-			B2buaHelper helper = request.getB2buaHelper();
-			SipSession peerSession = helper.getLinkedSession(request
-					.getSession());
-			List<SipServletMessage> pendingMessages = helper
-					.getPendingMessages(peerSession, UAMode.UAC);
-			SipServletResponse invitePendingResponse = null;
-			logger.info("Pending messages : ");
-			for (SipServletMessage pendingMessage : pendingMessages) {
-				logger.info("\t Pending message : " + pendingMessage);
-				if (((SipServletResponse) pendingMessage).getStatus() == 200) {
-					invitePendingResponse = (SipServletResponse) pendingMessage;
-					break;
-				}
-			}
-			invitePendingResponse.createAck().send();
-		}
-	}
-
 	
 	@SuppressWarnings("unused")
 	@Override
@@ -258,8 +233,6 @@ public class Opencall extends SipServlet {
 					
 				}
 				
-				
-				
 				if (finalSipCallInfo != null && finalCalled.length() > 0) {
 					
 					helper = request.getB2buaHelper();
@@ -319,10 +292,8 @@ public class Opencall extends SipServlet {
 					 * Route List implementation
 					 */
 					
-					try {
-					
+					try {	
 						inviteRequest.send();
-					
 					}
 					catch (Exception exc) {
 						
@@ -340,8 +311,6 @@ public class Opencall extends SipServlet {
 					logger.error("INVITE. Not found in rules");
 					SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_NOT_FOUND);
 					sipServletResponse.send();
-			
-				
 				}
 			} 
 			catch (Exception e) {
@@ -350,10 +319,8 @@ public class Opencall extends SipServlet {
 				logger.error("Error: " + e.getMessage());			
 				SipServletResponse sipServletResponse = request.createResponse(SipServletResponse.SC_SERVICE_UNAVAILABLE);
 				sipServletResponse.send();
-
 			}
-						
-			
+					
 		} else {
 			
 			// Deals with Re-Invite request		
@@ -367,6 +334,31 @@ public class Opencall extends SipServlet {
 			b2buaHelper.createRequest(origSession, request, null).send();
 		}
 		
+	}
+	
+	@Override
+	protected void doAck(SipServletRequest request) throws ServletException,
+			IOException {
+		
+		logger.info("Got : " + request.toString());
+		
+		if (request.getTo().getURI().toString().contains("fwd-ack")) {
+			B2buaHelper helper = request.getB2buaHelper();
+			SipSession peerSession = helper.getLinkedSession(request
+					.getSession());
+			List<SipServletMessage> pendingMessages = helper
+					.getPendingMessages(peerSession, UAMode.UAC);
+			SipServletResponse invitePendingResponse = null;
+			logger.info("Pending messages : ");
+			for (SipServletMessage pendingMessage : pendingMessages) {
+				logger.info("\t Pending message : " + pendingMessage);
+				if (((SipServletResponse) pendingMessage).getStatus() == 200) {
+					invitePendingResponse = (SipServletResponse) pendingMessage;
+					break;
+				}
+			}
+			invitePendingResponse.createAck().send();
+		}
 	}
 
 	@Override
@@ -523,8 +515,6 @@ public class Opencall extends SipServlet {
 	
 		logger.warn("Error response received got : " + sipServletResponse.getStatus() + " "
 					+ sipServletResponse.getReasonPhrase());
-	
-
 		// create and sends the error response for the first call leg
 		SipServletRequest originalRequest = (SipServletRequest) sipServletResponse.getSession().getAttribute("originalRequest");
 		SipServletResponse responseToOriginalRequest = originalRequest.createResponse(sipServletResponse.getStatus());

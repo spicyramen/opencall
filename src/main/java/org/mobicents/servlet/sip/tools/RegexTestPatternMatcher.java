@@ -40,7 +40,7 @@ public class RegexTestPatternMatcher {
      */
     
     
-    System.out.println("Replaced text: " + result.getReplacedText());
+    //System.out.println("Replaced text: " + result.getReplacedText());
     
    
     // Now create a new pattern and matcher to replace whitespace with tabs

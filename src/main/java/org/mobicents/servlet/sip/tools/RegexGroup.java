@@ -64,7 +64,6 @@ public class RegexGroup {
 
 
 	public RegexGroup(int groupId) {
-		System.out.println("RegexGroup() Object: " + groupId);
 		this.groupID = groupId;	
 	}
 	
