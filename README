@@ -1,5 +1,5 @@
 OpenCall 
---------
+----------------------
 
 When placing SIP Calls for multiple products you face the challenge to install a SIP server and configure Call routing rules, Trunks, ACL, usernames, passwords. OpenCall? is an OpenSource? SIP B2BUA which uses Mobicents SIP stack which 
  solves this problem. By just installing Mobicents and deploying this application you will be able to place calls in 
@@ -7,7 +7,7 @@ When placing SIP Calls for multiple products you face the challenge to install a
  (Cisco Unified Communications Manager, VCS, CTX, CME, Asterisk, Polycom DMA, etc.)
 
 Features
---------
+----------------------
 
 -Allows Call Routing Rules configuration
 -Local File configuration
@@ -19,7 +19,7 @@ Features
 -Allow WebRTC clients using WS to connect to SIP enviroments (sipml5)
 
 
-Version 1.1 supports:
+Version 1.1a Features:
 
 -Allows Call Routing Rules transformations
 -Route List support
@@ -34,7 +34,7 @@ Version 1.1 supports:
 
 
 Installation
-------------
+----------------------
 
 Mobicents installation
 
@@ -109,12 +109,12 @@ TWILIO_ACCOUNT_SID=AC433e7b0bec93dc5996e4fb80b1e56eec
 TWILIO_AUTH_TOKEN=9cc9267fe09dab362d3be160f711a09d
 
 
-¥	Download and configure Opencall server call routing rules
+-Download and configure Opencall server call routing rules
 
 https://code.google.com/p/ramenOpencall/downloads/detail?name=Opencallrules.cfg&can=2&q
 
 
-¥	Deploy opencall war file
+-Deploy opencall war file
 
 Move Opencall war file to the Mobicents deployment folder: 
 mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/deployments
@@ -136,16 +136,17 @@ Deployment folder
 opencall-1.0.0-COMENDADOR.war.deployed
 
 WebSockets Installation
+-----------------------
 
-¥	Download Websockets war file*
+-Download Websockets war file*
 
 http://repo1.maven.org/maven2/org/mobicents/servlet/sip/examples/websockets-sip-servlet/2.0.0.FINAL/websockets-sip-servlet-2.0.0.FINAL.war
 
 	*File may be already included in Mobicents zip file.
  
-¥	Deploy WebSockets war file
-Move Opencall war file to the Mobicents deployment folder: 
-mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/deployments
+-Deploy WebSockets war file
+
+Move Opencall war file to the Mobicents deployment folder:  mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/deployments
 
 Verify Websockets war is deployed successfully, verify server log file in log folder: the server log file is named: server.log
 
@@ -154,12 +155,13 @@ Verify Websockets war is deployed successfully, verify server log file in log fo
 	21:55:33,723 INFO  [org.jboss.as.server] (ServerService Thread Pool -- 29) JBAS018559: Deployed "websockets-sip-servlet-2.1.0-20121108.113957-1.war"
 
 Deployment folder
+------------------------
 
 websockets-sip-servlet-2.1.0-20121108.113957-1.war.deployed
-Configuration
+
 
 Mobicents configuration
-
+------------------------
 For Mobicents please make sure you configure configuration file properly.
 Configure your Default Application Router Configuration and define the proper Application Name.
 
@@ -167,12 +169,12 @@ INVITE: 	Opencall
 REGISTER:	WebSockets
  	 
 Opencall configuration
-
+------------------------
 Configure opencall.ini and define the initial system configuration settings
 Configure opencall.cfg and define the System Routing rules in order to connect Mobicents to your external system.
 
-Opencall System Configuration
-
+Opencall System
+------------------------
 Opencall server will look for opencall.ini located:
 
 mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin and mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall
@@ -216,6 +218,7 @@ TWILIO_AUTH_TOKEN=9cc9267fe09dab362d3be160f711a09d
 
 
 Opencall Route Configuration
+--------------------------------------------
 
 Opencall have the option to read call routing rules from a configuration file or from a MySQL DB.
 This document describes how to configure opencallrules.cfg to provide call routing rules in order to connect to your system.
@@ -252,7 +255,7 @@ ROUTE=("13","10","NUMERIC","+14089449402","110.10.0.200","5060")
 ROUTE=("14","10","NUMERIC","+14089449402","_TWILIO_")
 
 
-¥	Verify Opencall war file is deployed successfully.
+-Verify Opencall war file is deployed successfully.
 
 $ pwd
 /Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/deployments
