@@ -9,28 +9,28 @@ When placing SIP Calls for multiple products you face the challenge to install a
 Features
 --------
 
-Allows Call Routing Rules configuration
-Local File configuration
-DB connection to MySQL DB where Rules can be stored
-SIP URI dialing
-SIP Regex support
-E164 dialing
-Transport support: TCP, UDP, WSS, TLS, WS
-Allow WebRTC clients using WS to connect to SIP enviroments (sipml5)
+-Allows Call Routing Rules configuration
+-Local File configuration
+-DB connection to MySQL DB where Rules can be stored
+-SIP URI dialing
+-SIP Regex support
+-E164 dialing
+-Transport support: TCP, UDP, WSS, TLS, WS
+-Allow WebRTC clients using WS to connect to SIP enviroments (sipml5)
 
 
-Version 1.1 will support:
+Version 1.1 supports:
 
-Allows Call Routing Rules transformations
-Route List support
-API
-Twilio
-Administration Web Page
-Call log analyzer
-CDR generation
-SIP Headers Modification
-SDP Body Modification via LUA script
-Implementation of SIP CLF (SIPCLF)
+-Allows Call Routing Rules transformations
+-Route List support
+-API
+-Twilio
+-Administration Web Page
+-Call log analyzer
+-CDR generation
+-SIP Headers Modification
+-SDP Body Modification via LUA script
+-Implementation of SIP CLF (SIPCLF)
 
 
 Installation
@@ -38,61 +38,46 @@ Installation
 
 Mobicents installation
 
-¥	Download Mobicents 2.0 Jboss
+-Download Mobicents 2.0 Jboss
 http://sourceforge.net/projects/mobicents/files/Mobicents%20Sip%20Servlets/
 
-¥	Extract Mobicents file
+-Extract Mobicents file
 
 mss-2.0.0.FINAL-jboss-as-7.1.2.Final-1349104459.zip
 
-¥	Download configuration file standalone-sip.xml
+-Download configuration file standalone-sip.xml
 
 https://code.google.com/p/ramenOpencall/downloads/detail?name=standalone-sip.xml&can=2&q=
 
-Move this file to this directory
-mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin and mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration
+-Move this file to this directory: mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin and mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration
 
-¥	Obtain local system information
-Obtain local IP address information and define which NIC system will be using:
-Ifconfig
+-Obtain local network information
+Obtain local IP address information and define which NIC system will be using ifconfig
+
 Example:
 ifconfig
-lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
-	options=3<RXCSUM,TXCSUM>
-	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1 
-	inet 127.0.0.1 netmask 0xff000000 
-	inet6 ::1 prefixlen 128 
-gif0: flags=8010<POINTOPOINT,MULTICAST> mtu 1280
-stf0: flags=0<> mtu 1280
+
 en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 	ether 20:c9:d0:42:af:7d 
 	inet6 fe80::22c9:d0ff:fe42:af7d%en0 prefixlen 64 scopeid 0x4 
 	inet 192.168.1.69 netmask 0xffffff00 broadcast 192.168.1.255
 	media: autoselect
 	status: active
-p2p0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 2304
-	ether 02:c9:d0:42:af:7d 
-	media: autoselect
-	status: inactive
 
+-Verify iptables or firewall is open for ports 5060,5061 and 5062.
+-Start Mobicents server. Go to the following folder in order to start Mobicents server: mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin
 
-¥	Verify iptables or firewall is open for ports 5060,5061 and 5062.
-¥	Start Mobicents server
-Go to the following folder in order to start Mobicents server:
-mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin
-
-Run the command:
-./standalone.sh -b 192.168.1.69 -c standalone-sip.xml &
+Run the command: ./standalone.sh -b 192.168.1.69 -c standalone-sip.xml &
 
 
 Opencall Installation
 ----------------------
 
-¥	Download Opencall  war file
+-Download Opencall  war file
 
 https://code.google.com/p/ramenOpencall/downloads/detail?name=Opencall-1.0.0-COMENDADOR.war&can=2&q=
 
-¥	Create Opencall folder
+-Create Opencall folder
 
 Create Opencall folder in mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin and mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration
 
@@ -100,7 +85,7 @@ Example:
 mkdir mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin and mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall
 
 
-¥	Download and configure Opencall server init file
+-Download and configure Opencall server init file
 
 https://code.google.com/p/ramenOpencall/downloads/detail?name=Opencall.ini&can=2&q
 
@@ -279,28 +264,4 @@ $ ls -al
 -rw-r--r--   1 gogasca  staff       27 Oct  1  2012 sip-servlets-management.war.deployed
 -rw-r--r--@  1 gogasca  staff  6039635 Nov 18 14:25 websockets-sip-servlet-2.1.0-20121108.113957-1.war
 -rw-r--r--   1 gogasca  staff       50 Nov 18 14:25 websockets-sip-servlet-2.1.0-20121108.113957-1.war.deployed
- 	  
- 	   
-
-OpenCall 1.1
-
-Opencall.java Initializes and reads opencall.ini:
-	CcProcessor
-	CcProcessor.startService
-		CcReadSystemConfiguration
-		CcReadSystemConfiguration.CcInitSystemConfiguration
-			CcInitConfigSrv
-			CcInitConfigSrv.initializeConfiguration			
-			CcSystemConfigurationEngine
-				CcSystemConfigurationEngine.CcStartCallRulesEngine
-				CcSystemConfigurationEngine.CcReadConfigurationFile
-					CcSystemConfigurationEngine.CcInitConfigurationValues
-					CcSystemConfigurationEngine.CcInitConfigurationFile
-					
-	New SIP Call:
-	
-	CcCallProcessSipMessage
-		CcExtractURI
-			CcDA
-				CcProcessRules
 					
