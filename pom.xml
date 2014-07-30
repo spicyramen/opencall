@@ -1,11 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.mobicents.servlet.sip.examples</groupId>
-		<artifactId>sip-servlets-examples-parent</artifactId>
-		<version>1.1.0-BELADOR</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
 	<artifactId>opencall</artifactId>
 	<packaging>war</packaging>
 	<name>Opencall</name>
@@ -38,7 +32,7 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<version>2.6</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
   
 	</dependencies>	

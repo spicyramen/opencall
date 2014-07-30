@@ -1,17 +1,18 @@
 OpenCall 
 ----------------------
 
-When placing SIP Calls for multiple products you face the challenge to install a SIP server and configure Call routing rules, Trunks, ACL, usernames, passwords. OpenCall? is an OpenSource? SIP B2BUA which uses Mobicents SIP stack which 
- solves this problem. By just installing Mobicents and deploying this application you will be able to place calls in 
- minutes. With Opencall you will be able to integrate to existing Audio and Video systems 
- (Cisco Unified Communications Manager, VCS, CTX, CME, Asterisk, Polycom DMA, etc.)
+When placing SIP Calls for multiple products you face the challenge to install a SIP server and configure Call routing rules, Trunks, ACL, usernames, passwords. 
+OpenCall is an OpenSource SIP B2BUA which uses Mobicents SIP stack which solves this problem.
+
+By installing Mobicents and deploying this application you will be able to place calls in  minutes. 
+Opencall will be able to integrate to existing Audio and Video systems  (Cisco Unified Communications Manager, VCS, CTX, CME, Asterisk, Polycom DMA, etc.)
 
 Features
 ----------------------
 
 -Allows Call Routing Rules configuration
 -Local File configuration
--DB connection to MySQL DB where Rules can be stored
+-DB connection to MySQL/MongoDb where Rules can be stored
 -SIP URI dialing
 -SIP Regex support
 -E164 dialing
@@ -24,7 +25,7 @@ Version 1.1a Features:
 -Allows Call Routing Rules transformations
 -Route List support
 -API
--Twilio
+-Twilio 
 -Administration Web Page
 -Call log analyzer
 -CDR generation
@@ -105,8 +106,8 @@ DBPASSWORD=
 
 # Twilio Support
 TWILIO_DOMAIN=opencall.sip.twilio.com
-TWILIO_ACCOUNT_SID=AC433e7b0bec93dc5996e4fb80b1e56eec
-TWILIO_AUTH_TOKEN=9cc9267fe09dab362d3be160f711a09d
+TWILIO_ACCOUNT_SID=AC433e7b0becXXXXXXXXXXXXXXXXXXX
+TWILIO_AUTH_TOKEN=9cc926XXXXXXXXXXXXXXXX
 
 
 -Download and configure Opencall server call routing rules
