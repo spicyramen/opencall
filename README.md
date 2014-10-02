@@ -85,28 +85,6 @@ https://code.google.com/p/ramenOpencall/downloads/detail?name=Opencall.ini&can=2
 
 Configure proper file location inside opencall-config.xml define path for Opencall server routing rules.
 
-<?xml version="1.0" encoding="utf-8"?>
-<config version="1.0">
-  <Server>
-    <Mode>1</Mode>
-    <RuleLimit>10000</RuleLimit>
-    <CallTransforms>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg</CallTransforms>
-    <CallRules>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg</CallRules>
-    <CallRouteLists>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg</CallRouteLists>
-  </Server>
-  <Database>
-    <Type>1</Type>
-    <DbHostName>localhost</DbHostName>
-    <DbPort>3306</DbPort>
-    <DbName>opencall</DbName>
-    <DbUserName>root</DbUserName>
-    <DbPassword></DbPassword>
-  </Database>
-  <Policies>
-    <BlackList>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/blacklist.cfg</BlackList>
-  </Policies>
-</config>
-
 
 -Download and configure Opencall server call routing rules
 
