@@ -56,14 +56,7 @@ https://code.google.com/p/ramenOpencall/downloads/detail?name=standalone-sip.xml
 Obtain local IP address information and define which NIC system will be using ifconfig
 
 Example:
-ifconfig
-
-en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
-	ether 20:c9:d0:42:af:7d 
-	inet6 fe80::22c9:d0ff:fe42:af7d%en0 prefixlen 64 scopeid 0x4 
-	inet 192.168.1.69 netmask 0xffffff00 broadcast 192.168.1.255
-	media: autoselect
-	status: active
+local ipaddress: 192.168.1.69 netmask 0xffffff00 broadcast 192.168.1.255
 
 -Verify iptables or firewall is open for ports 5060,5061 and 5062.
 -Start Mobicents server. Go to the following folder in order to start Mobicents server: mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin
@@ -90,24 +83,28 @@ mkdir mss-2.0.0.FINAL-jboss-as-7.1.2.Final/bin and mss-2.0.0.FINAL-jboss-as-7.1.
 
 https://code.google.com/p/ramenOpencall/downloads/detail?name=Opencall.ini&can=2&q
 
-Configure proper file location inside Opencall.ini define path for Opencall server routing rules.
+Configure proper file location inside opencall-config.xml define path for Opencall server routing rules.
 
-MODE=1
-RULE_LIMIT=100
-CALLRULES=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
-CALLTRANSFORMS=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
-CALLROUTELIST=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg
-DBTYPE=1
-DBHOSTNAME=localhost
-DBPORT=3306
-DBNAME=opencall
-DBUSERNAME=root
-DBPASSWORD=
-
-# Twilio Support
-TWILIO_DOMAIN=opencall.sip.twilio.com
-TWILIO_ACCOUNT_SID=AC433e7b0becXXXXXXXXXXXXXXXXXXX
-TWILIO_AUTH_TOKEN=9cc926XXXXXXXXXXXXXXXX
+<?xml version="1.0" encoding="utf-8"?>
+<config version="1.0">
+  <Server>
+    <Mode>1</Mode>
+    <RuleLimit>10000</RuleLimit>
+    <CallTransforms>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg</CallTransforms>
+    <CallRules>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg</CallRules>
+    <CallRouteLists>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg</CallRouteLists>
+  </Server>
+  <Database>
+    <Type>1</Type>
+    <DbHostName>localhost</DbHostName>
+    <DbPort>3306</DbPort>
+    <DbName>opencall</DbName>
+    <DbUserName>root</DbUserName>
+    <DbPassword></DbPassword>
+  </Database>
+  <Policies>
+    <BlackList>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/blacklist.cfg</BlackList>
+  </Policies>
 
 
 -Download and configure Opencall server call routing rules
@@ -197,26 +194,6 @@ DB TYPE
 MODE 1 must have FILEROUTINGRULES
 MODE 2 must have DBTYPE,DBHOSTNAME,DBPORT,DBNAME,DBUSERNAME and DBPASSWORD
 MODE 3 does not need any parameters (Not implemented)
-
-Example:
-
-MODE=1
-RULE_LIMIT=100
-CALLRULES=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallrules.cfg
-CALLTRANSFORMS=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencalltransforms.cfg
-CALLROUTELIST=/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/opencallroutelists.cfg
-DBTYPE=1
-DBHOSTNAME=localhost
-DBPORT=3306
-DBNAME=opencall
-DBUSERNAME=root
-DBPASSWORD=
-
-# Twilio Support
-TWILIO_DOMAIN=opencall.sip.twilio.com
-TWILIO_ACCOUNT_SID=AC433e7b0bec93dc5996e4fb80b1e56eec
-TWILIO_AUTH_TOKEN=9cc9267fe09dab362d3be160f711a09d
-
 
 Opencall Route Configuration
 --------------------------------------------
