@@ -130,6 +130,7 @@ public class CcReadSystemConfiguration {
 
 	private boolean CcReadFileParameters(String configurationFileName)
 			throws IOException {
+		
 		try {
 			FileInputStream fstream = new FileInputStream(configurationFileName);
 			DataInputStream in = new DataInputStream(fstream);
@@ -267,6 +268,7 @@ public class CcReadSystemConfiguration {
 									}
 								} catch (NumberFormatException e) {
 									logger.info("CcVerifyFilesystemParameters() Error Parsing Rule");
+									br.close();
 									return false;
 								}
 
@@ -275,6 +277,7 @@ public class CcReadSystemConfiguration {
 										+ paramType[0].toString()
 										+ " index: "
 										+ index);
+								br.close();
 								return false;
 							}
 						} else {

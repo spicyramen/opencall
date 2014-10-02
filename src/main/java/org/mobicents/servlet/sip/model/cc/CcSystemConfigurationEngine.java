@@ -355,8 +355,11 @@ public class CcSystemConfigurationEngine implements
 						candidateRouteLists.add(strLine);
 					else if (type == 3)
 						candidateRoutePatterns.add(strLine);
-					else
+					else {
+						fstream.close();
+						br.close();
 						return false;
+					}
 				}
 			}
 

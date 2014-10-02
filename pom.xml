@@ -75,9 +75,11 @@
 		</repository>
 	</repositories>
 	<description>Gonzalo Gasca Meza
-Oxford University
+gonzalo.gasca.meza@cs.ox.uk.ac
+University of Oxford
 Department of Computer Science, Wolfson Building,  
 Parks Rd, Oxford OX1, United Kingdom
-+44 1865 273838
-</description>
++44 1865 273838</description>
+	<version>1.0.1</version>
+	<groupId>org.mobicents.servlet.sip</groupId>
 </project>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sip-app>
+	<app-name>org.mobicents.servlet.sip.application.Opencall</app-name>
+	<display-name>Opencall</display-name>
+	<description>Ramen Networks Opencall</description>	
+	<servlet-selection>
+		<main-servlet>Opencall</main-servlet>
+	</servlet-selection>
+
+	<servlet>
+		<servlet-name>Opencall</servlet-name>
+		<display-name>Opencall</display-name>
+		<description>Ramen Networks Opencall</description>
+		<servlet-class>org.mobicents.servlet.sip.application.Opencall</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>	
+</sip-app>
