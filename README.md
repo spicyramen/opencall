@@ -105,6 +105,7 @@ Configure proper file location inside opencall-config.xml define path for Openca
   <Policies>
     <BlackList>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/blacklist.cfg</BlackList>
   </Policies>
+</config>
 
 
 -Download and configure Opencall server call routing rules
