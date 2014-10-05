@@ -18,4 +18,9 @@
   <Policies>
     <BlackList>/Users/gogasca/Documents/OpenSource/Development/Java/Mobicents/mss-2.0.0.FINAL-jboss-as-7.1.2.Final/standalone/configuration/opencall/blacklist.cfg</BlackList>
   </Policies>
+  <System>
+  	<CallPriority>50</CallPriority>
+    <SipPort>5060</SipPort>
+    <SipTransport>UDP</SipTransport>
+  </System>
 </config>

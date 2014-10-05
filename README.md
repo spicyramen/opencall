@@ -2,17 +2,19 @@ OpenCall
 ----------------------
 
 When placing SIP Calls for multiple products you face the challenge to install a SIP server and configure Call routing rules, Trunks, ACL, usernames, passwords. 
-OpenCall is an OpenSource SIP B2BUA which uses Mobicents SIP stack which solves this problem.
-
-By installing Mobicents and deploying this application you will be able to place calls in  minutes. 
+OpenCall is an OpenSource SIP B2BUA which uses Mobicents SIP stack and solves this problem.
+Just by running a simple install script you will be able to place Audio and Video calls in minutes.
 Opencall will be able to integrate to existing Audio and Video systems  (Cisco Unified Communications Manager, VCS, CTX, CME, Asterisk, Polycom DMA, etc.)
 
 Features
 ----------------------
 
+-SIP compliants
+-SIP Registrar, B2BUA, Proxy mode.
 -Allows Call Routing Rules configuration
+-Allows Call Routing Rules transformations
 -Local File configuration
--DB connection to MySQL/MongoDb where Rules can be stored
+-DB connection to MySQL/MongoDb where Rules/Configuration can be stored
 -SIP URI dialing
 -SIP Regex support
 -E164 dialing
@@ -22,7 +24,6 @@ Features
 
 Version 1.1a Features:
 
--Allows Call Routing Rules transformations
 -Route List support
 -API
 -Twilio 
