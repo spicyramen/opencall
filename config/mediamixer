@@ -1,0 +1,67 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          mcu
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: MCU Videomixer
+# Description:       Starts and stops mcu Video Mixer
+### END INIT INFO
+ 
+# Do NOT "set -e"
+ 
+# Media Mixer installation directory
+MCU="/usr/local/src/medooze/mcu/bin/debug"
+# Username to run application server
+USER="root"
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="MCU Video Media Mixing Server"
+DAEMON="${MCU}/mcu"
+DAEMONPARAMS=""
+SCRIPTNAME="mcu"
+ 
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+ 
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+        echo -n "Starting $DESC:"
+        cd $MCU && nohup $DAEMON $DAEMONPARAMS > /var/log/mcu 2>&1 &
+        echo "Done"
+}
+ 
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+        echo -n "Stopping $DESC:"
+        killall -9 mcu
+        echo "Done"
+}
+ 
+ 
+case "$1" in
+  start)
+        do_start
+        ;;
+  stop)
+        do_stop
+        ;;
+  restart|force-reload)
+        echo -n "Restarting $DESC"
+        do_stop
+        do_start
+        ;;
+  *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+        exit 3
+        ;;
+esac
+ 
+:
